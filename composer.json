@@ -1,7 +1,8 @@
 {
     "name": "elnebuloso/bundler",
-    "description": "bundling files n' stuff",
     "type": "library",
+    "license": "MIT",
+    "description": "bundling files n' stuff",
     "keywords":
         [
             "bundling",
@@ -11,7 +12,14 @@
             "stylesheet",
             "css"
         ],
-    "license": "MIT",
+    "authors":
+        [
+            {
+                "name": "Jeff Tunessen",
+                "email": "jeff.tunessen@gmail.com",
+                "role": "Maintainer"
+            }
+        ],
     "require": {
         "php": ">=5.3.3"
     },

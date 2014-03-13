@@ -5,7 +5,7 @@ namespace Bundler;
  * Class Version
  *
  * @package Bundler
- * @author Jan Thönneßen <jeff.tunessen@gmail.com>
+ * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
 final class Version {
 

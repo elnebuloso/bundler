@@ -5,7 +5,7 @@ require_once 'AbstractBundleTask.php';
  * Class AbstractBundlePublicTask
  *
  * @package PhingCommons\Bundle
- * @author Jan Thönneßen <jan.thoennessen@googlemail.com>
+ * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
 abstract class AbstractBundlePublicTask extends AbstractBundleTask {
 

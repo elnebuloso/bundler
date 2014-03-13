@@ -3,7 +3,7 @@
  * Class AbstractBundleTask
  *
  * @package PhingCommons\Bundle
- * @author Jan Thönneßen <jan.thoennessen@googlemail.com>
+ * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
 abstract class AbstractBundleTask extends Task {
 
