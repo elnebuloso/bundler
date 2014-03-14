@@ -2,11 +2,11 @@
 namespace Bundler\Task;
 
 /**
- * Class AbstractPublicTask
+ * Class BuildTask
  *
  * @package Bundler\Task
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
-abstract class AbstractPublicTask extends AbstractTask {
+class BuildTask extends AbstractPublicTask {
 
 }

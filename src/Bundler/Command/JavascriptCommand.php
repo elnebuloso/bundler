@@ -1,6 +1,8 @@
 <?php
 namespace Bundler\Command;
 
+use Bundler\Task\JavascriptTask;
+use Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -52,5 +54,14 @@ class JavascriptCommand extends Command {
 
         $output->writeln("  <info>compressor: {$this->_compressor}</info>");
         $output->writeln("");
+
+        try {
+            $task = new JavascriptTask($output);
+            $task->bundle();
+        }
+        catch(Exception $e) {
+            $output->writeln("  <error>{$e->getMessage()}</error>");
+            $output->writeln("");
+        }
     }
 }

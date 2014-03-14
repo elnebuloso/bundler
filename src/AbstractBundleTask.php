@@ -12,25 +12,7 @@ abstract class AbstractBundleTask extends Task {
      */
     protected $_verbose;
 
-    /**
-     * @var string
-     */
-    protected $_manifest;
 
-    /**
-     * @var string
-     */
-    protected $_folder;
-
-    /**
-     * @var array
-     */
-    protected $_manifestDefinition;
-
-    /**
-     * @var array
-     */
-    protected $_filesSelected;
 
     /**
      * @param $verbose
@@ -39,34 +21,14 @@ abstract class AbstractBundleTask extends Task {
         $this->_verbose = (int) $verbose;
     }
 
-    /**
-     * @param string $manifest
-     */
-    public function setManifest($manifest) {
-        $this->_manifest = $manifest;
-    }
-
-    /**
-     * @param string $folder
-     */
-    public function setFolder($folder) {
-        $this->_folder = $folder;
-    }
 
     /**
      * @throws BuildException
      */
     public function main() {
-        $this->_manifest = realpath($this->_manifest);
-        $this->_folder = realpath($this->_folder);
 
-        if($this->_manifest === false) {
-            throw new BuildException("Manifest file {$this->_manifest} not found.");
-        }
 
-        if($this->_folder === false) {
-            throw new BuildException("Directory {$this->_folder} not found.");
-        }
+
 
         $this->log("");
         $this->log("manifest:  {$this->_manifest}");
