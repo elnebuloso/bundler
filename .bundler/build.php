@@ -1,12 +1,13 @@
 <?php
 return array(
-    "target" => "./build",
+    "folder" => ".",
+    "target" => "build",
     "bundle" => array(
-        "./www" => array(
+        "www" => array(
             "include" => array(
-                "./public/.*",
-                "./src/.*",
-                "./vendor/.*"
+                "public/.*",
+                "src/.*",
+                "vendor/.*"
             ),
             "exclude" => array("./vendor/dflydev/markdown/tests/.*")
         )
