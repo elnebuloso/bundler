@@ -19,6 +19,11 @@ class StylesheetCommand extends Command {
     /**
      * @var string
      */
+    private $_root;
+
+    /**
+     * @var string
+     */
     private $_compressor;
 
     /**
@@ -28,6 +33,13 @@ class StylesheetCommand extends Command {
         'yuicompressor',
         'cssmin'
     );
+
+    /**
+     * @param string $root
+     */
+    public function setRoot($root) {
+        $this->_root = $root;
+    }
 
     /**
      * @return void
@@ -58,6 +70,8 @@ class StylesheetCommand extends Command {
 
         try {
             $task = new StylesheetTask($output);
+            $task->setRoot($this->_root);
+            $task->setManifest("$this->_root/.bundler/stylesheet.php");
             $task->bundle();
         }
         catch(Exception $e) {

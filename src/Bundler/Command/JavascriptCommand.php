@@ -19,6 +19,11 @@ class JavascriptCommand extends Command {
     /**
      * @var string
      */
+    private $_root;
+
+    /**
+     * @var string
+     */
     private $_compressor;
 
     /**
@@ -27,6 +32,13 @@ class JavascriptCommand extends Command {
     private $_compressors = array(
         'yuicompressor'
     );
+
+    /**
+     * @param string $root
+     */
+    public function setRoot($root) {
+        $this->_root = $root;
+    }
 
     /**
      * @return void
@@ -41,7 +53,7 @@ class JavascriptCommand extends Command {
      * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
-        $output->writeln('<comment>bundling javascripts</comment>');
+        $output->writeln("<comment>bundling javascripts</comment>");
 
         $this->_compressor = !is_null($input->getArgument('compressor')) ? $input->getArgument('compressor') : 'yuicompressor';
 
@@ -57,6 +69,8 @@ class JavascriptCommand extends Command {
 
         try {
             $task = new JavascriptTask($output);
+            $task->setRoot($this->_root);
+            $task->setManifest("$this->_root/.bundler/javascript.php");
             $task->bundle();
         }
         catch(Exception $e) {

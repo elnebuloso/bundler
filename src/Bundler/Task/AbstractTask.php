@@ -20,7 +20,7 @@ abstract class AbstractTask {
     /**
      * @var string
      */
-    protected $_folder;
+    protected $_root;
 
     /**
      * @var string
@@ -53,10 +53,10 @@ abstract class AbstractTask {
     }
 
     /**
-     * @param string $folder
+     * @param string $root
      */
-    public function setFolder($folder) {
-        $this->_folder = $folder;
+    public function setRoot($root) {
+        $this->_root = $root;
     }
 
     /**
@@ -65,14 +65,18 @@ abstract class AbstractTask {
      */
     public function bundle() {
         $this->_manifest = realpath($this->_manifest);
-        $this->_folder = realpath($this->_folder);
+        $this->_root = realpath($this->_root);
 
         if($this->_manifest === false) {
             throw new Exception("Manifest file {$this->_manifest} not found.");
         }
 
-        if($this->_folder === false) {
-            throw new Exception("Directory {$this->_folder} not found.");
+        if($this->_root === false) {
+            throw new Exception("Root {$this->_root} not found.");
         }
+
+        $this->_output->writeln("<comment>configuration</comment>");
+        $this->_output->writeln("  <info>manifest: {$this->_manifest}</info>");
+        $this->_output->writeln("  <info>root:     {$this->_root}</info>");
     }
 }

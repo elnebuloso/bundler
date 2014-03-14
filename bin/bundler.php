@@ -39,8 +39,17 @@ use Bundler\Command\JavascriptCommand;
 use Bundler\Command\StylesheetCommand;
 use Symfony\Component\Console\Application;
 
+$stylesheetCommand = new StylesheetCommand();
+$stylesheetCommand->setRoot($root);
+
+$javascriptCommand = new JavascriptCommand();
+$javascriptCommand->setRoot($root);
+
+$buildCommand = new BuildCommand();
+$buildCommand->setRoot($root);
+
 $console = new Application();
-$console->add(new StylesheetCommand());
-$console->add(new JavascriptCommand());
-$console->add(new BuildCommand());
+$console->add($stylesheetCommand);
+$console->add($javascriptCommand);
+$console->add($buildCommand);
 $console->run();

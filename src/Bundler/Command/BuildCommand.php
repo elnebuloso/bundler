@@ -16,6 +16,18 @@ use Symfony\Component\Console\Output\OutputInterface;
 class BuildCommand extends Command {
 
     /**
+     * @var string
+     */
+    private $_root;
+
+    /**
+     * @param string $root
+     */
+    public function setRoot($root) {
+        $this->_root = $root;
+    }
+
+    /**
      * @return void
      */
     protected function configure() {
@@ -28,10 +40,12 @@ class BuildCommand extends Command {
      * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
-        $output->writeln('<info>bundling builds</info>');
+        $output->writeln("<comment>bundling builds</comment>");
 
         try {
             $task = new BuildTask($output);
+            $task->setRoot($this->_root);
+            $task->setManifest("$this->_root/.bundler/build.php");
             $task->bundle();
         }
         catch(Exception $e) {
