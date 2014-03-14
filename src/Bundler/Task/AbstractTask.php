@@ -80,7 +80,7 @@ abstract class AbstractTask {
         }
 
         if($this->_root === false) {
-            throw new Exception("Root {$this->_root} not found.");
+            throw new Exception("Root Folder {$this->_root} not found.");
         }
 
         $this->_manifestDefinition = require_once($this->_manifest);

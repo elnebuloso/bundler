@@ -1,6 +1,8 @@
 <?php
 namespace Bundler\Task;
 
+use Exception;
+
 /**
  * Class JavascriptTask
  *
@@ -9,4 +11,11 @@ namespace Bundler\Task;
  */
 class JavascriptTask extends AbstractPublicTask {
 
+    /**
+     * @return void
+     * @throws Exception
+     */
+    public function bundle() {
+        parent::bundle();
+    }
 }

@@ -1,6 +1,8 @@
 <?php
 namespace Bundler\Task;
 
+use Exception;
+
 /**
  * Class StylesheetTask
  *
@@ -9,4 +11,11 @@ namespace Bundler\Task;
  */
 class StylesheetTask extends AbstractPublicTask {
 
+    /**
+     * @return void
+     * @throws Exception
+     */
+    public function bundle() {
+        parent::bundle();
+    }
 }
