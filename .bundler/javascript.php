@@ -12,6 +12,7 @@ return array(
         ),
         "javascript.bottom" => array(
             "include" => array(
+                "vendor/twitter/bootstrap/3.1.0/js/bootstrap.js",
                 "vendor/jquery/jquery/1.11.0/jquery-1.11.0.js"
             ),
             "exclude" => array()
