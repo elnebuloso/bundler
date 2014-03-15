@@ -37,6 +37,7 @@ if(file_exists('vendor/autoload.php')) {
 use Bundler\Command\BuildCommand;
 use Bundler\Command\JavascriptCommand;
 use Bundler\Command\StylesheetCommand;
+use Bundler\Command\VersionCommand;
 use Symfony\Component\Console\Application;
 
 $stylesheetCommand = new StylesheetCommand();
@@ -52,4 +53,5 @@ $console = new Application();
 $console->add($stylesheetCommand);
 $console->add($javascriptCommand);
 $console->add($buildCommand);
+$console->add(new VersionCommand());
 $console->run();
