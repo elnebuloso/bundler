@@ -1,8 +1,9 @@
 <?php
 return array(
     "folder" => "public",
+    "target" => "public/css",
     "bundle" => array(
-        "css/stylesheet.top.css" => array(
+        "stylesheet.top" => array(
             "include" => array(
                 "vendor/twitter/bootstrap/3.1.0/css/bootstrap.min.css",
                 "vendor/twitter/bootstrap/3.1.0/css/bootstrap-theme.min.css",

@@ -31,7 +31,8 @@ class BuildCommand extends Command {
      * @return void
      */
     protected function configure() {
-        $this->setName('bundle:build')->setDescription('bundling builds');
+        $this->setName('bundle:build');
+        $this->setDescription('bundling builds');
     }
 
     /**

@@ -12,22 +12,11 @@ use Exception;
 class BuildTask extends AbstractPublicTask {
 
     /**
-     * @var string
-     */
-    protected $_target;
-
-    /**
      * @return void
      * @throws Exception
      */
     public function bundle() {
         parent::bundle();
-
-        $this->_target = "{$this->_root}/{$this->_manifestDefinition['target']}";
-
-        if($this->_target === false) {
-            throw new Exception("Target {$this->_target} not found.");
-        }
 
         foreach($this->_filesSelected as $package => $data) {
             $this->_output->writeln("");

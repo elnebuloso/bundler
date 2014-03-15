@@ -41,6 +41,11 @@ abstract class AbstractTask {
     protected $_folder;
 
     /**
+     * @var string
+     */
+    protected $_target;
+
+    /**
      * @var array
      */
     protected $_filesSelected;
@@ -84,16 +89,24 @@ abstract class AbstractTask {
         }
 
         $this->_manifestDefinition = require_once($this->_manifest);
+
         $this->_folder = realpath("{$this->_root}/{$this->_manifestDefinition['folder']}");
 
-        if($this->_root === false) {
+        if($this->_folder === false) {
             throw new Exception("Folder {$this->_folder} not found.");
         }
 
+        $this->_target = "{$this->_root}/{$this->_manifestDefinition['target']}";
+
+        if($this->_target === false) {
+            throw new Exception("Target {$this->_target} not found.");
+        }
+
         $this->_output->writeln("<comment>configuration</comment>");
-        $this->_output->writeln("  <info>manifest: {$this->_manifest}</info>");
-        $this->_output->writeln("  <info>root:     {$this->_root}</info>");
-        $this->_output->writeln("  <info>folder:   {$this->_folder}</info>");
+        $this->_output->writeln("  <info>Manifest: {$this->_manifest}</info>");
+        $this->_output->writeln("  <info>Root:     {$this->_root}</info>");
+        $this->_output->writeln("  <info>Folder:   {$this->_folder}</info>");
+        $this->_output->writeln("  <info>Target:   {$this->_target}</info>");
 
         $this->_readManifest();
     }

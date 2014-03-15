@@ -24,14 +24,20 @@ class JavascriptCommand extends Command {
     /**
      * @var string
      */
-    private $_compressor;
+    private $_compressor = 'google';
 
     /**
      * @var array
      */
     private $_compressors = array(
+        'google',
         'yuicompressor'
     );
+
+    /**
+     * @var string
+     */
+    protected $_java = 'java';
 
     /**
      * @param string $root
@@ -44,7 +50,10 @@ class JavascriptCommand extends Command {
      * @return void
      */
     protected function configure() {
-        $this->setName('bundle:javascript')->setDescription('bundling javascripts')->addArgument('compressor', InputArgument::OPTIONAL, implode('|', $this->_compressors));
+        $this->setName('bundle:javascript');
+        $this->setDescription('bundling javascripts');
+        $this->addArgument('compressor', InputArgument::OPTIONAL, implode('|', $this->_compressors));
+        $this->addArgument('java', InputArgument::OPTIONAL, 'java binary call');
     }
 
     /**
@@ -55,7 +64,8 @@ class JavascriptCommand extends Command {
     protected function execute(InputInterface $input, OutputInterface $output) {
         $output->writeln("<comment>bundling javascripts</comment>");
 
-        $this->_compressor = !is_null($input->getArgument('compressor')) ? $input->getArgument('compressor') : 'yuicompressor';
+        $this->_compressor = !is_null($input->getArgument('compressor')) ? $input->getArgument('compressor') : $this->_compressor;
+        $this->_java = !is_null($input->getArgument('java')) ? $input->getArgument('java') : $this->_java;
 
         if(!in_array($this->_compressor, $this->_compressors)) {
             $output->writeln("  <error>invalid compressor: {$this->_compressor}</error>");
@@ -65,12 +75,15 @@ class JavascriptCommand extends Command {
         }
 
         $output->writeln("  <info>compressor: {$this->_compressor}</info>");
+        $output->writeln("  <info>java:       {$this->_java}</info>");
         $output->writeln("");
 
         try {
             $task = new JavascriptTask($output);
             $task->setRoot($this->_root);
             $task->setManifest("$this->_root/.bundler/javascript.php");
+            $task->setCompressor($this->_compressor);
+            $task->setJava($this->_java);
             $task->bundle();
         }
         catch(Exception $e) {

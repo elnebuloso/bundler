@@ -24,7 +24,7 @@ class StylesheetCommand extends Command {
     /**
      * @var string
      */
-    private $_compressor;
+    private $_compressor = 'yuicompressor';
 
     /**
      * @var array
@@ -33,6 +33,11 @@ class StylesheetCommand extends Command {
         'yuicompressor',
         'cssmin'
     );
+
+    /**
+     * @var string
+     */
+    protected $_java = 'java';
 
     /**
      * @param string $root
@@ -45,7 +50,10 @@ class StylesheetCommand extends Command {
      * @return void
      */
     protected function configure() {
-        $this->setName('bundle:stylesheet')->setDescription('bundling stylesheets')->addArgument('compressor', InputArgument::OPTIONAL, implode('|', $this->_compressors));
+        $this->setName('bundle:stylesheet');
+        $this->setDescription('bundling stylesheets');
+        $this->addArgument('compressor', InputArgument::OPTIONAL, implode('|', $this->_compressors));
+        $this->addArgument('java', InputArgument::OPTIONAL, 'java binary call');
     }
 
     /**
@@ -56,7 +64,8 @@ class StylesheetCommand extends Command {
     protected function execute(InputInterface $input, OutputInterface $output) {
         $output->writeln("<comment>bundling stylesheets</comment>");
 
-        $this->_compressor = !is_null($input->getArgument('compressor')) ? $input->getArgument('compressor') : 'yuicompressor';
+        $this->_compressor = !is_null($input->getArgument('compressor')) ? $input->getArgument('compressor') : $this->_compressor;
+        $this->_java = !is_null($input->getArgument('java')) ? $input->getArgument('java') : $this->_java;
 
         if(!in_array($this->_compressor, $this->_compressors)) {
             $output->writeln("  <error>invalid compressor: {$this->_compressor}</error>");
@@ -66,12 +75,15 @@ class StylesheetCommand extends Command {
         }
 
         $output->writeln("  <info>compressor: {$this->_compressor}</info>");
+        $output->writeln("  <info>java:       {$this->_java}</info>");
         $output->writeln("");
 
         try {
             $task = new StylesheetTask($output);
             $task->setRoot($this->_root);
             $task->setManifest("$this->_root/.bundler/stylesheet.php");
+            $task->setCompressor($this->_compressor);
+            $task->setJava($this->_java);
             $task->bundle();
         }
         catch(Exception $e) {
