@@ -17,6 +17,55 @@ class StylesheetTask extends AbstractPublicTask {
      */
     public function bundle() {
         parent::bundle();
+
+        foreach($this->_filesSelected as $package => $data) {
+            $this->_output->writeln("");
+            $this->_output->writeln("<comment>package: {$package}</comment>");
+
+            $this->_content = array();
+            $this->_destinationMax = "{$this->_target}/{$package}.bundler.css";
+            $this->_destinationMin = "{$this->_target}/{$package}.bundler.min.css";
+
+            foreach($data['files'] as $file) {
+                $this->_output->writeln("  <info>include: {$file}</info>");
+
+                $path = pathinfo($file);
+                $path = $this->_getRelativePath($path['dirname'], $this->_target);
+
+                $css = file_get_contents($file);
+                $css = $this->_changeUrlPath($path, $css);
+
+                $this->_content[] = $css;
+            }
+
+            // create max file
+            $this->_content = implode(PHP_EOL . PHP_EOL, $this->_content);
+            file_put_contents($this->_destinationMax, $this->_content);
+
+            // create min file
+            if($this->_compressor == 'yuicompressor') {
+                $this->_compileWithYuiCompressor();
+            }
+
+            if($this->_compressor == 'cssmin') {
+                $this->_compileWithCSSMin();
+            }
+
+            $this->_output->writeln("  <info>created: {$this->_destinationMax}</info>");
+            $this->_output->writeln("  <info>created: {$this->_destinationMin}</info>");
+
+            $org = strlen(file_get_contents($this->_destinationMax));
+            $new = strlen(file_get_contents($this->_destinationMin));
+            $ratio = !empty($org) ? $new / $org : 0;
+
+            $this->_output->writeln("");
+            $this->_output->writeln("  <info>include:           " . count($data['includes']) . "</info>");
+            $this->_output->writeln("  <info>exclude:           " . count($data['excludes']) . "</info>");
+            $this->_output->writeln("  <info>copy:              " . count($data['files']) . "</info>");
+            $this->_output->writeln("  <info>org:               {$org} bytes</info>");
+            $this->_output->writeln("  <info>new:               {$new} bytes</info>");
+            $this->_output->writeln("  <info>compression ratio: {$ratio}</info>");
+        }
     }
 
     /**
