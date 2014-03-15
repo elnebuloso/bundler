@@ -15,6 +15,14 @@ usage
  * create file .bundler/javascript.php for bundling javascripts
  * create file .bundler/build.php for bundling the whole project
 
+commands
+========
+ * ./vendor/bin/bundler.php
+ * ./vendor/bin/bundler.php version
+ * ./vendor/bin/bundler.php bundle:stylesheet
+ * ./vendor/bin/bundler.php bundle:javascript
+ * ./vendor/bin/bundler.php bundle:build
+
 demo .bundler/stylesheet.php
 ============================
 
