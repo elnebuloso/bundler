@@ -42,6 +42,9 @@ class StylesheetTask extends AbstractPublicTask {
             $this->_content = implode(PHP_EOL . PHP_EOL, $this->_content);
             file_put_contents($this->_destinationMax, $this->_content);
 
+            $this->_output->writeln("  <info>created: {$this->_destinationMax}</info>");
+            $this->_output->writeln("  <info>created: {$this->_destinationMin}</info>");
+
             // create min file
             if($this->_compressor == 'yuicompressor') {
                 $this->_compileWithYuiCompressor();
@@ -50,9 +53,6 @@ class StylesheetTask extends AbstractPublicTask {
             if($this->_compressor == 'cssmin') {
                 $this->_compileWithCSSMin();
             }
-
-            $this->_output->writeln("  <info>created: {$this->_destinationMax}</info>");
-            $this->_output->writeln("  <info>created: {$this->_destinationMin}</info>");
 
             $org = strlen(file_get_contents($this->_destinationMax));
             $new = strlen(file_get_contents($this->_destinationMin));
@@ -107,7 +107,6 @@ class StylesheetTask extends AbstractPublicTask {
 
         $this->_output->writeln("");
         $this->_output->writeln("  <info>compiled by yuicompressor</info>");
-        $this->_output->writeln("");
     }
 
     /**
@@ -141,7 +140,6 @@ class StylesheetTask extends AbstractPublicTask {
 
         $this->_output->writeln("");
         $this->_output->writeln("  <info>compiled by cssmin</info>");
-        $this->_output->writeln("");
     }
 
     /**
