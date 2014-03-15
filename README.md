@@ -63,7 +63,7 @@ demo .bundler/javascript.php
   * in this demo case, this creates javascript.bottom.bundler.js
   * in this demo case, this creates javascript.bottom.bundler.min.js
 
-```
+```php
 <?php
 return array(
     "folder" => "public",
@@ -96,7 +96,7 @@ demo .bundler/build.php
   * define multiple packages here
   * in this demo case, this creates ./build/www/public, ./build/www/src, ./build/www/vendor,
 
-```
+```php
 <?php
 return array(
     "folder" => ".",
