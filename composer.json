@@ -28,5 +28,9 @@
         "psr-0": {
             "Bundler\\": "src/"
         }
-    }
+    },
+    "bin":
+        [
+            "bin/bundler.php"
+        ]
 }
