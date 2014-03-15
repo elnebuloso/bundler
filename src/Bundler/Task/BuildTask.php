@@ -40,7 +40,6 @@ class BuildTask extends AbstractPublicTask {
             }
 
             $this->_output->writeln("");
-            $this->_output->writeln("<comment>package: {$package}</comment>");
             $this->_output->writeln("  <info>include: " . count($data['includes']) . "</info>");
             $this->_output->writeln("  <info>exclude: " . count($data['excludes']) . "</info>");
             $this->_output->writeln("  <info>copy:    " . count($data['files']) . "</info>");

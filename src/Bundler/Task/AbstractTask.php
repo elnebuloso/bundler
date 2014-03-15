@@ -116,8 +116,10 @@ abstract class AbstractTask {
      */
     private function _readManifest() {
         foreach($this->_manifestDefinition['bundle'] as $package => $definition) {
-            $this->_output->writeln("");
-            $this->_output->writeln("<comment>package: {$package}</comment>");
+            if($this->_output->isVerbose()) {
+                $this->_output->writeln("");
+                $this->_output->writeln("<comment>package: {$package}</comment>");
+            }
 
             $includes = array();
             $excludes = array();
@@ -146,11 +148,15 @@ abstract class AbstractTask {
             }
 
             foreach($includeFiles as $file) {
-                $this->_output->writeln("  <info>include: {$file}</info>");
+                if($this->_output->isVerbose()) {
+                    $this->_output->writeln("  <info>include: {$file}</info>");
+                }
             }
 
             foreach($excludeFiles as $file) {
-                $this->_output->writeln("  <info>exclude: {$file}</info>");
+                if($this->_output->isVerbose()) {
+                    $this->_output->writeln("  <info>exclude: {$file}</info>");
+                }
             }
 
             $this->_filesSelected[$package] = array(

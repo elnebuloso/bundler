@@ -68,59 +68,7 @@ class BundleStylesheetTask extends AbstractBundlePublicTask {
         }
     }
 
-    /**
-     * @return void
-     */
-    private function _compileWithYuiCompressor() {
-        $path = realpath(__DIR__ . '/../../../../');
 
-        $compiler = $path . '/third-party/yuicompressor/2.4.8/yuicompressor.jar';
-        $command = "{$this->_java} -jar {$compiler} --type css --line-break 5000 -o {$this->_destinationMin} {$this->_destinationMax}";
-        exec($command);
 
-        $this->log("compiled by yuicompressor");
-    }
 
-    /**
-     * @return void
-     */
-    private function _compileWithCSSMin() {
-        $path = realpath(__DIR__ . '/../../../../');
-
-        require_once $path . '/third-party/cssmin/3.0.1/source/CssMin.php';
-
-        $cssFilter = array(
-            'ImportImports' => false,
-            // default false
-            'ConvertLevel3Properties' => true
-            // default true
-        );
-
-        $cssPlugins = array(
-            'Variables' => true,
-            // default true
-            'ConvertFontWeight' => true,
-            // default false
-            'ConvertNamedColors' => true,
-            // default false
-            'CompressColorValues' => true,
-            // default false
-            'CompressUnitValues' => false
-            // default false
-        );
-
-        $minifier = new CssMinifier($this->_content, $cssFilter, $cssPlugins, false);
-        file_put_contents($this->_destinationMin, $minifier->getMinified());
-
-        $this->log("compiled by yuicompressor");
-    }
-
-    /**
-     * @param $baseUrl
-     * @param $content
-     * @return string
-     */
-    private function _changeUrlPath($baseUrl, $content) {
-        return preg_replace('/url\(\s*[\'"]?\/?(.+?)[\'"]?\s*\)/i', 'url(' . $baseUrl . '/$1)', $content);
-    }
 }

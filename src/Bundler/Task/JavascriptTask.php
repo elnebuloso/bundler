@@ -27,6 +27,7 @@ class JavascriptTask extends AbstractPublicTask {
             $this->_destinationMin = "{$this->_target}/{$package}.bundler.min.js";
 
             foreach($data['files'] as $file) {
+                $this->_output->writeln("  <info>include: {$file}</info>");
                 $this->_content[] = file_get_contents($file);
             }
 
@@ -77,6 +78,7 @@ class JavascriptTask extends AbstractPublicTask {
 
         $this->_output->writeln("");
         $this->_output->writeln("  <info>compiled by yuicompressor</info>");
+        $this->_output->writeln("");
     }
 
     /**
@@ -97,5 +99,6 @@ class JavascriptTask extends AbstractPublicTask {
 
         $this->_output->writeln("");
         $this->_output->writeln("  <info>compiled by google closure compiler</info>");
+        $this->_output->writeln("");
     }
 }
