@@ -30,8 +30,9 @@ demo .bundler/stylesheet.php
  * target: relative to the root where the files are copied
  * bundle/[package]
   * define multiple packages here
-  * in this demo case, this creates stylesheet.top.bundler.css
-  * in this demo case, this creates stylesheet.top.bundler.min.css
+  * in this demo case, this creates ./public/css/stylesheet.top.bundler.css
+  * in this demo case, this creates ./public/css/stylesheet.top.bundler.min.css
+ * all paths in the stylesheets are solved
 
 ```php
 <?php
