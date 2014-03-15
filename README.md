@@ -33,7 +33,7 @@ demo .bundler/stylesheet.php
   * in this demo case, this creates stylesheet.top.bundler.css
   * in this demo case, this creates stylesheet.top.bundler.min.css
 
-```
+```php
 <?php
 return array(
     "folder" => "public",
