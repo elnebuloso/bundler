@@ -1,6 +1,7 @@
 <?php
 namespace Bundler\Command;
 
+use Exception;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -40,5 +41,13 @@ class StylesheetCommand extends AbstractPublicCommand {
         parent::execute($input, $output);
 
         $this->bundle();
+    }
+
+    /**
+     * @return void
+     * @throws Exception
+     */
+    protected function bundle() {
+        parent::bundle();
     }
 }

@@ -3,6 +3,7 @@ namespace Bundler\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Exception;
 
 /**
  * Class JavascriptCommand
@@ -40,5 +41,13 @@ class JavascriptCommand extends AbstractPublicCommand {
         parent::execute($input, $output);
 
         $this->bundle();
+    }
+
+    /**
+     * @return void
+     * @throws Exception
+     */
+    protected function bundle() {
+        parent::bundle();
     }
 }

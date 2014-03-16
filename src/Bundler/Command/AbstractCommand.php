@@ -2,6 +2,9 @@
 namespace Bundler\Command;
 
 use Exception;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use RegexIterator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -46,6 +49,11 @@ class AbstractCommand extends Command {
     protected $_target;
 
     /**
+     * @var array
+     */
+    protected $_filesSelected;
+
+    /**
      * @param string $root
      */
     public function setRoot($root) {
@@ -79,13 +87,6 @@ class AbstractCommand extends Command {
         $this->_output = $output;
         $this->_root = realpath($this->_root);
         $this->_manifest = realpath($this->_manifest);
-    }
-
-    /**
-     * @return void
-     * @throws Exception
-     */
-    protected function bundle() {
         $this->_manifestDefinition = require_once $this->_manifest;
 
         $folder = "{$this->_root}/{$this->_manifestDefinition['folder']}";
@@ -107,5 +108,113 @@ class AbstractCommand extends Command {
         $this->_output->writeln("  <info>root:     {$this->_root}</info>");
         $this->_output->writeln("  <info>folder:   {$this->_folder}</info>");
         $this->_output->writeln("  <info>target:   {$this->_target}</info>");
+    }
+
+    /**
+     * @return void
+     * @throws Exception
+     */
+    protected function bundle() {
+        foreach($this->_manifestDefinition['bundle'] as $package => $definition) {
+            $this->_output->writeln("");
+            $this->_output->writeln("<comment>package: {$package}</comment>");
+
+            $includes = array();
+            $excludes = array();
+
+            if(array_key_exists('include', $definition) && is_array($definition['include'])) {
+                $includes = $definition['include'];
+            }
+
+            if(array_key_exists('exclude', $definition) && is_array($definition['exclude'])) {
+                $excludes = $definition['exclude'];
+            }
+
+            $includeFiles = array();
+            $excludeFiles = array();
+
+            foreach($includes as $pattern) {
+                $files = $this->selectFiles($this->_folder, '`' . $pattern . '`');
+                $files = $this->updateFiles($this->_folder, $files);
+                $includeFiles = array_merge($includeFiles, $files);
+            }
+
+            foreach($excludes as $pattern) {
+                $files = $this->selectFiles($this->_folder, '`' . $pattern . '`');
+                $files = $this->updateFiles($this->_folder, $files);
+                $excludeFiles = array_merge($excludeFiles, $files);
+            }
+
+            if($this->_output->isVerbose()) {
+                $this->_output->writeln("");
+
+                foreach($includeFiles as $file) {
+                    $this->_output->writeln("  <info>include: {$file}</info>");
+                }
+
+                foreach($excludeFiles as $file) {
+                    $this->_output->writeln("  <info>exclude: {$file}</info>");
+                }
+            }
+
+            $this->_filesSelected[$package] = array(
+                'files' => $this->getFilesToBundle($includeFiles, $excludeFiles),
+                'includes' => $includeFiles,
+                'excludes' => $excludeFiles
+            );
+        }
+    }
+
+    /**
+     * @param string $folder
+     * @param string $pattern
+     * @return array
+     */
+    private function selectFiles($folder, $pattern) {
+        $this->_output->writeln("");
+        $this->_output->writeln("<comment>selecting files</comment>");
+        $this->_output->writeln("  <info>folder:   {$folder}</info>");
+        $this->_output->writeln("  <info>pattern:  {$pattern}</info>");
+
+        $dir = new RecursiveDirectoryIterator($folder);
+        $ite = new RecursiveIteratorIterator($dir);
+        $files = new RegexIterator($ite, $pattern, RegexIterator::GET_MATCH);
+        $fileList = array();
+
+        foreach($files as $file) {
+            $fileList = array_merge($fileList, $file);
+        }
+
+        return $fileList;
+    }
+
+    /**
+     * @param string $folder
+     * @param array $fileList
+     * @return array
+     */
+    private function updateFiles($folder, array $fileList) {
+        $returnFiles = array();
+
+        foreach($fileList as $currentFile) {
+            $currentFile = realpath($folder . '/' . $currentFile);
+
+            if(empty($currentFile) || is_dir($currentFile)) {
+                continue;
+            }
+
+            $returnFiles[md5($currentFile)] = $currentFile;
+        }
+
+        return $returnFiles;
+    }
+
+    /**
+     * @param array $includeFiles
+     * @param array $excludeFiles
+     * @return array
+     */
+    private function getFilesToBundle(array $includeFiles, array $excludeFiles) {
+        return array_diff($includeFiles, $excludeFiles);
     }
 }
