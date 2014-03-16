@@ -81,21 +81,21 @@ class JavascriptCommand extends AbstractPublicCommand {
                     break;
             }
 
-            $this->_output->writeln("");
-            $this->_output->writeln("  <info>created: {$this->_destinationMax}</info>");
-            $this->_output->writeln("  <info>created: {$this->_destinationMin}</info>");
-
             $org = strlen(file_get_contents($this->_destinationMax));
             $new = strlen(file_get_contents($this->_destinationMin));
             $ratio = !empty($org) ? $new / $org : 0;
 
             $this->_output->writeln("");
-            $this->_output->writeln("  <info>include:           " . count($data['includes']) . "</info>");
-            $this->_output->writeln("  <info>exclude:           " . count($data['excludes']) . "</info>");
-            $this->_output->writeln("  <info>copy:              " . count($data['files']) . "</info>");
-            $this->_output->writeln("  <info>org:               {$org} bytes</info>");
-            $this->_output->writeln("  <info>new:               {$new} bytes</info>");
-            $this->_output->writeln("  <info>compression ratio: {$ratio}</info>");
+            $this->_output->writeln("  <info>bundled: " . count($data['files']) . "</info>");
+            $this->_output->writeln("  <info>include: " . count($data['includes']) . "</info>");
+            $this->_output->writeln("  <info>exclude: " . count($data['excludes']) . "</info>");
+            $this->_output->writeln("  <info>org:     {$org} bytes</info>");
+            $this->_output->writeln("  <info>new:     {$new} bytes</info>");
+            $this->_output->writeln("  <info>ratio:   {$ratio}</info>");
+
+            $this->_output->writeln("");
+            $this->_output->writeln("  <info>created: {$this->_destinationMax}</info>");
+            $this->_output->writeln("  <info>created: {$this->_destinationMin}</info>");
         }
 
         $this->_output->writeln("");

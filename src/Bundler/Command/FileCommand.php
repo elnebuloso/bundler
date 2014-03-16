@@ -89,7 +89,7 @@ class FileCommand extends AbstractCommand {
             $progress->finish();
 
             $this->_output->writeln("");
-            $this->_output->writeln("  <info>copied:  {$countFiles}</info>");
+            $this->_output->writeln("  <info>bundled: {$countFiles}</info>");
             $this->_output->writeln("  <info>include: {$countIncludes}</info>");
             $this->_output->writeln("  <info>exclude: {$countExcludes}</info>");
         }
