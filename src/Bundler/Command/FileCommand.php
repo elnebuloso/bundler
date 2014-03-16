@@ -50,6 +50,14 @@ class FileCommand extends AbstractCommand {
     protected function bundle() {
         parent::bundle();
 
+        if(!$this->cleanupTarget($this->_target)) {
+            throw new Exception("unable to cleanup target: {$this->_target}");
+        }
+
+        if(!mkdir($this->_target, 0755, true)) {
+            throw new Exception("unable to create target: {$this->_target}");
+        }
+
         foreach($this->_filesSelected as $package => $data) {
             $this->_output->writeln("");
             $this->_output->writeln("<comment>bundling: {$package}</comment>");
@@ -85,5 +93,22 @@ class FileCommand extends AbstractCommand {
             $this->_output->writeln("  <info>include: {$countIncludes}</info>");
             $this->_output->writeln("  <info>exclude: {$countExcludes}</info>");
         }
+    }
+
+    /**
+     * @param $directory
+     * @return bool
+     */
+    protected function cleanupTarget($directory) {
+        $files = array_diff(scandir($directory), array(
+            '.',
+            '..'
+        ));
+
+        foreach($files as $file) {
+            (is_dir("$directory/$file")) ? $this->cleanupTarget("$directory/$file") : unlink("$directory/$file");
+        }
+
+        return rmdir($directory);
     }
 }
