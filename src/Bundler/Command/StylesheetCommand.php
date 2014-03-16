@@ -38,5 +38,7 @@ class StylesheetCommand extends AbstractPublicCommand {
         $output->writeln("<comment>bundling stylesheet</comment>");
 
         parent::execute($input, $output);
+
+        $this->bundle();
     }
 }

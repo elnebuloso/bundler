@@ -38,5 +38,7 @@ class JavascriptCommand extends AbstractPublicCommand {
         $output->writeln("<comment>bundling javascript</comment>");
 
         parent::execute($input, $output);
+
+        $this->bundle();
     }
 }

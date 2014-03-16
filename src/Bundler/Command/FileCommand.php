@@ -38,5 +38,7 @@ class FileCommand extends AbstractCommand {
         $output->writeln("<comment>bundling files</comment>");
 
         parent::execute($input, $output);
+
+        $this->bundle();
     }
 }

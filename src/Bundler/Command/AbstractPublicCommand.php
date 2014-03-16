@@ -36,7 +36,7 @@ class AbstractPublicCommand extends AbstractCommand {
         parent::configure();
 
         $this->addArgument('java', InputArgument::OPTIONAL, 'java binary call');
-        $this->addArgument('compiler', InputArgument::OPTIONAL, implode('|', $this->_compilers));
+        $this->addArgument('compiler', InputArgument::OPTIONAL, implode(', ', $this->_compilers));
     }
 
     /**
