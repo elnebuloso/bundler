@@ -97,7 +97,11 @@ class AbstractCommand extends Command {
         }
 
         if(realpath($target) === false) {
-            throw new Exception("target: {$target} not found.");
+            if(!file_exists($target)) {
+                if(!mkdir($target, 0755, true)) {
+                    throw new Exception("unable to create target: {$target}");
+                }
+            }
         }
 
         $this->_folder = realpath($folder);
