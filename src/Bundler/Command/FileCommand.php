@@ -1,25 +1,32 @@
 <?php
 namespace Bundler\Command;
 
-use Bundler\Version;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class VersionCommand
+ * Class FileCommand
  *
  * @package Bundler\Command
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
-class VersionCommand extends Command {
+class FileCommand extends AbstractCommand {
+
+    /**
+     * @var string
+     */
+    protected $_manifest;
 
     /**
      * @return void
      */
     protected function configure() {
-        $this->setName('version');
-        $this->setDescription('show the bundler version');
+        $this->_manifest = "files.php";
+
+        parent::configure();
+
+        $this->setName('bundle:files');
+        $this->setDescription('bundling files');
     }
 
     /**
@@ -28,10 +35,8 @@ class VersionCommand extends Command {
      * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
-        $version = Version::getVersion();
+        $output->writeln("<comment>bundling files</comment>");
 
-        $output->writeln("<comment>bundler</comment>");
-        $output->writeln("  <info>version: {$version}</info>");
-        $output->writeln("");
+        parent::execute($input, $output);
     }
 }

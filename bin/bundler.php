@@ -34,24 +34,23 @@ if(file_exists('vendor/autoload.php')) {
     $loader = include 'vendor/autoload.php';
 }
 
-use Bundler\Command\BuildCommand;
+use Bundler\Command\FileCommand;
 use Bundler\Command\JavascriptCommand;
 use Bundler\Command\StylesheetCommand;
-use Bundler\Command\VersionCommand;
 use Symfony\Component\Console\Application;
 
-$stylesheetCommand = new StylesheetCommand();
-$stylesheetCommand->setRoot($root);
-
-$javascriptCommand = new JavascriptCommand();
-$javascriptCommand->setRoot($root);
-
-$buildCommand = new BuildCommand();
-$buildCommand->setRoot($root);
-
 $console = new Application();
-$console->add($stylesheetCommand);
-$console->add($javascriptCommand);
-$console->add($buildCommand);
-$console->add(new VersionCommand());
+
+$command = new FileCommand();
+$command->setRoot($root);
+$console->add($command);
+
+$command = new StylesheetCommand();
+$command->setRoot($root);
+$console->add($command);
+
+$command = new JavascriptCommand();
+$command->setRoot($root);
+$console->add($command);
+
 $console->run();
