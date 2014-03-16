@@ -106,7 +106,7 @@ class JavascriptCommand extends AbstractPublicCommand {
      * @return void
      * @throws Exception
      */
-    protected function compileWithGoogle() {
+    private function compileWithGoogle() {
         $compiler = $this->_thirdParty . '/google/compiler.jar';
         $command = "{$this->_java} -jar {$compiler} --compilation_level=SIMPLE_OPTIMIZATIONS --warning_level=QUIET --js={$this->_destinationMax} --js_output_file={$this->_destinationMin}";
         exec($command);
@@ -116,7 +116,7 @@ class JavascriptCommand extends AbstractPublicCommand {
      * @return void
      * @throws Exception
      */
-    protected function compileWithYuiCompressor() {
+    private function compileWithYuiCompressor() {
         $compiler = $this->_thirdParty . '/yuicompressor/2.4.8/yuicompressor.jar';
         $command = "{$this->_java} -jar {$compiler} --type js --line-break 5000 --nomunge --preserve-semi --disable-optimizations -o {$this->_destinationMin} {$this->_destinationMax}";
         exec($command);
