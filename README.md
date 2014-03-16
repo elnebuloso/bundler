@@ -11,17 +11,43 @@ usage
 =====
 
  * create folder .bundler in your project root
+ * create file .bundler/files.php for bundling the whole project
  * create file .bundler/stylesheet.php for bundling stylesheets
  * create file .bundler/javascript.php for bundling javascripts
- * create file .bundler/build.php for bundling the whole project
 
 commands
 ========
  * ./vendor/bin/bundler.php
- * ./vendor/bin/bundler.php version
+ * ./vendor/bin/bundler.php bundle:files
  * ./vendor/bin/bundler.php bundle:stylesheet
  * ./vendor/bin/bundler.php bundle:javascript
- * ./vendor/bin/bundler.php bundle:build
+
+demo .bundler/files.php
+============================
+
+ * folder: relative to the root from which the files are collected
+ * target: relative to the root where the files are copied
+ * bundle/[package]
+  * define multiple packages here
+  * in this demo case, this creates ./build/www/public, ./build/www/src, ./build/www/vendor,
+
+```php
+<?php
+return array(
+    "folder" => ".",
+    "target" => "build",
+    "bundle" => array(
+        "www" => array(
+            "include" => array(
+                "public/.*",
+                "src/.*",
+                "vendor/.*"
+            ),
+            "exclude" => array("./vendor/dflydev/markdown/tests/.*")
+        )
+    )
+);
+```
 
 demo .bundler/stylesheet.php
 ============================
@@ -83,33 +109,6 @@ return array(
                 "vendor/jquery/jquery/1.11.0/jquery-1.11.0.js"
             ),
             "exclude" => array()
-        )
-    )
-);
-```
-
-demo .bundler/build.php
-============================
-
- * folder: relative to the root from which the files are collected
- * target: relative to the root where the files are copied
- * bundle/[package]
-  * define multiple packages here
-  * in this demo case, this creates ./build/www/public, ./build/www/src, ./build/www/vendor,
-
-```php
-<?php
-return array(
-    "folder" => ".",
-    "target" => "build",
-    "bundle" => array(
-        "www" => array(
-            "include" => array(
-                "public/.*",
-                "src/.*",
-                "vendor/.*"
-            ),
-            "exclude" => array("./vendor/dflydev/markdown/tests/.*")
         )
     )
 );
