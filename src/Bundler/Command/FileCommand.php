@@ -49,5 +49,10 @@ class FileCommand extends AbstractCommand {
      */
     protected function bundle() {
         parent::bundle();
+
+        foreach($this->_filesSelected as $package => $data) {
+            $this->_output->writeln("");
+            $this->_output->writeln("<comment>bundling: {$package}</comment>");
+        }
     }
 }

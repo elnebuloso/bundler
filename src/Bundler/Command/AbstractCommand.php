@@ -117,7 +117,7 @@ class AbstractCommand extends Command {
     protected function bundle() {
         foreach($this->_manifestDefinition['bundle'] as $package => $definition) {
             $this->_output->writeln("");
-            $this->_output->writeln("<comment>package: {$package}</comment>");
+            $this->_output->writeln("<comment>selecting: {$package}</comment>");
 
             $includes = array();
             $excludes = array();
@@ -172,7 +172,6 @@ class AbstractCommand extends Command {
      */
     private function selectFiles($folder, $pattern) {
         $this->_output->writeln("");
-        $this->_output->writeln("<comment>selecting files</comment>");
         $this->_output->writeln("  <info>folder:   {$folder}</info>");
         $this->_output->writeln("  <info>pattern:  {$pattern}</info>");
 
