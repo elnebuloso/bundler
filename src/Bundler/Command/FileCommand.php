@@ -93,6 +93,8 @@ class FileCommand extends AbstractCommand {
             $this->_output->writeln("  <info>include: {$countIncludes}</info>");
             $this->_output->writeln("  <info>exclude: {$countExcludes}</info>");
         }
+
+        $this->_output->writeln("");
     }
 
     /**

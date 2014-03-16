@@ -30,6 +30,26 @@ class AbstractPublicCommand extends AbstractCommand {
     protected $_compilers;
 
     /**
+     * @var string
+     */
+    protected $_content;
+
+    /**
+     * @var string
+     */
+    protected $_destinationMax;
+
+    /**
+     * @var string
+     */
+    protected $_destinationMin;
+
+    /**
+     * @var string
+     */
+    protected $_thirdParty;
+
+    /**
      * @return void
      */
     protected function configure() {
@@ -63,5 +83,19 @@ class AbstractPublicCommand extends AbstractCommand {
 
         $output->writeln("  <info>java:     {$this->_java}</info>");
         $output->writeln("  <info>compiler: {$this->_compiler}</info>");
+    }
+
+    /**
+     * @return void
+     * @throws Exception
+     */
+    protected function bundle() {
+        parent::bundle();
+
+        $this->_thirdParty = realpath(__DIR__ . '/../../../third-party');
+
+        if($this->_thirdParty === false) {
+            throw new Exception("bundler missing it third party tools at {$this->_thirdParty}");
+        }
     }
 }
