@@ -29,21 +29,34 @@ demo .bundler/files.php
  * target: relative to the root where the files are copied
  * bundle/[package]
   * define multiple packages here
-  * in this demo case, this creates ./build/www/public, ./build/www/src, ./build/www/vendor,
+  * in this demo case, this creates
+   * ./build/foo/public
+   * ./build/foo/src
+   * ./build/foo/vendor
+   * ./build/bar/src
+   * ./build/bar/vendor
 
 ```php
+<?php
 <?php
 return array(
     "folder" => ".",
     "target" => "build",
     "bundle" => array(
-        "www" => array(
+        "foo" => array(
             "include" => array(
                 "public/.*",
                 "src/.*",
                 "vendor/.*"
             ),
-            "exclude" => array("./vendor/dflydev/markdown/tests/.*")
+            "exclude" => array("^.+README.md")
+        ),
+        "bar" => array(
+            "include" => array(
+                "src/.*",
+                "vendor/.*"
+            ),
+            "exclude" => array("^.+README.md")
         )
     )
 );
@@ -56,8 +69,8 @@ demo .bundler/stylesheet.php
  * target: relative to the root where the files are copied
  * bundle/[package]
   * define multiple packages here
-  * in this demo case, this creates ./public/css/stylesheet.top.bundler.css
-  * in this demo case, this creates ./public/css/stylesheet.top.bundler.min.css
+  * in this demo case, this creates ./public/css/foo.bundler.css
+  * in this demo case, this creates ./public/css/foo.bundler.min.css
  * all paths in the stylesheets are solved
 
 ```php
@@ -66,11 +79,11 @@ return array(
     "folder" => "public",
     "target" => "public/css",
     "bundle" => array(
-        "stylesheet.top" => array(
+        "foo" => array(
             "include" => array(
-                "vendor/twitter/bootstrap/3.1.0/css/bootstrap.css",
-                "vendor/twitter/bootstrap/3.1.0/css/bootstrap-theme.css",
-                "vendor/twitter/bootstrap/3.1.0/css/dashboard.css"
+                "public/vendor/twitter/bootstrap/3.1.0/css/bootstrap.css",
+                "public/vendor/twitter/bootstrap/3.1.0/css/bootstrap-theme.css",
+                "public/vendor/twitter/bootstrap/3.1.0/css/dashboard.css"
             ),
             "exclude" => array()
         )
@@ -85,10 +98,10 @@ demo .bundler/javascript.php
  * target: relative to the root where the files are copied
  * bundle/[package]
   * define multiple packages here
-  * in this demo case, this creates javascript.top.bundler.js
-  * in this demo case, this creates javascript.top.bundler.min.js
-  * in this demo case, this creates javascript.bottom.bundler.js
-  * in this demo case, this creates javascript.bottom.bundler.min.js
+  * in this demo case, this creates foo.bundler.js
+  * in this demo case, this creates foo.bundler.min.js
+  * in this demo case, this creates bar.bundler.js
+  * in this demo case, this creates bar.bundler.min.js
 
 ```php
 <?php
@@ -96,17 +109,17 @@ return array(
     "folder" => "public",
     "target" => "public/js",
     "bundle" => array(
-        "javascript.top" => array(
+        "foo" => array(
             "include" => array(
-                "vendor/afarkas/html5shiv/3.7.0/src/html5shiv.js",
-                "vendor/scottjehl/respond/1.4.2/respond.src.js"
+                "public/vendor/afarkas/html5shiv/3.7.0/src/html5shiv.js",
+                "public/vendor/scottjehl/respond/1.4.2/respond.src.js"
             ),
             "exclude" => array()
         ),
-        "javascript.bottom" => array(
+        "bar" => array(
             "include" => array(
-                "vendor/twitter/bootstrap/3.1.0/js/bootstrap.js",
-                "vendor/jquery/jquery/1.11.0/jquery-1.11.0.js"
+                "public/vendor/twitter/bootstrap/3.1.0/js/bootstrap.js",
+                "public/vendor/jquery/jquery/1.11.0/jquery-1.11.0.js"
             ),
             "exclude" => array()
         )
