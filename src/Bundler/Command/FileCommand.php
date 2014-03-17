@@ -14,15 +14,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 class FileCommand extends AbstractCommand {
 
     /**
-     * @var string
-     */
-    protected $_manifest;
-
-    /**
      * @return void
      */
     protected function configure() {
-        $this->_manifest = "files.php";
+        $this->manifest = "files.php";
 
         parent::configure();
 
@@ -41,6 +36,7 @@ class FileCommand extends AbstractCommand {
         parent::execute($input, $output);
 
         $this->bundle();
+        $this->output->writeln("");
     }
 
     /**
@@ -50,29 +46,24 @@ class FileCommand extends AbstractCommand {
     protected function bundle() {
         parent::bundle();
 
-        if(realpath($this->_target) !== false) {
-            if(!$this->cleanupTarget($this->_target)) {
-                throw new Exception("unable to cleanup target: {$this->_target}");
+        if(realpath($this->target) !== false) {
+            if(!$this->cleanupTarget($this->target)) {
+                throw new Exception("unable to cleanup target: {$this->target}");
             }
         }
 
-        if(!mkdir($this->_target, 0755, true)) {
-            throw new Exception("unable to create target: {$this->_target}");
+        if(!mkdir($this->target, 0755, true)) {
+            throw new Exception("unable to create target: {$this->target}");
         }
 
-        foreach($this->_filesSelected as $package => $data) {
-            $this->_output->writeln("");
-            $this->_output->writeln("<comment>bundling: {$package}</comment>");
-
-            $countFiles = count($data['files']);
-            $countIncludes = count($data['includes']);
-            $countExcludes = count($data['excludes']);
+        foreach($this->filesSelected as $this->currentPackage => $this->filesSelectedByPackage) {
+            $this->outputBundlingPackage();
 
             $progress = $this->getHelperSet()->get('progress');
-            $progress->start($this->_output, $countFiles);
+            $progress->start($this->output, count($this->filesSelectedByPackage['files']));
 
-            foreach($data['files'] as $file) {
-                $destination = $this->_target . '/' . $package . '/' . str_replace($this->_folder . '/', '', $file);
+            foreach($this->filesSelectedByPackage['files'] as $file) {
+                $destination = $this->target . '/' . $this->currentPackage . '/' . str_replace($this->folder . '/', '', $file);
                 $directory = dirname($destination);
 
                 if(!file_exists($directory)) {
@@ -90,13 +81,8 @@ class FileCommand extends AbstractCommand {
 
             $progress->finish();
 
-            $this->_output->writeln("");
-            $this->_output->writeln("  <info>bundled: {$countFiles}</info>");
-            $this->_output->writeln("  <info>include: {$countIncludes}</info>");
-            $this->_output->writeln("  <info>exclude: {$countExcludes}</info>");
+            $this->outputBundlingFilesByPackage();
         }
-
-        $this->_output->writeln("");
     }
 
     /**

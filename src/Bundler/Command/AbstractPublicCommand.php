@@ -17,37 +17,37 @@ class AbstractPublicCommand extends AbstractCommand {
     /**
      * @var string
      */
-    protected $_java;
+    protected $java;
 
     /**
      * @var string
      */
-    protected $_compiler;
+    protected $compiler;
 
     /**
      * @var array
      */
-    protected $_compilers;
+    protected $compilers;
 
     /**
      * @var string
      */
-    protected $_content;
+    protected $content;
 
     /**
      * @var string
      */
-    protected $_destinationMax;
+    protected $destinationMax;
 
     /**
      * @var string
      */
-    protected $_destinationMin;
+    protected $destinationMin;
 
     /**
      * @var string
      */
-    protected $_thirdParty;
+    protected $thirdParty;
 
     /**
      * @return void
@@ -56,7 +56,7 @@ class AbstractPublicCommand extends AbstractCommand {
         parent::configure();
 
         $this->addArgument('java', InputArgument::OPTIONAL, 'java binary call');
-        $this->addArgument('compiler', InputArgument::OPTIONAL, implode(', ', $this->_compilers));
+        $this->addArgument('compiler', InputArgument::OPTIONAL, implode(', ', $this->compilers));
     }
 
     /**
@@ -68,21 +68,21 @@ class AbstractPublicCommand extends AbstractCommand {
     protected function execute(InputInterface $input, OutputInterface $output) {
         parent::execute($input, $output);
 
-        $this->_java = !is_null($input->getArgument('java')) ? $input->getArgument('java') : 'java';
-        $this->_compiler = !is_null($input->getArgument('compiler')) ? $input->getArgument('compiler') : $this->_compiler;
+        $this->java = !is_null($input->getArgument('java')) ? $input->getArgument('java') : 'java';
+        $this->compiler = !is_null($input->getArgument('compiler')) ? $input->getArgument('compiler') : $this->compiler;
 
         exec('java -version 2>&1', $exec, $return);
 
         if(empty($exec) || strpos($exec[0], "java version") === false) {
-            throw new Exception("missing java binary on path: {$this->_java}");
+            throw new Exception("missing java binary on path: {$this->java}");
         }
 
-        if(!in_array($this->_compiler, $this->_compilers)) {
-            throw new Exception("invalid compiler: {$this->_compiler}");
+        if(!in_array($this->compiler, $this->compilers)) {
+            throw new Exception("invalid compiler: {$this->compiler}");
         }
 
-        $output->writeln("  <info>java:     {$this->_java}</info>");
-        $output->writeln("  <info>compiler: {$this->_compiler}</info>");
+        $output->writeln("  <info>java:     {$this->java}</info>");
+        $output->writeln("  <info>compiler: {$this->compiler}</info>");
     }
 
     /**
@@ -92,10 +92,34 @@ class AbstractPublicCommand extends AbstractCommand {
     protected function bundle() {
         parent::bundle();
 
-        $this->_thirdParty = realpath(__DIR__ . '/../../../third-party');
+        $this->thirdParty = realpath(__DIR__ . '/../../../third-party');
 
-        if($this->_thirdParty === false) {
-            throw new Exception("bundler missing it third party tools at {$this->_thirdParty}");
+        if($this->thirdParty === false) {
+            throw new Exception("bundler missing it third party tools at {$this->thirdParty}");
         }
+
+        if(realpath($this->target) == false) {
+            if(!mkdir($this->target, 0755, true)) {
+                throw new Exception("unable to create target: {$this->target}");
+            }
+        }
+    }
+
+    /**
+     * @return void
+     */
+    protected function outputBundlingFilesCompression() {
+        $org = strlen(file_get_contents($this->destinationMax));
+        $new = strlen(file_get_contents($this->destinationMin));
+        $ratio = !empty($org) ? $new / $org : 0;
+
+        $this->output->writeln("");
+        $this->output->writeln("  <info>org:     {$org} bytes</info>");
+        $this->output->writeln("  <info>new:     {$new} bytes</info>");
+        $this->output->writeln("  <info>ratio:   {$ratio}</info>");
+
+        $this->output->writeln("");
+        $this->output->writeln("  <info>created: {$this->destinationMax}</info>");
+        $this->output->writeln("  <info>created: {$this->destinationMin}</info>");
     }
 }

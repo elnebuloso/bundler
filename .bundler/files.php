@@ -3,9 +3,16 @@ return array(
     "folder" => ".",
     "target" => "build",
     "bundle" => array(
-        "www" => array(
+        "foo" => array(
             "include" => array(
                 "public/.*",
+                "src/.*",
+                "vendor/.*"
+            ),
+            "exclude" => array("^.+README.md")
+        ),
+        "bar" => array(
+            "include" => array(
                 "src/.*",
                 "vendor/.*"
             ),

@@ -21,43 +21,53 @@ class AbstractCommand extends Command {
     /**
      * @var OutputInterface
      */
-    protected $_output;
+    protected $output;
 
     /**
      * @var string
      */
-    protected $_root;
+    protected $root;
 
     /**
      * @var string
      */
-    protected $_manifest;
+    protected $manifest;
 
     /**
      * @var array
      */
-    protected $_manifestDefinition;
+    protected $manifestDefinition;
 
     /**
      * @var string
      */
-    protected $_folder;
+    protected $folder;
 
     /**
      * @var string
      */
-    protected $_target;
+    protected $target;
 
     /**
      * @var array
      */
-    protected $_filesSelected;
+    protected $filesSelected;
+
+    /**
+     * @var array
+     */
+    protected $filesSelectedByPackage;
+
+    /**
+     * @var string
+     */
+    protected $currentPackage;
 
     /**
      * @param string $root
      */
     public function setRoot($root) {
-        $this->_root = $root;
+        $this->root = $root;
     }
 
     /**
@@ -74,36 +84,36 @@ class AbstractCommand extends Command {
      * @throws Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
-        $this->_manifest = !is_null($input->getArgument('manifest')) ? $input->getArgument('manifest') : "$this->_root/.bundler/{$this->_manifest}";
+        $this->manifest = !is_null($input->getArgument('manifest')) ? $input->getArgument('manifest') : "$this->root/.bundler/{$this->manifest}";
 
-        if(realpath($this->_root) === false) {
-            throw new Exception("root folder: {$this->_root} not found.");
+        if(realpath($this->root) === false) {
+            throw new Exception("root folder: {$this->root} not found.");
         }
 
-        if(realpath($this->_manifest) === false) {
-            throw new Exception("manifest file: {$this->_manifest} not found.");
+        if(realpath($this->manifest) === false) {
+            throw new Exception("manifest file: {$this->manifest} not found.");
         }
 
-        $this->_output = $output;
-        $this->_root = realpath($this->_root);
-        $this->_manifest = realpath($this->_manifest);
-        $this->_manifestDefinition = require_once $this->_manifest;
+        $this->output = $output;
+        $this->root = realpath($this->root);
+        $this->manifest = realpath($this->manifest);
+        $this->manifestDefinition = require_once $this->manifest;
 
-        $folder = "{$this->_root}/{$this->_manifestDefinition['folder']}";
-        $target = "{$this->_root}/{$this->_manifestDefinition['target']}";
+        $folder = "{$this->root}/{$this->manifestDefinition['folder']}";
+        $target = "{$this->root}/{$this->manifestDefinition['target']}";
 
         if(realpath($folder) === false) {
             throw new Exception("folder: {$folder} not found.");
         }
 
-        $this->_folder = realpath($folder);
-        $this->_target = realpath($target);
+        $this->folder = realpath($folder);
+        $this->target = realpath($target);
 
-        $this->_output->writeln("<comment>configuration</comment>");
-        $this->_output->writeln("  <info>manifest: {$this->_manifest}</info>");
-        $this->_output->writeln("  <info>root:     {$this->_root}</info>");
-        $this->_output->writeln("  <info>folder:   {$this->_folder}</info>");
-        $this->_output->writeln("  <info>target:   {$this->_target}</info>");
+        $this->output->writeln("<comment>configuration</comment>");
+        $this->output->writeln("  <info>manifest: {$this->manifest}</info>");
+        $this->output->writeln("  <info>root:     {$this->root}</info>");
+        $this->output->writeln("  <info>folder:   {$this->folder}</info>");
+        $this->output->writeln("  <info>target:   {$this->target}</info>");
     }
 
     /**
@@ -111,9 +121,9 @@ class AbstractCommand extends Command {
      * @throws Exception
      */
     protected function bundle() {
-        foreach($this->_manifestDefinition['bundle'] as $package => $definition) {
-            $this->_output->writeln("");
-            $this->_output->writeln("<comment>selecting: {$package}</comment>");
+        foreach($this->manifestDefinition['bundle'] as $package => $definition) {
+            $this->output->writeln("");
+            $this->output->writeln("<comment>selecting: {$package}</comment>");
 
             $includes = array();
             $excludes = array();
@@ -130,38 +140,38 @@ class AbstractCommand extends Command {
             $excludeFiles = array();
 
             foreach($includes as $pattern) {
-                $this->_output->writeln("");
-                $this->_output->writeln("  <info>folder:   {$this->_folder}</info>");
-                $this->_output->writeln("  <info>include:  {$pattern}</info>");
+                $this->output->writeln("");
+                $this->output->writeln("  <info>folder:   {$this->folder}</info>");
+                $this->output->writeln("  <info>include:  {$pattern}</info>");
 
-                $files = $this->selectFiles($this->_folder, '`' . $pattern . '`');
-                $files = $this->updateFiles($this->_folder, $files);
+                $files = $this->selectFiles($this->folder, '`' . $pattern . '`');
+                $files = $this->updateFiles($files);
                 $includeFiles = array_merge($includeFiles, $files);
             }
 
             foreach($excludes as $pattern) {
-                $this->_output->writeln("");
-                $this->_output->writeln("  <info>folder:   {$this->_folder}</info>");
-                $this->_output->writeln("  <info>exclude:  {$pattern}</info>");
+                $this->output->writeln("");
+                $this->output->writeln("  <info>folder:   {$this->folder}</info>");
+                $this->output->writeln("  <info>exclude:  {$pattern}</info>");
 
-                $files = $this->selectFiles($this->_folder, '`' . $pattern . '`');
-                $files = $this->updateFiles($this->_folder, $files);
+                $files = $this->selectFiles($this->folder, '`' . $pattern . '`');
+                $files = $this->updateFiles($files);
                 $excludeFiles = array_merge($excludeFiles, $files);
             }
 
-            if($this->_output->isVerbose()) {
-                $this->_output->writeln("");
+            if($this->output->getVerbosity() > 1) {
+                $this->output->writeln("");
 
                 foreach($includeFiles as $file) {
-                    $this->_output->writeln("  <info>include: {$file}</info>");
+                    $this->output->writeln("  <info>include: {$file}</info>");
                 }
 
                 foreach($excludeFiles as $file) {
-                    $this->_output->writeln("  <info>exclude: {$file}</info>");
+                    $this->output->writeln("  <info>exclude: {$file}</info>");
                 }
             }
 
-            $this->_filesSelected[$package] = array(
+            $this->filesSelected[$package] = array(
                 'files' => $this->getFilesToBundle($includeFiles, $excludeFiles),
                 'includes' => $includeFiles,
                 'excludes' => $excludeFiles
@@ -188,11 +198,10 @@ class AbstractCommand extends Command {
     }
 
     /**
-     * @param string $folder
      * @param array $fileList
      * @return array
      */
-    private function updateFiles($folder, array $fileList) {
+    private function updateFiles(array $fileList) {
         $returnFiles = array();
 
         foreach($fileList as $currentFile) {
@@ -215,5 +224,27 @@ class AbstractCommand extends Command {
      */
     private function getFilesToBundle(array $includeFiles, array $excludeFiles) {
         return array_diff($includeFiles, $excludeFiles);
+    }
+
+    /**
+     * @return void
+     */
+    protected function outputBundlingPackage() {
+        $this->output->writeln("");
+        $this->output->writeln("<comment>bundling: {$this->currentPackage}</comment>");
+    }
+
+    /**
+     * @return void
+     */
+    protected function outputBundlingFilesByPackage() {
+        $countFiles = count($this->filesSelectedByPackage['files']);
+        $countIncludes = count($this->filesSelectedByPackage['includes']);
+        $countExcludes = count($this->filesSelectedByPackage['excludes']);
+
+        $this->output->writeln("");
+        $this->output->writeln("  <info>bundled: {$countFiles}</info>");
+        $this->output->writeln("  <info>include: {$countIncludes}</info>");
+        $this->output->writeln("  <info>exclude: {$countExcludes}</info>");
     }
 }

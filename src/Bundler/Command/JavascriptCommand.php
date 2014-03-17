@@ -17,9 +17,9 @@ class JavascriptCommand extends AbstractPublicCommand {
      * @return void
      */
     protected function configure() {
-        $this->_manifest = "javascript.php";
-        $this->_compiler = "google";
-        $this->_compilers = array(
+        $this->manifest = "javascript.php";
+        $this->compiler = "google";
+        $this->compilers = array(
             "google",
             "yuicompressor"
         );
@@ -41,6 +41,7 @@ class JavascriptCommand extends AbstractPublicCommand {
         parent::execute($input, $output);
 
         $this->bundle();
+        $this->output->writeln("");
     }
 
     /**
@@ -50,61 +51,39 @@ class JavascriptCommand extends AbstractPublicCommand {
     protected function bundle() {
         parent::bundle();
 
-        if(realpath($this->_target) == false) {
-            if(!mkdir($this->_target, 0755, true)) {
-                throw new Exception("unable to create target: {$this->_target}");
-            }
-        }
+        foreach($this->filesSelected as $this->currentPackage => $this->filesSelectedByPackage) {
+            $this->outputBundlingPackage();
 
-        foreach($this->_filesSelected as $package => $data) {
-            $this->_output->writeln("");
-            $this->_output->writeln("<comment>package: {$package}</comment>");
+            $this->content = array();
+            $this->destinationMax = "{$this->target}/{$this->currentPackage}.bundler.js";
+            $this->destinationMin = "{$this->target}/{$this->currentPackage}.bundler.min.js";
 
-            $this->_content = array();
-            $this->_destinationMax = "{$this->_target}/{$package}.bundler.js";
-            $this->_destinationMin = "{$this->_target}/{$package}.bundler.min.js";
-
-            foreach($data['files'] as $file) {
-                $this->_output->writeln("  <info>include: {$file}</info>");
-                $this->_content[] = file_get_contents($file);
+            foreach($this->filesSelectedByPackage['files'] as $file) {
+                $this->output->writeln("  <info>include: {$file}</info>");
+                $this->content[] = file_get_contents($file);
             }
 
             // create max file
-            $this->_content = implode(PHP_EOL . PHP_EOL, $this->_content);
-            file_put_contents($this->_destinationMax, $this->_content);
+            $this->content = implode(PHP_EOL . PHP_EOL, $this->content);
+            file_put_contents($this->destinationMax, $this->content);
 
-            switch($this->_compiler) {
+            switch($this->compiler) {
                 case "google":
                     $this->compileWithGoogle();
-                    $this->_output->writeln("");
-                    $this->_output->writeln("  <info>compiled by google closure compiler</info>");
+                    $this->output->writeln("");
+                    $this->output->writeln("  <info>compiled by google closure compiler</info>");
                     break;
 
                 case "yuicompressor":
                     $this->compileWithYuiCompressor();
-                    $this->_output->writeln("");
-                    $this->_output->writeln("  <info>compiled by yuicompressor</info>");
+                    $this->output->writeln("");
+                    $this->output->writeln("  <info>compiled by yuicompressor</info>");
                     break;
             }
 
-            $org = strlen(file_get_contents($this->_destinationMax));
-            $new = strlen(file_get_contents($this->_destinationMin));
-            $ratio = !empty($org) ? $new / $org : 0;
-
-            $this->_output->writeln("");
-            $this->_output->writeln("  <info>bundled: " . count($data['files']) . "</info>");
-            $this->_output->writeln("  <info>include: " . count($data['includes']) . "</info>");
-            $this->_output->writeln("  <info>exclude: " . count($data['excludes']) . "</info>");
-            $this->_output->writeln("  <info>org:     {$org} bytes</info>");
-            $this->_output->writeln("  <info>new:     {$new} bytes</info>");
-            $this->_output->writeln("  <info>ratio:   {$ratio}</info>");
-
-            $this->_output->writeln("");
-            $this->_output->writeln("  <info>created: {$this->_destinationMax}</info>");
-            $this->_output->writeln("  <info>created: {$this->_destinationMin}</info>");
+            $this->outputBundlingFilesByPackage();
+            $this->outputBundlingFilesCompression();
         }
-
-        $this->_output->writeln("");
     }
 
     /**
@@ -112,9 +91,9 @@ class JavascriptCommand extends AbstractPublicCommand {
      * @return void
      * @throws Exception
      */
-    private function compileWithGoogle() {
-        $compiler = $this->_thirdParty . '/google/compiler.jar';
-        $command = "{$this->_java} -jar {$compiler} --compilation_level=SIMPLE_OPTIMIZATIONS --warning_level=QUIET --js={$this->_destinationMax} --js_output_file={$this->_destinationMin}";
+    protected function compileWithGoogle() {
+        $compiler = $this->thirdParty . '/google/compiler.jar';
+        $command = "{$this->java} -jar {$compiler} --compilation_level=SIMPLE_OPTIMIZATIONS --warning_level=QUIET --js={$this->destinationMax} --js_output_file={$this->destinationMin}";
         exec($command);
     }
 
@@ -122,9 +101,9 @@ class JavascriptCommand extends AbstractPublicCommand {
      * @return void
      * @throws Exception
      */
-    private function compileWithYuiCompressor() {
-        $compiler = $this->_thirdParty . '/yuicompressor/2.4.8/yuicompressor.jar';
-        $command = "{$this->_java} -jar {$compiler} --type js --line-break 5000 --nomunge --preserve-semi --disable-optimizations -o {$this->_destinationMin} {$this->_destinationMax}";
+    protected function compileWithYuiCompressor() {
+        $compiler = $this->thirdParty . '/yuicompressor/2.4.8/yuicompressor.jar';
+        $command = "{$this->java} -jar {$compiler} --type js --line-break 5000 --nomunge --preserve-semi --disable-optimizations -o {$this->destinationMin} {$this->destinationMax}";
         exec($command);
     }
 }

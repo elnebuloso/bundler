@@ -17,9 +17,9 @@ class StylesheetCommand extends AbstractPublicCommand {
      * @return void
      */
     protected function configure() {
-        $this->_manifest = "stylesheet.php";
-        $this->_compiler = "yuicompressor";
-        $this->_compilers = array(
+        $this->manifest = "stylesheet.php";
+        $this->compiler = "yuicompressor";
+        $this->compilers = array(
             "yuicompressor",
             "cssmin"
         );
@@ -41,6 +41,7 @@ class StylesheetCommand extends AbstractPublicCommand {
         parent::execute($input, $output);
 
         $this->bundle();
+        $this->output->writeln("");
     }
 
     /**
@@ -50,68 +51,46 @@ class StylesheetCommand extends AbstractPublicCommand {
     protected function bundle() {
         parent::bundle();
 
-        if(realpath($this->_target) == false) {
-            if(!mkdir($this->_target, 0755, true)) {
-                throw new Exception("unable to create target: {$this->_target}");
-            }
-        }
+        foreach($this->filesSelected as $this->currentPackage => $this->filesSelectedByPackage) {
+            $this->outputBundlingPackage();
 
-        foreach($this->_filesSelected as $package => $data) {
-            $this->_output->writeln("");
-            $this->_output->writeln("<comment>package: {$package}</comment>");
+            $this->content = array();
+            $this->destinationMax = "{$this->target}/{$this->currentPackage}.bundler.css";
+            $this->destinationMin = "{$this->target}/{$this->currentPackage}.bundler.min.css";
 
-            $this->_content = array();
-            $this->_destinationMax = "{$this->_target}/{$package}.bundler.css";
-            $this->_destinationMin = "{$this->_target}/{$package}.bundler.min.css";
-
-            foreach($data['files'] as $file) {
-                $this->_output->writeln("  <info>include: {$file}</info>");
+            foreach($this->filesSelectedByPackage['files'] as $file) {
+                $this->output->writeln("  <info>include: {$file}</info>");
 
                 $path = pathinfo($file);
-                $path = $this->getRelativePath($path['dirname'], $this->_target);
+                $path = $this->getRelativePath($path['dirname'], $this->target);
 
                 $css = file_get_contents($file);
                 $css = $this->changeUrlPath($path, $css);
 
-                $this->_content[] = $css;
+                $this->content[] = $css;
             }
 
             // create max file
-            $this->_content = implode(PHP_EOL . PHP_EOL, $this->_content);
-            file_put_contents($this->_destinationMax, $this->_content);
+            $this->content = implode(PHP_EOL . PHP_EOL, $this->content);
+            file_put_contents($this->destinationMax, $this->content);
 
-            switch($this->_compiler) {
+            switch($this->compiler) {
                 case "yuicompressor":
                     $this->compileWithYuiCompressor();
-                    $this->_output->writeln("");
-                    $this->_output->writeln("  <info>compiled by yuicompressor</info>");
+                    $this->output->writeln("");
+                    $this->output->writeln("  <info>compiled by yuicompressor</info>");
                     break;
 
                 case "cssmin":
                     $this->compileWithCSSMin();
-                    $this->_output->writeln("");
-                    $this->_output->writeln("  <info>compiled by cssmin</info>");
+                    $this->output->writeln("");
+                    $this->output->writeln("  <info>compiled by cssmin</info>");
                     break;
             }
 
-            $org = strlen(file_get_contents($this->_destinationMax));
-            $new = strlen(file_get_contents($this->_destinationMin));
-            $ratio = !empty($org) ? $new / $org : 0;
-
-            $this->_output->writeln("");
-            $this->_output->writeln("  <info>bundled: " . count($data['files']) . "</info>");
-            $this->_output->writeln("  <info>include: " . count($data['includes']) . "</info>");
-            $this->_output->writeln("  <info>exclude: " . count($data['excludes']) . "</info>");
-            $this->_output->writeln("  <info>org:     {$org} bytes</info>");
-            $this->_output->writeln("  <info>new:     {$new} bytes</info>");
-            $this->_output->writeln("  <info>ratio:   {$ratio}</info>");
-
-            $this->_output->writeln("");
-            $this->_output->writeln("  <info>created: {$this->_destinationMax}</info>");
-            $this->_output->writeln("  <info>created: {$this->_destinationMin}</info>");
+            $this->outputBundlingFilesByPackage();
+            $this->outputBundlingFilesCompression();
         }
-
-        $this->_output->writeln("");
     }
 
     /**
@@ -149,17 +128,17 @@ class StylesheetCommand extends AbstractPublicCommand {
      * @return void
      * @throws Exception
      */
-    private function compileWithYuiCompressor() {
-        $compiler = $this->_thirdParty . '/yuicompressor/2.4.8/yuicompressor.jar';
-        $command = "{$this->_java} -jar {$compiler} --type css --line-break 5000 -o {$this->_destinationMin} {$this->_destinationMax}";
+    protected function compileWithYuiCompressor() {
+        $compiler = $this->thirdParty . '/yuicompressor/2.4.8/yuicompressor.jar';
+        $command = "{$this->java} -jar {$compiler} --type css --line-break 5000 -o {$this->destinationMin} {$this->destinationMax}";
         exec($command);
     }
 
     /**
      * @return void
      */
-    private function compileWithCSSMin() {
-        require_once $this->_thirdParty . '/cssmin/3.0.1/source/CssMin.php';
+    protected function compileWithCSSMin() {
+        require_once $this->thirdParty . '/cssmin/3.0.1/source/CssMin.php';
 
         $cssFilter = array(
             'ImportImports' => false,
@@ -181,7 +160,8 @@ class StylesheetCommand extends AbstractPublicCommand {
             // default false
         );
 
-        $minifier = new CssMinifier($this->_content, $cssFilter, $cssPlugins, false);
-        file_put_contents($this->_destinationMin, $minifier->getMinified());
+        $minifier = new CssMinifier($this->content, $cssFilter, $cssPlugins, false);
+
+        file_put_contents($this->destinationMin, $minifier->getMinified());
     }
 }
