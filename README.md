@@ -1,4 +1,4 @@
-![Image](logo.png?raw=true)
+![Image](logo.jpg?raw=true)
 
 bundler
 =======
