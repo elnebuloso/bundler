@@ -96,14 +96,6 @@ class AbstractCommand extends Command {
             throw new Exception("folder: {$folder} not found.");
         }
 
-        if(realpath($target) === false) {
-            if(!file_exists($target)) {
-                if(!mkdir($target, 0755, true)) {
-                    throw new Exception("unable to create target: {$target}");
-                }
-            }
-        }
-
         $this->_folder = realpath($folder);
         $this->_target = realpath($target);
 
@@ -138,12 +130,20 @@ class AbstractCommand extends Command {
             $excludeFiles = array();
 
             foreach($includes as $pattern) {
+                $this->_output->writeln("");
+                $this->_output->writeln("  <info>folder:   {$this->_folder}</info>");
+                $this->_output->writeln("  <info>include:  {$pattern}</info>");
+
                 $files = $this->selectFiles($this->_folder, '`' . $pattern . '`');
                 $files = $this->updateFiles($this->_folder, $files);
                 $includeFiles = array_merge($includeFiles, $files);
             }
 
             foreach($excludes as $pattern) {
+                $this->_output->writeln("");
+                $this->_output->writeln("  <info>folder:   {$this->_folder}</info>");
+                $this->_output->writeln("  <info>exclude:  {$pattern}</info>");
+
                 $files = $this->selectFiles($this->_folder, '`' . $pattern . '`');
                 $files = $this->updateFiles($this->_folder, $files);
                 $excludeFiles = array_merge($excludeFiles, $files);
@@ -175,10 +175,6 @@ class AbstractCommand extends Command {
      * @return array
      */
     private function selectFiles($folder, $pattern) {
-        $this->_output->writeln("");
-        $this->_output->writeln("  <info>folder:   {$folder}</info>");
-        $this->_output->writeln("  <info>pattern:  {$pattern}</info>");
-
         $dir = new RecursiveDirectoryIterator($folder);
         $ite = new RecursiveIteratorIterator($dir);
         $files = new RegexIterator($ite, $pattern, RegexIterator::GET_MATCH);
@@ -200,7 +196,7 @@ class AbstractCommand extends Command {
         $returnFiles = array();
 
         foreach($fileList as $currentFile) {
-            $currentFile = realpath($folder . '/' . $currentFile);
+            $currentFile = realpath($currentFile);
 
             if(empty($currentFile) || is_dir($currentFile)) {
                 continue;

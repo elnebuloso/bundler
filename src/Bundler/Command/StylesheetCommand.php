@@ -50,6 +50,12 @@ class StylesheetCommand extends AbstractPublicCommand {
     protected function bundle() {
         parent::bundle();
 
+        if(realpath($this->_target) == false) {
+            if(!mkdir($this->_target, 0755, true)) {
+                throw new Exception("unable to create target: {$this->_target}");
+            }
+        }
+
         foreach($this->_filesSelected as $package => $data) {
             $this->_output->writeln("");
             $this->_output->writeln("<comment>package: {$package}</comment>");

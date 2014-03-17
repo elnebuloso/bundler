@@ -9,7 +9,7 @@ return array(
                 "src/.*",
                 "vendor/.*"
             ),
-            "exclude" => array("./vendor/dflydev/markdown/tests/.*")
+            "exclude" => array("^.+README.md")
         )
     )
 );

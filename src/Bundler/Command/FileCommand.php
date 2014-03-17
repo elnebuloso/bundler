@@ -50,8 +50,10 @@ class FileCommand extends AbstractCommand {
     protected function bundle() {
         parent::bundle();
 
-        if(!$this->cleanupTarget($this->_target)) {
-            throw new Exception("unable to cleanup target: {$this->_target}");
+        if(realpath($this->_target) !== false) {
+            if(!$this->cleanupTarget($this->_target)) {
+                throw new Exception("unable to cleanup target: {$this->_target}");
+            }
         }
 
         if(!mkdir($this->_target, 0755, true)) {
