@@ -38,7 +38,6 @@ demo .bundler/files.php
 
 ```php
 <?php
-<?php
 return array(
     "folder" => ".",
     "target" => "build",
