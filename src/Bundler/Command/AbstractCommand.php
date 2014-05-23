@@ -102,8 +102,14 @@ class AbstractCommand extends Command {
         $folder = "{$this->root}/{$this->manifestDefinition['folder']}";
         $target = "{$this->root}/{$this->manifestDefinition['target']}";
 
-        if(realpath($folder) === false) {
+        if(!file_exists($folder)) {
             throw new Exception("folder: {$folder} not found.");
+        }
+
+        if(!file_exists($target)) {
+            if(!mkdir($target, 0755, true)) {
+                throw new Exception("unable to create target: {$target}");
+            }
         }
 
         $this->folder = realpath($folder);
