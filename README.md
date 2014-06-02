@@ -74,14 +74,12 @@ bundle:
       - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap.css
       - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap-theme.css
       - public/vendor/twitter/bootstrap/3.1.0/css/dashboard.css
-    exclude:
 
   # package bar
   bar:
     include:
       - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap.css
       - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap-theme.css
-    exclude:
 ```
 
 In this demo case, this creates
@@ -109,14 +107,12 @@ bundle:
     include:
       - public/vendor/afarkas/html5shiv/3.7.0/src/html5shiv.js
       - public/vendor/scottjehl/respond/1.4.2/respond.src.js
-    exclude:
 
   # package bar
   bar:
     include:
       - public/vendor/twitter/bootstrap/3.1.0/js/bootstrap.js
       - public/vendor/jquery/jquery/1.11.0/jquery-1.11.0.js
-    exclude:
 ```
 
 In this demo case, this creates
@@ -125,3 +121,72 @@ In this demo case, this creates
  * ./public/js/foo.bundler.min.js
  * ./public/js/bar.bundler.js
  * ./public/js/bar.bundler.min.js
+
+## output stylesheet markup
+
+```
+$stylesheetMarkup = new StylesheetMarkup();
+
+// optional, path relative to yaml, used by development mode
+// default shown
+$stylesheetMarkup->setYaml('.bundler/stylesheet.yaml');
+
+// optional host
+// default shown
+$stylesheetMarkup->setHost('');
+
+// optional, path relative to public stylesheet
+// default shown
+$stylesheetMarkup->setPublic('public/css');
+
+// optional output minified files
+// default shown
+$stylesheetMarkup->setMinified(true);
+
+// optional, in development mode, output each file
+// default shown
+$stylesheetMarkup->setDevelopment(true);
+
+// markup for package foo
+// default shown
+echo $stylesheetMarkup->get('foo');
+
+// markup for package bar
+echo $stylesheetMarkup->get('bar');
+echo PHP_EOL;
+```
+
+## output javascript markup
+
+```
+$javascriptMarkup = new JavascriptMarkup();
+
+// optional, path relative to yaml, used by development mode
+// default shown
+$javascriptMarkup->setYaml('.bundler/javascript.yaml');
+
+// optional host
+// default shown
+$javascriptMarkup->setHost('');
+
+// optional, path relative to public javascript
+// default shown
+$javascriptMarkup->setPublic('public/js');
+
+// optional, output minified files
+// default shown
+$javascriptMarkup->setMinified(true);
+
+// optional, in development mode, output each file
+// default shown
+$javascriptMarkup->setDevelopment(true);
+
+// markup for package foo
+// default shown
+echo $javascriptMarkup->get('foo');
+
+// markup for package bar
+echo $javascriptMarkup->get('bar');
+echo PHP_EOL;
+```
+
