@@ -1,12 +1,21 @@
+# relative to the root from which the files are collected
 folder: public
+
+# relative to the root where the files are copied to
 target: public/css
+
+# packages, define multiple packages here
 bundle:
+
+  # package foo
   foo:
     include:
       - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap.css
       - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap-theme.css
       - public/vendor/twitter/bootstrap/3.1.0/css/dashboard.css
     exclude:
+
+  # package bar
   bar:
     include:
       - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap.css

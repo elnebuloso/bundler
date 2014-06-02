@@ -1,7 +1,7 @@
 # relative to the root from which the files are collected
 folder: .
 
-# relative to the root where the files are copied
+# relative to the root where the files are copied to
 target: build
 
 # packages, define multiple packages here

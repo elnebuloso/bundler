@@ -18,21 +18,13 @@ bundle your project, your stylesheets and your javascripts
  * ./vendor/bin/bundler.php bundle:stylesheet
  * ./vendor/bin/bundler.php bundle:javascript
 
-### .bundler/files.yaml
-
-In this demo case, this creates
-
- * ./build/foo/public
- * ./build/foo/src
- * ./build/foo/vendor
- * ./build/bar/src
- * ./build/bar/vendor
+## .bundler/files.yaml
 
 ```
 # relative to the root from which the files are collected
 folder: .
 
-# relative to the root where the files are copied
+# relative to the root where the files are copied to
 target: build
 
 # packages, define multiple packages here
@@ -55,3 +47,81 @@ bundle:
     exclude:
       - ^.+README.md
 ```
+
+In this demo case, this creates
+
+ * ./build/foo/public
+ * ./build/foo/src
+ * ./build/foo/vendor
+ * ./build/bar/src
+ * ./build/bar/vendor
+
+## .bundler/stylesheet.yaml
+
+```
+# relative to the root from which the files are collected
+folder: public
+
+# relative to the root where the files are copied to
+target: public/css
+
+# packages, define multiple packages here
+bundle:
+
+  # package foo
+  foo:
+    include:
+      - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap.css
+      - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap-theme.css
+      - public/vendor/twitter/bootstrap/3.1.0/css/dashboard.css
+    exclude:
+
+  # package bar
+  bar:
+    include:
+      - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap.css
+      - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap-theme.css
+    exclude:
+```
+
+In this demo case, this creates
+
+ * ./public/css/foo.bundler.css
+ * ./public/css/foo.bundler.min.css
+ * ./public/css/bar.bundler.css
+ * ./public/css/bar.bundler.min.css
+ * all paths in the stylesheets are solved automatically
+
+## .bundler/javascript.yaml
+
+```
+# relative to the root from which the files are collected
+folder: public
+
+# relative to the root where the files are copied to
+target: public/js
+
+# packages, define multiple packages here
+bundle:
+
+  # package foo
+  foo:
+    include:
+      - public/vendor/afarkas/html5shiv/3.7.0/src/html5shiv.js
+      - public/vendor/scottjehl/respond/1.4.2/respond.src.js
+    exclude:
+
+  # package bar
+  bar:
+    include:
+      - public/vendor/twitter/bootstrap/3.1.0/js/bootstrap.js
+      - public/vendor/jquery/jquery/1.11.0/jquery-1.11.0.js
+    exclude:
+```
+
+In this demo case, this creates
+
+ * ./public/js/foo.bundler.js
+ * ./public/js/foo.bundler.min.js
+ * ./public/js/bar.bundler.js
+ * ./public/js/bar.bundler.min.js
