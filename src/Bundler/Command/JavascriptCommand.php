@@ -17,7 +17,7 @@ class JavascriptCommand extends AbstractPublicCommand {
      * @return void
      */
     protected function configure() {
-        $this->manifest = "javascript.php";
+        $this->manifest = "javascript.yaml";
         $this->compiler = "google";
         $this->compilers = array(
             "google",

@@ -1,0 +1,14 @@
+folder: public
+target: public/css
+bundle:
+  foo:
+    include:
+      - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap.css
+      - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap-theme.css
+      - public/vendor/twitter/bootstrap/3.1.0/css/dashboard.css
+    exclude:
+  bar:
+    include:
+      - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap.css
+      - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap-theme.css
+    exclude:

@@ -17,7 +17,7 @@ class StylesheetCommand extends AbstractPublicCommand {
      * @return void
      */
     protected function configure() {
-        $this->manifest = "stylesheet.php";
+        $this->manifest = "stylesheet.yaml";
         $this->compiler = "yuicompressor";
         $this->compilers = array(
             "yuicompressor",
