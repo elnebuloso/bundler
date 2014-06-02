@@ -17,7 +17,7 @@ class FileCommand extends AbstractCommand {
      * @return void
      */
     protected function configure() {
-        $this->manifest = "files.php";
+        $this->manifest = "files.yaml";
 
         parent::configure();
 

@@ -1,0 +1,16 @@
+folder: .
+target: build
+bundle:
+  foo:
+    include:
+      - public/.*
+      - src/.*
+      - vendor/.*
+    exclude:
+      - ^.+README.md
+  bar:
+    include:
+      - src/.*
+      - vendor/.*
+    exclude:
+      - ^.+README.md

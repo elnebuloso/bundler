@@ -22,7 +22,8 @@
         ],
     "require": {
         "php": ">=5.3.3",
-        "symfony/console": "*"
+        "symfony/console": "*",
+        "symfony/yaml": "*"
     },
     "autoload": {
         "psr-0": {

@@ -9,6 +9,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class AbstractCommand
@@ -97,7 +98,7 @@ class AbstractCommand extends Command {
         $this->output = $output;
         $this->root = realpath($this->root);
         $this->manifest = realpath($this->manifest);
-        $this->manifestDefinition = require_once $this->manifest;
+        $this->manifestDefinition = Yaml::parse($this->manifest);
 
         $folder = "{$this->root}/{$this->manifestDefinition['folder']}";
         $target = "{$this->root}/{$this->manifestDefinition['target']}";
