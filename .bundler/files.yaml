@@ -1,6 +1,13 @@
+# relative to the root from which the files are collected
 folder: .
+
+# relative to the root where the files are copied
 target: build
+
+# packages, define multiple packages here
 bundle:
+
+  # package foo
   foo:
     include:
       - public/.*
@@ -8,6 +15,8 @@ bundle:
       - vendor/.*
     exclude:
       - ^.+README.md
+
+  # package bar
   bar:
     include:
       - src/.*
