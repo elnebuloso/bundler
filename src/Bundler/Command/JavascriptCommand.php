@@ -83,6 +83,17 @@ class JavascriptCommand extends AbstractPublicCommand {
 
             $this->outputBundlingFilesByPackage();
             $this->outputBundlingFilesCompression();
+
+            // create php loader file
+            $pathMax = basename($this->target) . "/{$this->currentPackage}.bundler.js";
+            $pathMin = basename($this->target) . "/{$this->currentPackage}.bundler.min.js";
+
+            $paths = array(
+                'max' => "{$pathMax}?v=" . md5_file($this->destinationMax),
+                'min' => "{$pathMin}?v=" . md5_file($this->destinationMin),
+            );
+
+            file_put_contents("{$this->target}/{$this->currentPackage}.bundler.php", "<?php return " . var_export($paths, true) . ";");
         }
     }
 
