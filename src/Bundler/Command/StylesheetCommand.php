@@ -140,8 +140,7 @@ class StylesheetCommand extends AbstractPublicCommand {
      * @throws Exception
      */
     protected function compileWithYuiCompressor() {
-        $compiler = $this->thirdParty . '/yuicompressor/2.4.8/yuicompressor.jar';
-        $command = "{$this->java} -jar {$compiler} --type css --line-break 5000 -o {$this->destinationMin} {$this->destinationMax}";
+        $command = $this->thirdParty . "/../bin/yui-compressor --type css --line-break 5000 -o {$this->destinationMin} {$this->destinationMax}";
         exec($command);
     }
 

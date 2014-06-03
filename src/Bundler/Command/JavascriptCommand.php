@@ -103,8 +103,7 @@ class JavascriptCommand extends AbstractPublicCommand {
      * @throws Exception
      */
     protected function compileWithGoogle() {
-        $compiler = $this->thirdParty . '/google/compiler.jar';
-        $command = "{$this->java} -jar {$compiler} --compilation_level=SIMPLE_OPTIMIZATIONS --warning_level=QUIET --js={$this->destinationMax} --js_output_file={$this->destinationMin}";
+        $command = $this->thirdParty . "/../bin/google-compiler --compilation_level=SIMPLE_OPTIMIZATIONS --warning_level=QUIET --js={$this->destinationMax} --js_output_file={$this->destinationMin}";
         exec($command);
     }
 
@@ -113,8 +112,7 @@ class JavascriptCommand extends AbstractPublicCommand {
      * @throws Exception
      */
     protected function compileWithYuiCompressor() {
-        $compiler = $this->thirdParty . '/yuicompressor/2.4.8/yuicompressor.jar';
-        $command = "{$this->java} -jar {$compiler} --type js --line-break 5000 --nomunge --preserve-semi --disable-optimizations -o {$this->destinationMin} {$this->destinationMax}";
+        $command = $this->thirdParty . "/../bin/yui-compressor --type js --line-break 5000 --nomunge --preserve-semi --disable-optimizations -o {$this->destinationMin} {$this->destinationMax}";
         exec($command);
     }
 }

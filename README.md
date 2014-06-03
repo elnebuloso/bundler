@@ -13,10 +13,10 @@ bundle your project, your stylesheets and your javascripts
 
 ## commands
 
- * ./vendor/bin/bundler.php
- * ./vendor/bin/bundler.php bundle:files
- * ./vendor/bin/bundler.php bundle:stylesheet
- * ./vendor/bin/bundler.php bundle:javascript
+ * ./bin/bundler.php
+ * ./bin/bundler.php bundle:files
+ * ./bin/bundler.php bundle:stylesheet
+ * ./bin/bundler.php bundle:javascript
 
 ## .bundler/files.yaml
 

@@ -71,12 +71,6 @@ class AbstractPublicCommand extends AbstractCommand {
         $this->java = !is_null($input->getArgument('java')) ? $input->getArgument('java') : 'java';
         $this->compiler = !is_null($input->getArgument('compiler')) ? $input->getArgument('compiler') : $this->compiler;
 
-        exec('java -version 2>&1', $exec, $return);
-
-        if(empty($exec) || strpos($exec[0], "java version") === false) {
-            throw new Exception("missing java binary on path: {$this->java}");
-        }
-
         if(!in_array($this->compiler, $this->compilers)) {
             throw new Exception("invalid compiler: {$this->compiler}");
         }

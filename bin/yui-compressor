@@ -1,0 +1,18 @@
+#!/bin/sh
+
+java_bin=`which java`;
+java_opt="-Xms128m -Xmx512m";
+
+if [ ! -x $java_bin ]; then
+   echo "Java is not installed. Please install OpenJRE 1.7+.";
+   exit 1;
+fi;
+
+lib_dir=$(readlink -f `dirname $0`/../third-party/yuicompressor/2.4.8);
+
+if [ "" = "$lib_dir" ]; then
+    echo "Resource directory `dirname $0`/../third-party/yuicompressor/2.4.8 not found.";
+	exit 2;
+fi;
+
+$java_bin $java_opt -jar $lib_dir/yuicompressor.jar "$@";
