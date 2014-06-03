@@ -28,10 +28,8 @@ if(is_null($root)) {
 // everything is relative to the application root now.
 chdir($root);
 
-// composer autoloading
-if(file_exists('vendor/autoload.php')) {
-    $loader = include 'vendor/autoload.php';
-}
+// autoloading
+require_once 'vendor/autoload.php';
 
 use Bundler\Command\FileCommand;
 use Bundler\Command\JavascriptCommand;

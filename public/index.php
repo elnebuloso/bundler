@@ -10,7 +10,7 @@ ini_set('display_errors', 'on');
 chdir(dirname(__DIR__));
 
 // autoloading
-include 'vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
 use Bundler\JavascriptMarkup;
 use Bundler\StylesheetMarkup;
