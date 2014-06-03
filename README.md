@@ -11,12 +11,12 @@ bundle your project, your stylesheets and your javascripts
  * create file .bundler/stylesheet.yaml for bundling stylesheets
  * create file .bundler/javascript.yaml for bundling javascripts
 
-## commands
+## commands (used as composer package)
 
- * ./bin/bundler.php
- * ./bin/bundler.php bundle:files
- * ./bin/bundler.php bundle:stylesheet
- * ./bin/bundler.php bundle:javascript
+ * ./vendor/bin/bundler.php
+ * ./vendor/bin/bundler.php bundle:files
+ * ./vendor/bin/bundler.php bundle:stylesheet
+ * ./vendor/bin/bundler.php bundle:javascript
 
 ## .bundler/files.yaml
 
