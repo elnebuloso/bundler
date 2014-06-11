@@ -1,8 +1,8 @@
-# path from which the files are collected
-folder: ./public
+# relative to the root from which the files are collected
+folder: public
 
-# path where the files are copied to
-target: ./public/js
+# relative to the root where the files are copied to
+target: public/js
 
 # packages, define multiple packages here
 bundle:

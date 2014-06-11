@@ -15,35 +15,35 @@ require_once 'vendor/autoload.php';
 use Bundler\JavascriptMarkup;
 use Bundler\StylesheetMarkup;
 
-$stylesheetMarkup = new StylesheetMarkup();
-
-// optional, path relative to yaml, used by development mode
-// default shown
-$stylesheetMarkup->setYaml('.bundler/stylesheet.yaml');
-
-// optional host
-// default shown
-$stylesheetMarkup->setHost('');
-
-// optional, path relative to public stylesheet
-// default shown
-$stylesheetMarkup->setPublic('public/css');
-
-// optional output minified files
-// default shown
-$stylesheetMarkup->setMinified(true);
-
-// optional, in development mode, output each file
-// default shown
-$stylesheetMarkup->setDevelopment(true);
-
-// markup for package foo
-// default shown
-echo $stylesheetMarkup->get('foo');
-
-// markup for package bar
-echo $stylesheetMarkup->get('bar');
-echo PHP_EOL;
+//$stylesheetMarkup = new StylesheetMarkup();
+//
+//// optional, path relative to yaml, used by development mode
+//// default shown
+//$stylesheetMarkup->setYaml('.bundler/stylesheet.yaml');
+//
+//// optional host
+//// default shown
+//$stylesheetMarkup->setHost('');
+//
+//// optional, path relative to public stylesheet
+//// default shown
+//$stylesheetMarkup->setPublic('public/css');
+//
+//// optional output minified files
+//// default shown
+//$stylesheetMarkup->setMinified(true);
+//
+//// optional, in development mode, output each file
+//// default shown
+//$stylesheetMarkup->setDevelopment(true);
+//
+//// markup for package foo
+//// default shown
+//echo $stylesheetMarkup->get('foo');
+//
+//// markup for package bar
+//echo $stylesheetMarkup->get('bar');
+//echo PHP_EOL;
 
 
 
@@ -71,8 +71,8 @@ $javascriptMarkup->setDevelopment(true);
 
 // markup for package foo
 // default shown
-echo $javascriptMarkup->get('foo');
+echo $javascriptMarkup->get('package-google-closure-compiler');
 
 // markup for package bar
-echo $javascriptMarkup->get('bar');
+echo $javascriptMarkup->get('package-yuicompressor');
 echo PHP_EOL;
