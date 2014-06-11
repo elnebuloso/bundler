@@ -2,6 +2,7 @@
 namespace Bundler\Command;
 
 use Exception;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -14,6 +15,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 class FileCommand extends AbstractCommand {
 
     /**
+     * @var string
+     */
+    private $version;
+
+    /**
      * @return void
      */
     protected function configure() {
@@ -23,6 +29,9 @@ class FileCommand extends AbstractCommand {
 
         $this->setName('bundle:files');
         $this->setDescription('bundling files');
+
+        // additional arguments
+        $this->addArgument('version', InputArgument::OPTIONAL, 'string containing version for bundling');
     }
 
     /**
@@ -35,6 +44,9 @@ class FileCommand extends AbstractCommand {
 
         parent::execute($input, $output);
 
+        // additional arguments
+        $this->version = !is_null($input->getArgument('version')) ? $input->getArgument('version') : date('YmdHis');
+
         $this->bundle();
         $this->output->writeln("");
     }
@@ -46,14 +58,16 @@ class FileCommand extends AbstractCommand {
     protected function bundle() {
         parent::bundle();
 
-        if(realpath($this->target) !== false) {
-            if(!$this->cleanupTarget($this->target)) {
-                throw new Exception("unable to cleanup target: {$this->target}");
+        $outputDirectory = $this->target . '/' . $this->version;
+
+        if(file_exists($outputDirectory)) {
+            if(!$this->cleanupTarget($outputDirectory)) {
+                throw new Exception("unable to cleanup target: {$outputDirectory}");
             }
         }
 
-        if(!mkdir($this->target, 0755, true)) {
-            throw new Exception("unable to create target: {$this->target}");
+        if(!mkdir($outputDirectory, 0755, true)) {
+            throw new Exception("unable to create target: {$outputDirectory}");
         }
 
         foreach($this->filesSelected as $this->currentPackage => $this->filesSelectedByPackage) {
@@ -63,7 +77,12 @@ class FileCommand extends AbstractCommand {
             $progress->start($this->output, count($this->filesSelectedByPackage['files']));
 
             foreach($this->filesSelectedByPackage['files'] as $file) {
-                $destination = $this->target . '/' . $this->currentPackage . '/' . str_replace($this->folder . '/', '', $file);
+                $destination = implode('/', array(
+                    $outputDirectory,
+                    $this->currentPackage,
+                    str_replace($this->folder . '/', '', $file)
+                ));
+
                 $directory = dirname($destination);
 
                 if(!file_exists($directory)) {

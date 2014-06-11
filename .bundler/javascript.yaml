@@ -1,20 +1,22 @@
-# relative to the root from which the files are collected
-folder: public
+# path from which the files are collected
+folder: ./public
 
-# relative to the root where the files are copied to
-target: public/js
+# path where the files are copied to
+target: ./public/js
 
 # packages, define multiple packages here
 bundle:
 
   # package foo
   foo:
+    compiler: google-closure-compiler
     include:
       - public/vendor/afarkas/html5shiv/3.7.0/src/html5shiv.js
       - public/vendor/scottjehl/respond/1.4.2/respond.src.js
 
   # package bar
   bar:
+    compiler: google-closure-compiler
     include:
       - public/vendor/twitter/bootstrap/3.1.0/js/bootstrap.js
       - public/vendor/jquery/jquery/1.11.0/jquery-1.11.0.js

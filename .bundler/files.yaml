@@ -1,8 +1,8 @@
-# relative to the root from which the files are collected
+# path from which the files are collected
 folder: .
 
-# relative to the root where the files are copied to
-target: build
+# path where the files are copied to
+target: ./bundler
 
 # packages, define multiple packages here
 bundle:
