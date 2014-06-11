@@ -145,7 +145,7 @@ class StylesheetCommand extends AbstractPublicCommand {
      * @throws Exception
      */
     protected function compileWithYuiCompressor() {
-        $command = $this->thirdParty . "/../bin/yui-compressor --type css --line-break 5000 -o {$this->destinationMin} {$this->destinationMax}";
+        $command = $this->thirdParty . "/../bin/yuicompressor --type css --line-break 5000 -o {$this->destinationMin} {$this->destinationMax}";
         exec($command);
     }
 
@@ -175,7 +175,7 @@ class StylesheetCommand extends AbstractPublicCommand {
             // default false
         );
 
-        $minifier = new CssMinifier($this->content, $cssFilter, $cssPlugins, false);
+        $minifier = new \CssMinifier($this->content, $cssFilter, $cssPlugins, false);
 
         file_put_contents($this->destinationMin, $minifier->getMinified());
     }
