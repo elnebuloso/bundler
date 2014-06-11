@@ -20,8 +20,7 @@ class StylesheetCommand extends AbstractPublicCommand {
         $this->manifest = "stylesheet.yaml";
         $this->compiler = "yuicompressor";
         $this->compilers = array(
-            "yuicompressor",
-            "cssmin"
+            "yuicompressor"
         );
 
         parent::configure();
@@ -85,12 +84,6 @@ class StylesheetCommand extends AbstractPublicCommand {
                     $this->output->writeln("");
                     $this->output->writeln("  <info>compiled by yuicompressor</info>");
                     break;
-
-                case "cssmin":
-                    $this->compileWithCSSMin();
-                    $this->output->writeln("");
-                    $this->output->writeln("  <info>compiled by cssmin</info>");
-                    break;
             }
 
             $this->outputBundlingFilesByPackage();
@@ -147,36 +140,5 @@ class StylesheetCommand extends AbstractPublicCommand {
     protected function compileWithYuiCompressor() {
         $command = $this->thirdParty . "/../bin/yuicompressor --type css --line-break 5000 -o {$this->destinationMin} {$this->destinationMax}";
         exec($command);
-    }
-
-    /**
-     * @return void
-     */
-    protected function compileWithCSSMin() {
-        require_once $this->thirdParty . '/cssmin/3.0.1/source/CssMin.php';
-
-        $cssFilter = array(
-            'ImportImports' => false,
-            // default false
-            'ConvertLevel3Properties' => true
-            // default true
-        );
-
-        $cssPlugins = array(
-            'Variables' => true,
-            // default true
-            'ConvertFontWeight' => true,
-            // default false
-            'ConvertNamedColors' => true,
-            // default false
-            'CompressColorValues' => true,
-            // default false
-            'CompressUnitValues' => false
-            // default false
-        );
-
-        $minifier = new \CssMinifier($this->content, $cssFilter, $cssPlugins, false);
-
-        file_put_contents($this->destinationMin, $minifier->getMinified());
     }
 }
