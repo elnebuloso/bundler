@@ -2,9 +2,6 @@
 namespace Bundler\Command;
 
 use Exception;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class AbstractPublicCommand
@@ -48,36 +45,6 @@ class AbstractPublicCommand extends AbstractCommand {
      * @var string
      */
     protected $thirdParty;
-
-//    /**
-//     * @return void
-//     */
-//    protected function configure() {
-//        parent::configure();
-//
-//        $this->addArgument('java', InputArgument::OPTIONAL, 'java binary call');
-//        $this->addArgument('compiler', InputArgument::OPTIONAL, implode(', ', $this->compilers));
-//    }
-
-//    /**
-//     * @param InputInterface $input
-//     * @param OutputInterface $output
-//     * @return void
-//     * @throws Exception
-//     */
-//    protected function execute(InputInterface $input, OutputInterface $output) {
-//        parent::execute($input, $output);
-//
-//        $this->java = !is_null($input->getArgument('java')) ? $input->getArgument('java') : 'java';
-//        $this->compiler = !is_null($input->getArgument('compiler')) ? $input->getArgument('compiler') : $this->compiler;
-//
-//        if(!in_array($this->compiler, $this->compilers)) {
-//            throw new Exception("invalid compiler: {$this->compiler}");
-//        }
-//
-//        $output->writeln("  <info>java:     {$this->java}</info>");
-//        $output->writeln("  <info>compiler: {$this->compiler}</info>");
-//    }
 
     /**
      * @return void

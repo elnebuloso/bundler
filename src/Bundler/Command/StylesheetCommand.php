@@ -52,6 +52,11 @@ class StylesheetCommand extends AbstractPublicCommand {
         parent::bundle();
 
         foreach($this->filesSelected as $this->currentPackage => $this->filesSelectedByPackage) {
+            if(!empty($this->manifestDefinition['bundle'][$this->currentPackage]['compiler'])) {
+                $compiler = $this->manifestDefinition['bundle'][$this->currentPackage]['compiler'];
+                $this->compiler = in_array($compiler, $this->compilers) ? $compiler : $this->compiler;
+            }
+
             $this->outputBundlingPackage();
 
             $this->content = array();
