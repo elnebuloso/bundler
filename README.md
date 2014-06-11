@@ -14,18 +14,18 @@ bundle your project, your stylesheets and your javascripts
 ## commands (used as composer package)
 
  * ./vendor/bin/bundler.php
- * ./vendor/bin/bundler.php bundle:files
- * ./vendor/bin/bundler.php bundle:stylesheet
- * ./vendor/bin/bundler.php bundle:javascript
+ * ./vendor/bin/bundler.php bundle:files [--help]
+ * ./vendor/bin/bundler.php bundle:stylesheet [--help]
+ * ./vendor/bin/bundler.php bundle:javascript [--help]
 
 ## .bundler/files.yaml
 
 ```
-# relative to the root from which the files are collected
+# path from which the files are collected
 folder: .
 
-# relative to the root where the files are copied to
-target: build
+# path where the files are copied to
+target: ./bundler
 
 # packages, define multiple packages here
 bundle:
@@ -48,13 +48,14 @@ bundle:
       - ^.+README.md
 ```
 
-In this demo case, this creates
+In this demo case, this creates the following folder structure.
+If no version was given as argument, the version contains a date string: YmdHis
 
- * ./build/foo/public
- * ./build/foo/src
- * ./build/foo/vendor
- * ./build/bar/src
- * ./build/bar/vendor
+ * ./bundler/{version}/foo/public
+ * ./bundler/{version}/foo/src
+ * ./bundler/{version}/foo/vendor
+ * ./bundler/{version}/bar/src
+ * ./bundler/{version}/bar/vendor
 
 ## .bundler/stylesheet.yaml
 
@@ -68,26 +69,20 @@ target: public/css
 # packages, define multiple packages here
 bundle:
 
-  # package foo
-  foo:
+  # package name: package-yuicompressor
+  package-yuicompressor:
+    compiler: yuicompressor
     include:
       - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap.css
       - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap-theme.css
       - public/vendor/twitter/bootstrap/3.1.0/css/dashboard.css
-
-  # package bar
-  bar:
-    include:
-      - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap.css
-      - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap-theme.css
 ```
 
 In this demo case, this creates
 
- * ./public/css/foo.bundler.css
- * ./public/css/foo.bundler.min.css
- * ./public/css/bar.bundler.css
- * ./public/css/bar.bundler.min.css
+ * ./public/css/package-yuicompressor.bundler.css
+ * ./public/css/package-yuicompressor.bundler.min.css
+ * ./public/css/package-yuicompressor.bundler.php
  * all paths in the stylesheets are solved automatically
 
 ## .bundler/javascript.yaml
@@ -102,25 +97,31 @@ target: public/js
 # packages, define multiple packages here
 bundle:
 
-  # package foo
-  foo:
+  # package name: package-google-closure-compiler
+  package-google-closure-compiler:
+    compiler: google-closure-compiler
     include:
-      - public/vendor/afarkas/html5shiv/3.7.0/src/html5shiv.js
-      - public/vendor/scottjehl/respond/1.4.2/respond.src.js
-
-  # package bar
-  bar:
-    include:
-      - public/vendor/twitter/bootstrap/3.1.0/js/bootstrap.js
       - public/vendor/jquery/jquery/1.11.0/jquery-1.11.0.js
+      - public/vendor/twitter/bootstrap/3.1.0/js/bootstrap.js
+
+  # package name: package-yuicompressor
+  package-yuicompressor:
+    compiler: yuicompressor
+    include:
+      - public/vendor/jquery/jquery/1.11.0/jquery-1.11.0.js
+      - public/vendor/twitter/bootstrap/3.1.0/js/bootstrap.js
 ```
 
 In this demo case, this creates
 
- * ./public/js/foo.bundler.js
- * ./public/js/foo.bundler.min.js
- * ./public/js/bar.bundler.js
- * ./public/js/bar.bundler.min.js
+ * ./public/js/package-google-closure-compiler.bundler.js
+ * ./public/js/package-google-closure-compiler.bundler.min.js
+ * ./public/js/package-google-closure-compiler.bundler.php
+ * ./public/js/package-yuicompressor.bundler.js
+ * ./public/js/package-yuicompressor.bundler.min.js
+ * ./public/js/package-yuicompressor.bundler.min.php
+
+The PHP Files are for the Markup Renderer.
 
 ## output stylesheet markup
 
@@ -147,12 +148,9 @@ $stylesheetMarkup->setMinified(true);
 // default shown
 $stylesheetMarkup->setDevelopment(true);
 
-// markup for package foo
+// markup for package package-yuicompressor
 // default shown
-echo $stylesheetMarkup->get('foo');
-
-// markup for package bar
-echo $stylesheetMarkup->get('bar');
+echo $stylesheetMarkup->get('package-yuicompressor');
 echo PHP_EOL;
 ```
 
@@ -181,12 +179,13 @@ $javascriptMarkup->setMinified(true);
 // default shown
 $javascriptMarkup->setDevelopment(true);
 
-// markup for package foo
+// markup for package package-google-closure-compiler
 // default shown
-echo $javascriptMarkup->get('foo');
+echo $javascriptMarkup->get('package-google-closure-compiler');
 
-// markup for package bar
-echo $javascriptMarkup->get('bar');
+// markup for package package-yuicompressor
+// default shown
+echo $javascriptMarkup->get('package-yuicompressor');
 echo PHP_EOL;
 ```
 

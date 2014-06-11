@@ -37,12 +37,9 @@ $stylesheetMarkup->setMinified(true);
 // default shown
 $stylesheetMarkup->setDevelopment(true);
 
-// markup for package foo
+// markup for package package-yuicompressor
 // default shown
 echo $stylesheetMarkup->get('package-yuicompressor');
-
-// markup for package bar
-echo $stylesheetMarkup->get('package-cssmin');
 echo PHP_EOL;
 
 
@@ -69,10 +66,11 @@ $javascriptMarkup->setMinified(true);
 // default shown
 $javascriptMarkup->setDevelopment(true);
 
-// markup for package foo
+// markup for package package-google-closure-compiler
 // default shown
 echo $javascriptMarkup->get('package-google-closure-compiler');
 
-// markup for package bar
+// markup for package package-yuicompressor
+// default shown
 echo $javascriptMarkup->get('package-yuicompressor');
 echo PHP_EOL;
