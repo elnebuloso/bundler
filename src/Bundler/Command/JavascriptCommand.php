@@ -18,9 +18,9 @@ class JavascriptCommand extends AbstractPublicCommand {
      */
     protected function configure() {
         $this->manifest = "javascript.yaml";
-        $this->compiler = "google";
+        $this->compiler = "google-closure-compiler";
         $this->compilers = array(
-            "google",
+            "google-closure-compiler",
             "yuicompressor"
         );
 
@@ -52,6 +52,11 @@ class JavascriptCommand extends AbstractPublicCommand {
         parent::bundle();
 
         foreach($this->filesSelected as $this->currentPackage => $this->filesSelectedByPackage) {
+            if(!empty($this->manifestDefinition['bundle'][$this->currentPackage]['compiler'])) {
+                $compiler = $this->manifestDefinition['bundle'][$this->currentPackage]['compiler'];
+                $this->compiler = in_array($compiler, $this->compilers) ? $compiler : $this->compiler;
+            }
+
             $this->outputBundlingPackage();
 
             $this->content = array();
@@ -68,7 +73,7 @@ class JavascriptCommand extends AbstractPublicCommand {
             file_put_contents($this->destinationMax, $this->content);
 
             switch($this->compiler) {
-                case "google":
+                case "google-closure-compiler":
                     $this->compileWithGoogle();
                     $this->output->writeln("");
                     $this->output->writeln("  <info>compiled by google closure compiler</info>");
@@ -103,7 +108,7 @@ class JavascriptCommand extends AbstractPublicCommand {
      * @throws Exception
      */
     protected function compileWithGoogle() {
-        $command = $this->thirdParty . "/../bin/google-compiler --compilation_level=SIMPLE_OPTIMIZATIONS --warning_level=QUIET --js={$this->destinationMax} --js_output_file={$this->destinationMin}";
+        $command = $this->thirdParty . "/../bin/google-closure-compiler --compilation_level=SIMPLE_OPTIMIZATIONS --warning_level=QUIET --js={$this->destinationMax} --js_output_file={$this->destinationMin}";
         exec($command);
     }
 
@@ -112,7 +117,7 @@ class JavascriptCommand extends AbstractPublicCommand {
      * @throws Exception
      */
     protected function compileWithYuiCompressor() {
-        $command = $this->thirdParty . "/../bin/yui-compressor --type js --line-break 5000 --nomunge --preserve-semi --disable-optimizations -o {$this->destinationMin} {$this->destinationMax}";
+        $command = $this->thirdParty . "/../bin/yuicompressor --type js --line-break 5000 --nomunge --preserve-semi --disable-optimizations -o {$this->destinationMin} {$this->destinationMax}";
         exec($command);
     }
 }
