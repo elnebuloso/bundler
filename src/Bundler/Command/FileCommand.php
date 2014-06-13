@@ -86,5 +86,9 @@ class FileCommand extends AbstractCommand {
                 throw new Exception("unable to delete output directory: {$this->outputDirectory}");
             }
         }
+
+        if(!mkdir($this->outputDirectory, 0777, true)) {
+            throw new Exception("unable to create output directory: {$this->outputDirectory}");
+        }
     }
 }
