@@ -143,17 +143,18 @@ class AbstractCommand extends Command {
 
     /**
      * @return void
+     * @throws Exception
      */
     protected function selectFiles() {
         $this->output->writeln("<comment>selecting files</comment>");
         $this->output->writeln("");
 
-        $includes = array();
-        $excludes = array();
-
-        if(array_key_exists('include', $this->manifestDefinition) && is_array($this->manifestDefinition['include'])) {
-            $includes = $this->manifestDefinition['include'];
+        if(!array_key_exists('include', $this->manifestDefinition) || !is_array($this->manifestDefinition['include']) || empty($this->manifestDefinition['include'])) {
+            throw new Exception("missing include pattern ");
         }
+
+        $includes = $this->manifestDefinition['include'];
+        $excludes = array();
 
         if(array_key_exists('exclude', $this->manifestDefinition) && is_array($this->manifestDefinition['exclude'])) {
             $excludes = $this->manifestDefinition['exclude'];
@@ -195,12 +196,12 @@ class AbstractCommand extends Command {
             $this->output->writeln("<comment>selecting files by package: {$package}</comment>");
             $this->output->writeln("");
 
-            $includes = array();
-            $excludes = array();
-
-            if(array_key_exists('include', $definition) && is_array($definition['include'])) {
-                $includes = $definition['include'];
+            if(!array_key_exists('include', $definition) || !is_array($definition['include']) || empty($definition['include'])) {
+                throw new Exception("missing include pattern for package: {$package}");
             }
+
+            $includes = $definition['include'];
+            $excludes = array();
 
             if(array_key_exists('exclude', $definition) && is_array($definition['exclude'])) {
                 $excludes = $definition['exclude'];

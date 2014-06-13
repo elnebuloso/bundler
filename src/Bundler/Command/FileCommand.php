@@ -1,6 +1,7 @@
 <?php
 namespace Bundler\Command;
 
+use Exception;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -34,5 +35,15 @@ class FileCommand extends AbstractCommand {
 
         $this->output->writeln("<comment>bundling files</comment>");
         $this->output->writeln("");
+
+        try {
+            $this->selectFiles();
+            $this->selectFilesByPackages();
+        }
+        catch(Exception $e) {
+        }
+
+        var_dump(is_null($this->fileSelector));
+        var_dump(is_null($this->fileSelectors));
     }
 }
