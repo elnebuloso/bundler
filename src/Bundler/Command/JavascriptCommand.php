@@ -37,8 +37,9 @@ class JavascriptCommand extends AbstractPublicCommand {
     protected function execute(InputInterface $input, OutputInterface $output) {
         parent::execute($input, $output);
 
-        $this->output->writeln("");
         $this->output->writeln("<comment>bundling javascript</comment>");
         $this->output->writeln("");
+
+        $this->selectFilesByPackages();
     }
 }

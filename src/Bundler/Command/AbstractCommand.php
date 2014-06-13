@@ -2,6 +2,7 @@
 namespace Bundler\Command;
 
 use Exception;
+use Flex\FileSelector\FileSelector;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -45,6 +46,16 @@ class AbstractCommand extends Command {
      * @var string
      */
     protected $target;
+
+    /**
+     * @var FileSelector
+     */
+    protected $fileSelector;
+
+    /**
+     * @var array
+     */
+    protected $fileSelectors;
 
     /**
      * @param string $root
@@ -111,5 +122,91 @@ class AbstractCommand extends Command {
         $this->output->writeln("  <info>root:     {$this->root}</info>");
         $this->output->writeln("  <info>folder:   {$this->folder}</info>");
         $this->output->writeln("  <info>target:   {$this->target}</info>");
+        $this->output->writeln("");
+    }
+
+    /**
+     * @return void
+     */
+    protected function selectFiles() {
+        $this->output->writeln("<comment>selecting files</comment>");
+        $this->output->writeln("");
+
+        $includes = array();
+        $excludes = array();
+
+        if(array_key_exists('include', $this->manifestDefinition) && is_array($this->manifestDefinition['include'])) {
+            $includes = $this->manifestDefinition['include'];
+        }
+
+        if(array_key_exists('exclude', $this->manifestDefinition) && is_array($this->manifestDefinition['exclude'])) {
+            $excludes = $this->manifestDefinition['exclude'];
+        }
+
+        foreach($includes as $pattern) {
+            $this->output->writeln("  <info>include:  {$pattern}</info>");
+        }
+
+        foreach($excludes as $pattern) {
+            $this->output->writeln("  <info>exclude:  {$pattern}</info>");
+        }
+
+        $this->output->writeln("");
+
+        $fileSelector = new FileSelector();
+        $fileSelector->setFolder($this->folder);
+        $fileSelector->setIncludes($includes);
+        $fileSelector->setExcludes($excludes);
+        $fileSelector->select();
+
+        $this->fileSelector = $fileSelector;
+    }
+
+    /**
+     * @return void
+     * @throws Exception
+     */
+    protected function selectFilesByPackages() {
+        if(!array_key_exists('bundle', $this->manifestDefinition)) {
+            throw new Exception("missing bundle definition in: {$this->manifest}");
+        }
+
+        if(empty($this->manifestDefinition['bundle'])) {
+            throw new Exception("missing bundle package definitions in: {$this->manifest}");
+        }
+
+        foreach($this->manifestDefinition['bundle'] as $package => $definition) {
+            $this->output->writeln("<comment>selecting files by package: {$package}</comment>");
+            $this->output->writeln("");
+
+            $includes = array();
+            $excludes = array();
+
+            if(array_key_exists('include', $definition) && is_array($definition['include'])) {
+                $includes = $definition['include'];
+            }
+
+            if(array_key_exists('exclude', $definition) && is_array($definition['exclude'])) {
+                $excludes = $definition['exclude'];
+            }
+
+            foreach($includes as $pattern) {
+                $this->output->writeln("  <info>include:  {$pattern}</info>");
+            }
+
+            foreach($excludes as $pattern) {
+                $this->output->writeln("  <info>exclude:  {$pattern}</info>");
+            }
+
+            $this->output->writeln("");
+
+            $fileSelector = new FileSelector();
+            $fileSelector->setFolder($this->folder);
+            $fileSelector->setIncludes($includes);
+            $fileSelector->setExcludes($excludes);
+            $fileSelector->select();
+
+            $this->fileSelectors[] = $fileSelector;
+        }
     }
 }

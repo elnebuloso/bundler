@@ -32,7 +32,6 @@ class FileCommand extends AbstractCommand {
     protected function execute(InputInterface $input, OutputInterface $output) {
         parent::execute($input, $output);
 
-        $this->output->writeln("");
         $this->output->writeln("<comment>bundling files</comment>");
         $this->output->writeln("");
     }
