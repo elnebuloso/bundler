@@ -8,7 +8,7 @@ target: ./bundler
 # $DATETIME
 # $VERSION
 # $ARGUMENT
-directory: $ARGUMENT
+directory: $DATETIME
 
 # define include / exclude pattern
 include:

@@ -8,7 +8,7 @@ target: ./bundler
 # $DATETIME
 # $VERSION
 # $ARGUMENT
-directory:
+directory: $DATETIME
 
 # packages, define multiple packages here
 bundle:

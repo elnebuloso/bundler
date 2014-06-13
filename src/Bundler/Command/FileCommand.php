@@ -2,6 +2,7 @@
 namespace Bundler\Command;
 
 use Exception;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -31,6 +32,7 @@ class FileCommand extends AbstractCommand {
 
         $this->setName('bundle:files');
         $this->setDescription('bundling files');
+        $this->addArgument('directory', InputArgument::OPTIONAL, 'string containing directory under bundling folder');
 
         $this->manifest = "files.yaml";
     }
@@ -62,6 +64,15 @@ class FileCommand extends AbstractCommand {
                         if(!empty($version)) {
                             $this->outputDirectory = $this->target . '/' . $version;
                         }
+                    }
+                    break;
+
+                case '$ARGUMENT':
+                    $directory = !is_null($input->getArgument('directory')) ? $input->getArgument('directory') : null;
+                    $directory = trim($directory);
+
+                    if(!empty($directory)) {
+                        $this->outputDirectory = $this->target . '/' . $directory;
                     }
                     break;
             }
