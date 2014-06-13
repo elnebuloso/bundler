@@ -45,8 +45,8 @@ exclude:
 
 In this demo case, this creates the following folder structure.
 
- * ./bundler/{YmdHis}/src
- * ./bundler/{YmdHis}/vendor
+ * ./build/{YmdHis}/src
+ * ./build/{YmdHis}/vendor
 
 ## .bundler/files-packages.yaml
 
@@ -86,11 +86,11 @@ bundle:
 
 In this demo case, this creates the following folder structure.
 
- * ./bundler/{YmdHis}/foo/public
- * ./bundler/{YmdHis}/foo/src
- * ./bundler/{YmdHis}/foo/vendor
- * ./bundler/{YmdHis}/bar/src
- * ./bundler/{YmdHis}/bar/vendor
+ * ./build/{YmdHis}/foo/public
+ * ./build/{YmdHis}/foo/src
+ * ./build/{YmdHis}/foo/vendor
+ * ./build/{YmdHis}/bar/src
+ * ./build/{YmdHis}/bar/vendor
 
 ## .bundler/stylesheet.yaml
 
