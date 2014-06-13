@@ -236,4 +236,21 @@ class AbstractCommand extends Command {
         $this->output->writeln("  <info>exclude: {$this->fileSelector->getExcludedFilesCount()}</info>");
         $this->output->writeln("");
     }
+
+    /**
+     * @param $directory
+     * @return bool
+     */
+    protected function removeDirectory($directory) {
+        $files = array_diff(scandir($directory), array(
+            '.',
+            '..'
+        ));
+
+        foreach($files as $file) {
+            (is_dir("$directory/$file")) ? $this->removeDirectory("$directory/$file") : unlink("$directory/$file");
+        }
+
+        return rmdir($directory);
+    }
 }

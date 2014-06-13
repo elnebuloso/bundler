@@ -4,11 +4,11 @@ folder: .
 # path where the files are copied to
 target: ./bundler
 
-# subfolder under target, if empty, no subfolder
+# directory under target, if empty, no directory
 # $DATETIME
 # $VERSION
 # $ARGUMENT
-subfolder:
+directory: $ARGUMENT
 
 # define include / exclude pattern
 include:
