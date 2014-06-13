@@ -71,6 +71,7 @@ class JavascriptCommand extends AbstractPublicCommand {
 
             foreach($this->fileSelector->getFiles() as $file) {
                 $this->content[] = file_get_contents($file);
+
                 $progress->advance();
             }
 

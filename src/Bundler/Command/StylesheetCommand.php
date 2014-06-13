@@ -50,12 +50,104 @@ class StylesheetCommand extends AbstractPublicCommand {
      */
     private function bundle() {
         foreach($this->fileSelectors as $this->currentPackage => $this->fileSelector) {
+            $this->output->writeln("<comment>bundling files by package: {$this->currentPackage}</comment>");
+            $this->output->writeln("");
+
             if(!empty($this->manifestDefinition['bundle'][$this->currentPackage]['compiler'])) {
                 $compiler = $this->manifestDefinition['bundle'][$this->currentPackage]['compiler'];
                 $this->compiler = in_array($compiler, $this->compilers) ? $compiler : $this->compiler;
             }
 
+            $this->content = array();
+            $this->destinationMax = "{$this->target}/{$this->currentPackage}.bundler.css";
+            $this->destinationMin = "{$this->target}/{$this->currentPackage}.bundler.min.css";
+
+            $this->output->writeln("  <info>compiling</info>");
+            $this->output->writeln("");
+
+            $progress = $this->getHelperSet()->get('progress');
+            $progress->start($this->output, $this->fileSelector->getFilesCount());
+
+            foreach($this->fileSelector->getFiles() as $file) {
+                $path = pathinfo($file);
+                $path = $this->getRelativePath($path['dirname'], $this->target);
+
+                $css = file_get_contents($file);
+                $css = $this->changeUrlPath($path, $css);
+
+                $this->content[] = $css;
+
+                $progress->advance();
+            }
+
+            $progress->finish();
+            $this->output->writeln("");
+
+            // create max file
+            $this->content = implode(PHP_EOL . PHP_EOL, $this->content);
+            file_put_contents($this->destinationMax, $this->content);
+
+            switch($this->compiler) {
+                case "yuicompressor":
+                    $this->compileWithYuiCompressor();
+                    $this->output->writeln("  <info>compiled by yuicompressor</info>");
+                    $this->output->writeln("");
+                    break;
+            }
+
             $this->outputFileSelector();
+            $this->outputBundlingFilesCompression();
+
+            // create php loader file
+            $pathMax = basename($this->target) . "/{$this->currentPackage}.bundler.css";
+            $pathMin = basename($this->target) . "/{$this->currentPackage}.bundler.min.css";
+
+            $paths = array(
+                'max' => "{$pathMax}?v=" . md5_file($this->destinationMax),
+                'min' => "{$pathMin}?v=" . md5_file($this->destinationMin),
+            );
+
+            file_put_contents("{$this->target}/{$this->currentPackage}.bundler.php", "<?php return " . var_export($paths, true) . ";");
         }
+    }
+
+    /**
+     * @param string $path
+     * @param string $from
+     * @return string
+     */
+    private function getRelativePath($path, $from) {
+        $path = explode(DIRECTORY_SEPARATOR, $path);
+        $from = rtrim($from, '/') . '/';
+        $from = explode(DIRECTORY_SEPARATOR, dirname($from . '.'));
+        $common = array_intersect_assoc($path, $from);
+
+        $base = array('.');
+
+        if($pre_fill = count(array_diff_assoc($from, $common))) {
+            $base = array_fill(0, $pre_fill, '..');
+        }
+
+        $path = array_merge($base, array_diff_assoc($path, $common));
+
+        return implode(DIRECTORY_SEPARATOR, $path);
+    }
+
+    /**
+     * @param $baseUrl
+     * @param $content
+     * @return string
+     */
+    private function changeUrlPath($baseUrl, $content) {
+        return preg_replace('/url\(\s*[\'"]?\/?(.+?)[\'"]?\s*\)/i', 'url(' . $baseUrl . '/$1)', $content);
+    }
+
+    /**
+     * @return void
+     * @throws Exception
+     */
+    protected function compileWithYuiCompressor() {
+        $command = $this->thirdParty . "/../bin/yuicompressor --type css --line-break 5000 -o {$this->destinationMin} {$this->destinationMax}";
+        exec($command);
     }
 }
