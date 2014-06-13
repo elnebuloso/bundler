@@ -22,6 +22,7 @@
         ],
     "require": {
         "php": ">=5.3.3",
+        "elnebuloso/flex-file-selector": "1.*",
         "symfony/console": "*",
         "symfony/yaml": "*"
     },
