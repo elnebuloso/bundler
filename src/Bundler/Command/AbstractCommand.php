@@ -134,6 +134,7 @@ class AbstractCommand extends Command {
 
         $this->output->writeln("");
         $this->output->writeln("<comment>configuration</comment>");
+        $this->output->writeln("");
         $this->output->writeln("  <info>manifest: {$this->manifest}</info>");
         $this->output->writeln("  <info>root:     {$this->root}</info>");
         $this->output->writeln("  <info>folder:   {$this->folder}</info>");

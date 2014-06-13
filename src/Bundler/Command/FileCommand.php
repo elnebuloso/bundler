@@ -2,6 +2,7 @@
 namespace Bundler\Command;
 
 use Exception;
+use Flex\FileSelector\FileSelector;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -41,7 +42,6 @@ class FileCommand extends AbstractCommand {
      * @param InputInterface $input
      * @param OutputInterface $output
      * @throws Exception
-     * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
         parent::execute($input, $output);
@@ -90,5 +90,66 @@ class FileCommand extends AbstractCommand {
         if(!mkdir($this->outputDirectory, 0777, true)) {
             throw new Exception("unable to create output directory: {$this->outputDirectory}");
         }
+
+        if(array_key_exists('bundle', $this->manifestDefinition)) {
+            $this->selectFilesByPackages();
+
+            foreach($this->fileSelectors as $this->currentPackage => $this->fileSelector) {
+                $this->output->writeln("<comment>bundling files by package: {$this->currentPackage}</comment>");
+                $this->output->writeln("");
+
+                $this->bundle($this->fileSelector, $this->currentPackage);
+            }
+        }
+
+        if(!array_key_exists('bundle', $this->manifestDefinition)) {
+            $this->selectFiles();
+
+            $this->output->writeln("<comment>bundling files</comment>");
+            $this->output->writeln("");
+
+            $this->bundle($this->fileSelector);
+        }
+    }
+
+    /**
+     * @param FileSelector $fileSelector
+     * @param string $package
+     * @throws Exception
+     */
+    private function bundle(FileSelector $fileSelector, $package = null) {
+        $progress = $this->getHelperSet()->get('progress');
+        $progress->start($this->output, $this->fileSelector->getFilesCount());
+
+        foreach($this->fileSelector->getFiles() as $file) {
+            $destination = array();
+            $destination[] = $this->outputDirectory;
+
+            if(!empty($package)) {
+                $destination[] = $package;
+            }
+
+            $destination[] = str_replace($this->folder . '/', '', $file);
+            $destination = implode('/', $destination);
+
+            $directory = dirname($destination);
+
+            if(!file_exists($directory)) {
+                if(!mkdir($directory, 0777, true)) {
+                    throw new Exception("unable to create directory for file copy: {$directory}");
+                }
+            }
+
+            if(!copy($file, $destination)) {
+                throw new Exception("unable to copy file to destination: {$destination}");
+            }
+
+            $progress->advance();
+        }
+
+        $progress->finish();
+        $this->output->writeln("");
+
+        $this->outputFileSelector();
     }
 }
