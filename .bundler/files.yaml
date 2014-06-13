@@ -4,22 +4,15 @@ folder: .
 # path where the files are copied to
 target: ./bundler
 
-# packages, define multiple packages here
-bundle:
+# subfolder under target, if empty, no subfolder
+# $DATETIME
+# $VERSION
+# $ARGUMENT
+subfolder:
 
-  # package foo
-  foo:
-    include:
-      - public/.*
-      - src/.*
-      - vendor/.*
-    exclude:
-      - ^.+README.md
-
-  # package bar
-  bar:
-    include:
-      - src/.*
-      - vendor/.*
-    exclude:
-      - ^.+README.md
+# define include / exclude pattern
+include:
+  - src/.*
+  - vendor/.*
+exclude:
+  - ^.+README.md

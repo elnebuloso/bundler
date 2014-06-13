@@ -1,0 +1,31 @@
+# path from which the files are collected
+folder: .
+
+# path where the files are copied to
+target: ./bundler
+
+# subfolder under target, if empty, no subfolder
+# $DATETIME
+# $VERSION
+# $ARGUMENT
+subfolder:
+
+# packages, define multiple packages here
+bundle:
+
+  # package foo
+  foo:
+    include:
+      - public/.*
+      - src/.*
+      - vendor/.*
+    exclude:
+      - ^.+README.md
+
+  # package bar
+  bar:
+    include:
+      - src/.*
+      - vendor/.*
+    exclude:
+      - ^.+README.md
