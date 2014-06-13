@@ -27,8 +27,7 @@
     },
     "autoload": {
         "psr-0": {
-            "Bundler\\": "src/",
-            "Flex\\": "src/"
+            "Bundler\\": "src/"
         }
     },
     "bin":
