@@ -2,7 +2,7 @@
 folder: .
 
 # path where the files are copied to
-target: ./bundler
+target: ./build
 
 # directory under target, if empty, no directory
 # $DATETIME

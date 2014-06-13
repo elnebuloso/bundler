@@ -1,6 +1,5 @@
 .idea
 .svn
 /build
-/bundler
 /vendor
 composer.lock
