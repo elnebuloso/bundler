@@ -15,6 +15,8 @@ bundle your project, your stylesheets and your javascripts
 
  * ./vendor/bin/bundler.php
  * ./vendor/bin/bundler.php bundle:files [--help]
+ * ./vendor/bin/bundler.php bundle:files files.yaml
+ * ./vendor/bin/bundler.php bundle:files files-packages.yaml
  * ./vendor/bin/bundler.php bundle:stylesheet [--help]
  * ./vendor/bin/bundler.php bundle:javascript [--help]
 
@@ -25,7 +27,41 @@ bundle your project, your stylesheets and your javascripts
 folder: .
 
 # path where the files are copied to
-target: ./bundler
+target: ./build
+
+# directory under target, if empty, no directory
+# $DATETIME
+# $VERSION
+# $ARGUMENT
+directory: $DATETIME
+
+# define include / exclude pattern
+include:
+  - src/.*
+  - vendor/.*
+exclude:
+  - ^.+README.md
+```
+
+In this demo case, this creates the following folder structure.
+
+ * ./bundler/{YmdHis}/src
+ * ./bundler/{YmdHis}/vendor
+
+## .bundler/files-packages.yaml
+
+```
+# path from which the files are collected
+folder: .
+
+# path where the files are copied to
+target: ./build
+
+# directory under target, if empty, no directory
+# $DATETIME
+# $VERSION
+# $ARGUMENT
+directory: $DATETIME
 
 # packages, define multiple packages here
 bundle:
@@ -49,13 +85,12 @@ bundle:
 ```
 
 In this demo case, this creates the following folder structure.
-If no version was given as argument, the version contains a date string: YmdHis
 
- * ./bundler/{version}/foo/public
- * ./bundler/{version}/foo/src
- * ./bundler/{version}/foo/vendor
- * ./bundler/{version}/bar/src
- * ./bundler/{version}/bar/vendor
+ * ./bundler/{YmdHis}/foo/public
+ * ./bundler/{YmdHis}/foo/src
+ * ./bundler/{YmdHis}/foo/vendor
+ * ./bundler/{YmdHis}/bar/src
+ * ./bundler/{YmdHis}/bar/vendor
 
 ## .bundler/stylesheet.yaml
 
