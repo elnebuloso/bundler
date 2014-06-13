@@ -48,6 +48,11 @@ class AbstractCommand extends Command {
     protected $target;
 
     /**
+     * @var string
+     */
+    protected $thirdParty;
+
+    /**
      * @var FileSelector
      */
     protected $fileSelector;
@@ -56,6 +61,11 @@ class AbstractCommand extends Command {
      * @var array
      */
     protected $fileSelectors;
+
+    /**
+     * @var string
+     */
+    protected $currentPackage;
 
     /**
      * @param string $root
@@ -116,7 +126,13 @@ class AbstractCommand extends Command {
 
         $this->folder = realpath($folder);
         $this->target = realpath($target);
+        $this->thirdParty = realpath(__DIR__ . '/../../../third-party');
 
+        if($this->thirdParty === false) {
+            throw new Exception("bundler missing its third party tools");
+        }
+
+        $this->output->writeln("");
         $this->output->writeln("<comment>configuration</comment>");
         $this->output->writeln("  <info>manifest: {$this->manifest}</info>");
         $this->output->writeln("  <info>root:     {$this->root}</info>");
@@ -206,7 +222,17 @@ class AbstractCommand extends Command {
             $fileSelector->setExcludes($excludes);
             $fileSelector->select();
 
-            $this->fileSelectors[] = $fileSelector;
+            $this->fileSelectors[$package] = $fileSelector;
         }
+    }
+
+    /**
+     * @return void
+     */
+    protected function outputFileSelector() {
+        $this->output->writeln("  <info>bundled: {$this->fileSelector->getFilesCount()}</info>");
+        $this->output->writeln("  <info>include: {$this->fileSelector->getIncludedFilesCount()}</info>");
+        $this->output->writeln("  <info>exclude: {$this->fileSelector->getExcludedFilesCount()}</info>");
+        $this->output->writeln("");
     }
 }

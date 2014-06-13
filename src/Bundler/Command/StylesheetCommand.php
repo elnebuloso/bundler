@@ -1,6 +1,7 @@
 <?php
 namespace Bundler\Command;
 
+use Exception;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -40,5 +41,21 @@ class StylesheetCommand extends AbstractPublicCommand {
         $this->output->writeln("");
 
         $this->selectFilesByPackages();
+        $this->bundle();
+    }
+
+    /**
+     * @return void
+     * @throws Exception
+     */
+    private function bundle() {
+        foreach($this->fileSelectors as $this->currentPackage => $this->fileSelector) {
+            if(!empty($this->manifestDefinition['bundle'][$this->currentPackage]['compiler'])) {
+                $compiler = $this->manifestDefinition['bundle'][$this->currentPackage]['compiler'];
+                $this->compiler = in_array($compiler, $this->compilers) ? $compiler : $this->compiler;
+            }
+
+            $this->outputFileSelector();
+        }
     }
 }
