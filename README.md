@@ -15,8 +15,6 @@ bundle your project, your stylesheets and your javascripts
 
  * ./vendor/bin/bundler.php
  * ./vendor/bin/bundler.php bundle:files [--help]
- * ./vendor/bin/bundler.php bundle:files files.yaml
- * ./vendor/bin/bundler.php bundle:files files-packages.yaml
  * ./vendor/bin/bundler.php bundle:stylesheet [--help]
  * ./vendor/bin/bundler.php bundle:javascript [--help]
 
@@ -32,8 +30,8 @@ target: ./build
 # directory under target, if empty, no directory
 # $DATETIME
 # $VERSION
-# $ARGUMENT
-directory: $DATETIME
+# $OPTION
+directory: $OPTION
 
 # define include / exclude pattern
 include:
@@ -60,8 +58,8 @@ target: ./build
 # directory under target, if empty, no directory
 # $DATETIME
 # $VERSION
-# $ARGUMENT
-directory: $DATETIME
+# $OPTION
+directory: $OPTION
 
 # packages, define multiple packages here
 bundle:

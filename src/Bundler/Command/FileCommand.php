@@ -3,8 +3,8 @@ namespace Bundler\Command;
 
 use Exception;
 use Flex\FileSelector\FileSelector;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -18,24 +18,20 @@ class FileCommand extends AbstractCommand {
     /**
      * @var string
      */
-    private $directory;
-
-    /**
-     * @var string
-     */
     private $outputDirectory;
 
     /**
      * @return void
      */
     protected function configure() {
+        $this->manifest = "files.yaml";
+
         parent::configure();
 
         $this->setName('bundle:files');
         $this->setDescription('bundling files');
-        $this->addArgument('directory', InputArgument::OPTIONAL, 'string containing directory under bundling folder');
 
-        $this->manifest = "files.yaml";
+        $this->addOption('directory', 'd', InputOption::VALUE_OPTIONAL, 'string containing directory under bundling folder', 'src');
     }
 
     /**
@@ -67,13 +63,8 @@ class FileCommand extends AbstractCommand {
                     }
                     break;
 
-                case '$ARGUMENT':
-                    $directory = !is_null($input->getArgument('directory')) ? $input->getArgument('directory') : null;
-                    $directory = trim($directory);
-
-                    if(!empty($directory)) {
-                        $this->outputDirectory = $this->target . '/' . $directory;
-                    }
+                case '$OPTION':
+                    $this->outputDirectory = $this->target . '/' . $input->getOption('directory');
                     break;
             }
         }

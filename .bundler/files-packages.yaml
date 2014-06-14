@@ -7,7 +7,7 @@ target: ./build
 # directory under target, if empty, no directory
 # $DATETIME
 # $VERSION
-# $ARGUMENT
+# $OPTION
 directory: $DATETIME
 
 # packages, define multiple packages here

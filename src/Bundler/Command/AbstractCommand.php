@@ -4,8 +4,8 @@ namespace Bundler\Command;
 use Exception;
 use Flex\FileSelector\FileSelector;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Yaml\Yaml;
 
@@ -78,7 +78,7 @@ class AbstractCommand extends Command {
      * @return void
      */
     protected function configure() {
-        $this->addArgument('manifest', InputArgument::OPTIONAL, 'name of the manifest yaml');
+        $this->addOption('manifest', 'm', InputOption::VALUE_OPTIONAL, 'the manifest filename', $this->manifest);
     }
 
     /**
@@ -88,7 +88,7 @@ class AbstractCommand extends Command {
      * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
-        $this->manifest = !is_null($input->getArgument('manifest')) ? "$this->root/.bundler/{$input->getArgument('manifest')}" : "$this->root/.bundler/{$this->manifest}";
+        $this->manifest = "$this->root/.bundler/{$input->getOption('manifest')}";
 
         if(realpath($this->root) === false) {
             throw new Exception("root folder: {$this->root} not found.");
