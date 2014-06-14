@@ -31,7 +31,7 @@ target: ./build
 # $DATETIME
 # $VERSION
 # $OPTION
-directory: $OPTION
+directory: $DATETIME
 
 # define include / exclude pattern
 include:
@@ -59,7 +59,7 @@ target: ./build
 # $DATETIME
 # $VERSION
 # $OPTION
-directory: $OPTION
+directory: $DATETIME
 
 # packages, define multiple packages here
 bundle:
