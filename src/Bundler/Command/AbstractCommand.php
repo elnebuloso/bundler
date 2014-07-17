@@ -114,6 +114,10 @@ class AbstractCommand extends Command {
         $folder = "{$this->root}/{$this->manifestDefinition['folder']}";
         $target = "{$this->root}/{$this->manifestDefinition['target']}";
 
+        if(strpos($this->manifestDefinition['target'], '/') === 0) {
+            $target = $this->manifestDefinition['target'];
+        }
+
         if(realpath($folder) === false) {
             throw new Exception("folder: {$folder} not found.");
         }
