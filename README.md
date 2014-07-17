@@ -111,9 +111,8 @@ bundle:
 
 In this demo case, this creates
 
- * ./public/css/package-yuicompressor.bundler.css
+ * ./public/css/package-yuicompressor.bundler.max.css
  * ./public/css/package-yuicompressor.bundler.min.css
- * ./public/css/package-yuicompressor.bundler.php
  * all paths in the stylesheets are solved automatically
 
 ## .bundler/javascript.yaml
