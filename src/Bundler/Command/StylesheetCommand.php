@@ -17,16 +17,16 @@ class StylesheetCommand extends AbstractPublicCommand {
      * @return void
      */
     protected function configure() {
-        parent::configure();
-
-        $this->setName('bundle:stylesheet');
-        $this->setDescription('bundling stylesheet');
-
         $this->manifest = "stylesheet.yaml";
         $this->compiler = "yuicompressor";
         $this->compilers = array(
             "yuicompressor"
         );
+
+        parent::configure();
+
+        $this->setName('bundle:stylesheet');
+        $this->setDescription('bundling stylesheet');
     }
 
     /**
@@ -59,7 +59,7 @@ class StylesheetCommand extends AbstractPublicCommand {
             }
 
             $this->content = array();
-            $this->destinationMax = "{$this->target}/{$this->currentPackage}.bundler.css";
+            $this->destinationMax = "{$this->target}/{$this->currentPackage}.bundler.max.css";
             $this->destinationMin = "{$this->target}/{$this->currentPackage}.bundler.min.css";
 
             $this->output->writeln("  <info>compiling</info>");
@@ -84,8 +84,7 @@ class StylesheetCommand extends AbstractPublicCommand {
             $this->output->writeln("");
 
             // create max file
-            $this->content = preg_replace('/\s+/', '', $this->content);
-            $this->content = implode(PHP_EOL . PHP_EOL, $this->content);
+            $this->content = implode(null, $this->content);
             file_put_contents($this->destinationMax, $this->content);
 
             switch($this->compiler) {
@@ -98,17 +97,6 @@ class StylesheetCommand extends AbstractPublicCommand {
 
             $this->outputFileSelector();
             $this->outputBundlingFilesCompression();
-
-            // create php loader file
-            $pathMax = basename($this->target) . "/{$this->currentPackage}.bundler.css";
-            $pathMin = basename($this->target) . "/{$this->currentPackage}.bundler.min.css";
-
-            $paths = array(
-                'max' => "{$pathMax}?v=" . md5_file($this->destinationMax),
-                'min' => "{$pathMin}?v=" . md5_file($this->destinationMin),
-            );
-
-            file_put_contents("{$this->target}/{$this->currentPackage}.bundler.php", "<?php return " . var_export($paths, true) . ";");
         }
     }
 
