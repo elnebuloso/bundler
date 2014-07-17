@@ -10,11 +10,16 @@ namespace Bundler;
 class JavascriptMarkup extends AbstractMarkup {
 
     /**
+     * @var string
+     */
+    protected $suffix = 'js';
+
+    /**
      * @return JavascriptMarkup
      */
     public function __construct() {
         $this->setYaml('.bundler/javascript.yaml');
-        $this->setHost('');
+        $this->setHost('/');
         $this->setPublic('public/js');
         $this->setMinified(true);
         $this->setDevelopment(true);
@@ -28,7 +33,7 @@ class JavascriptMarkup extends AbstractMarkup {
         $markup = array();
 
         foreach($files as $file) {
-            $markup[] = '<script src="' . $this->getHost() . '/' . $file . '"></script>';
+            $markup[] = '<script src="' . $this->getHost() . $file . '"></script>';
         }
 
         return $markup;

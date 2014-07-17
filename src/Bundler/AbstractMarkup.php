@@ -38,6 +38,11 @@ abstract class AbstractMarkup {
     private $development;
 
     /**
+     * @var string
+     */
+    protected $suffix;
+
+    /**
      * @param string $yaml
      */
     public function setYaml($yaml) {
@@ -124,14 +129,15 @@ abstract class AbstractMarkup {
      * @throws Exception
      */
     private function getFiles($package) {
-        $public = realpath($this->getPublic());
+        $public = explode('/', $this->getPublic());
+        $public = $public[1];
 
-        if($public === false) {
-            throw new Exception("public folder: {$this->getPublic()} not found.");
-        }
-
-        $file = require_once $public . '/' . $package . '.bundler.php';
-        $file = $this->getMinified() ? $file['min'] : $file['max'];
+        $file = implode(".", array(
+            $public . "/" . $package,
+            "bundler",
+            $this->getMinified() ? "min" : "max",
+            $this->suffix
+        ));
 
         return array($file);
     }

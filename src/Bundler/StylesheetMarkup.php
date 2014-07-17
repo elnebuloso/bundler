@@ -10,11 +10,16 @@ namespace Bundler;
 class StylesheetMarkup extends AbstractMarkup {
 
     /**
+     * @var string
+     */
+    protected $suffix = 'css';
+
+    /**
      * @return StylesheetMarkup
      */
     public function __construct() {
         $this->setYaml('.bundler/stylesheet.yaml');
-        $this->setHost('');
+        $this->setHost('/');
         $this->setPublic('public/css');
         $this->setMinified(true);
         $this->setDevelopment(true);
@@ -28,7 +33,7 @@ class StylesheetMarkup extends AbstractMarkup {
         $markup = array();
 
         foreach($files as $file) {
-            $markup[] = '<link rel="stylesheet" href="' . $this->getHost() . '/' . $file . '">';
+            $markup[] = '<link rel="stylesheet" href="' . $this->getHost() . $file . '">';
         }
 
         return $markup;

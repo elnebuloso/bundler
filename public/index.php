@@ -1,3 +1,33 @@
+<?php
+// error reporting
+ini_set('error_reporting', E_ALL);
+ini_set('display_errors', 'on');
+
+// this makes our life easier when dealing with paths.
+// everything is relative to the application root now.
+chdir(dirname(__DIR__));
+
+// autoloading
+require_once 'vendor/autoload.php';
+
+use Bundler\JavascriptMarkup;
+use Bundler\StylesheetMarkup;
+
+$stylesheetMarkup = new StylesheetMarkup();
+$stylesheetMarkup->setYaml('.bundler/stylesheet.yaml');
+$stylesheetMarkup->setHost('/');
+$stylesheetMarkup->setPublic('public/css');
+$stylesheetMarkup->setMinified(true);
+$stylesheetMarkup->setDevelopment(false);
+
+$javascriptMarkup = new JavascriptMarkup();
+$javascriptMarkup->setYaml('.bundler/javascript.yaml');
+$javascriptMarkup->setHost('/');
+$javascriptMarkup->setPublic('public/js');
+$javascriptMarkup->setMinified(true);
+$javascriptMarkup->setDevelopment(false);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +37,7 @@
     <title>elnebuloso/bundler</title>
 
     <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <?php echo $stylesheetMarkup->get('package-yuicompressor'); ?>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -19,12 +49,11 @@
 <body>
 
 <div class="container">
-    <h1>bundler <small>elnebuloso</small></h1>
+    <h1>bundler
+        <small>elnebuloso</small>
+    </h1>
 </div>
 
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="js/bootstrap.min.js"></script>
+<?php echo $javascriptMarkup->get('package-google-closure-compiler'); ?>
 </body>
 </html>
