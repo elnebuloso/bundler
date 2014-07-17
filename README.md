@@ -145,9 +145,9 @@ bundle:
 
 In this demo case, this creates
 
- * ./public/js/package-google-closure-compiler.bundler.js
+ * ./public/js/package-google-closure-compiler.bundler.max.js
  * ./public/js/package-google-closure-compiler.bundler.min.js
- * ./public/js/package-yuicompressor.bundler.js
+ * ./public/js/package-yuicompressor.bundler.max.js
  * ./public/js/package-yuicompressor.bundler.min.js
 
 The PHP Files are for the Markup Renderer.
