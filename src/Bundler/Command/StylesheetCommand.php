@@ -84,7 +84,7 @@ class StylesheetCommand extends AbstractPublicCommand {
             $this->output->writeln("");
 
             // create max file
-            $this->content = implode(null, $this->content);
+            $this->content = implode(PHP_EOL . PHP_EOL, $this->content);
             file_put_contents($this->destinationMax, $this->content);
 
             switch($this->compiler) {
