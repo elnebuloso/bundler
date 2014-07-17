@@ -1,6 +1,6 @@
 # bundler
 
-bundle your project, your stylesheets and your javascripts
+bundle your project files, your stylesheets and your javascripts
 
 ## usage
 
@@ -147,10 +147,8 @@ In this demo case, this creates
 
  * ./public/js/package-google-closure-compiler.bundler.js
  * ./public/js/package-google-closure-compiler.bundler.min.js
- * ./public/js/package-google-closure-compiler.bundler.php
  * ./public/js/package-yuicompressor.bundler.js
  * ./public/js/package-yuicompressor.bundler.min.js
- * ./public/js/package-yuicompressor.bundler.min.php
 
 The PHP Files are for the Markup Renderer.
 
@@ -165,7 +163,7 @@ $stylesheetMarkup->setYaml('.bundler/stylesheet.yaml');
 
 // optional host
 // default shown
-$stylesheetMarkup->setHost('');
+$stylesheetMarkup->setHost('/');
 
 // optional, path relative to public stylesheet
 // default shown
@@ -196,7 +194,7 @@ $javascriptMarkup->setYaml('.bundler/javascript.yaml');
 
 // optional host
 // default shown
-$javascriptMarkup->setHost('');
+$javascriptMarkup->setHost('/');
 
 // optional, path relative to public javascript
 // default shown
