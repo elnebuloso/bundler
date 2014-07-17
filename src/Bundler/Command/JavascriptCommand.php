@@ -79,6 +79,7 @@ class JavascriptCommand extends AbstractPublicCommand {
             $this->output->writeln("");
 
             // create max file
+            $this->content = preg_replace('/\s+/', '', $this->content);
             $this->content = implode(PHP_EOL . PHP_EOL, $this->content);
             file_put_contents($this->destinationMax, $this->content);
 

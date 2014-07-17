@@ -1,38 +1,36 @@
 {
-    "name": "elnebuloso/bundler",
+    "version": "4.1.14",
+    "name": "elnebuloso\/bundler",
     "type": "library",
     "license": "MIT",
     "description": "bundling files n' stuff",
-    "keywords":
-        [
-            "bundling",
-            "minifying",
-            "javascript",
-            "js",
-            "stylesheet",
-            "css"
-        ],
-    "authors":
-        [
-            {
-                "name": "Jeff Tunessen",
-                "email": "jeff.tunessen@gmail.com",
-                "role": "Maintainer"
-            }
-        ],
+    "keywords": [
+        "bundling",
+        "minifying",
+        "javascript",
+        "js",
+        "stylesheet",
+        "css"
+    ],
+    "authors": [
+        {
+            "name": "Jeff Tunessen",
+            "email": "jeff.tunessen@gmail.com",
+            "role": "Maintainer"
+        }
+    ],
     "require": {
         "php": ">=5.3.3",
-        "elnebuloso/flex-file-selector": "1.*",
-        "symfony/console": "*",
-        "symfony/yaml": "*"
+        "elnebuloso\/flex-file-selector": "1.*",
+        "symfony\/console": "*",
+        "symfony\/yaml": "*"
     },
     "autoload": {
         "psr-0": {
-            "Bundler\\": "src/"
+            "Bundler\\": "src\/"
         }
     },
-    "bin":
-        [
-            "bin/bundler.php"
-        ]
+    "bin": [
+        "bin\/bundler.php"
+    ]
 }

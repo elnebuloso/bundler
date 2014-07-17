@@ -1,76 +1,30 @@
-<?php
-defined('APP_ENV') || define('APP_ENV', (getenv('APP_ENV') ? getenv('APP_ENV') : 'production'));
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>elnebuloso/bundler</title>
 
-// error reporting
-ini_set('error_reporting', E_ALL);
-ini_set('display_errors', 'on');
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 
-// this makes our life easier when dealing with paths.
-// everything is relative to the application root now.
-chdir(dirname(__DIR__));
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
 
-// autoloading
-require_once 'vendor/autoload.php';
+<div class="container">
+    <h1>bundler <small>elnebuloso</small></h1>
+</div>
 
-use Bundler\JavascriptMarkup;
-use Bundler\StylesheetMarkup;
-
-$stylesheetMarkup = new StylesheetMarkup();
-
-// optional, path relative to yaml, used by development mode
-// default shown
-$stylesheetMarkup->setYaml('.bundler/stylesheet.yaml');
-
-// optional host
-// default shown
-$stylesheetMarkup->setHost('');
-
-// optional, path relative to public stylesheet
-// default shown
-$stylesheetMarkup->setPublic('public/css');
-
-// optional output minified files
-// default shown
-$stylesheetMarkup->setMinified(true);
-
-// optional, in development mode, output each file
-// default shown
-$stylesheetMarkup->setDevelopment(true);
-
-// markup for package package-yuicompressor
-// default shown
-echo $stylesheetMarkup->get('package-yuicompressor');
-echo PHP_EOL;
-
-
-
-$javascriptMarkup = new JavascriptMarkup();
-
-// optional, path relative to yaml, used by development mode
-// default shown
-$javascriptMarkup->setYaml('.bundler/javascript.yaml');
-
-// optional host
-// default shown
-$javascriptMarkup->setHost('');
-
-// optional, path relative to public javascript
-// default shown
-$javascriptMarkup->setPublic('public/js');
-
-// optional, output minified files
-// default shown
-$javascriptMarkup->setMinified(true);
-
-// optional, in development mode, output each file
-// default shown
-$javascriptMarkup->setDevelopment(true);
-
-// markup for package package-google-closure-compiler
-// default shown
-echo $javascriptMarkup->get('package-google-closure-compiler');
-
-// markup for package package-yuicompressor
-// default shown
-echo $javascriptMarkup->get('package-yuicompressor');
-echo PHP_EOL;
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+</body>
+</html>
