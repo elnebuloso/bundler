@@ -9,6 +9,10 @@ bundle your project files, your stylesheets and your javascripts
  * create file .bundler/stylesheet.yaml for bundling stylesheets
  * create file .bundler/javascript.yaml for bundling javascripts
 
+### usage
+
+all include / exclude definitions are regular expressions
+
 ## commands (used as composer package)
 
  * ./vendor/bin/bundler.php
@@ -104,9 +108,8 @@ bundle:
   package-yuicompressor:
     compiler: yuicompressor
     include:
-      - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap.css
-      - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap-theme.css
-      - public/vendor/twitter/bootstrap/3.1.0/css/dashboard.css
+      - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap.css$
+      - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap-theme.css$
 ```
 
 In this demo case, this creates
@@ -131,15 +134,15 @@ bundle:
   package-google-closure-compiler:
     compiler: google-closure-compiler
     include:
-      - public/vendor/jquery/jquery/1.11.0/jquery-1.11.0.js
-      - public/vendor/twitter/bootstrap/3.1.0/js/bootstrap.js
+      - public/vendor/jquery/jquery/1.11.0/jquery-1.11.0.js$
+      - public/vendor/twitter/bootstrap/3.1.0/js/bootstrap.js$
 
   # package name: package-yuicompressor
   package-yuicompressor:
     compiler: yuicompressor
     include:
-      - public/vendor/jquery/jquery/1.11.0/jquery-1.11.0.js
-      - public/vendor/twitter/bootstrap/3.1.0/js/bootstrap.js
+      - public/vendor/jquery/jquery/1.11.0/jquery-1.11.0.js$
+      - public/vendor/twitter/bootstrap/3.1.0/js/bootstrap.js$
 ```
 
 In this demo case, this creates

@@ -11,5 +11,5 @@ bundle:
   package-yuicompressor:
     compiler: yuicompressor
     include:
-      - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap.css
-      - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap-theme.css
+      - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap.css$
+      - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap-theme.css$
