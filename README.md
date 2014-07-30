@@ -15,10 +15,10 @@ all include / exclude definitions are regular expressions
 
 ## commands (used as composer package)
 
- * ./vendor/bin/bundler.php
- * ./vendor/bin/bundler.php bundle:files [--help]
- * ./vendor/bin/bundler.php bundle:stylesheet [--help]
- * ./vendor/bin/bundler.php bundle:javascript [--help]
+ * ./vendor/bin/bundler
+ * ./vendor/bin/bundler bundle:files [--help]
+ * ./vendor/bin/bundler bundle:stylesheet [--help]
+ * ./vendor/bin/bundler bundle:javascript [--help]
 
 ## .bundler/files.yaml
 
