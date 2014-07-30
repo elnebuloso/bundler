@@ -2,7 +2,7 @@
 folder: .
 
 # path where the files are copied to
-target: /var/www/rollout/bundler
+target: /var/builds/bundler
 
 # directory under target, if empty, no directory
 # $DATETIME

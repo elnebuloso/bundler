@@ -4,32 +4,31 @@
 ini_set('error_reporting', E_ALL);
 ini_set('display_errors', 'on');
 
-// check root folder
-$root = null;
-$vendor = null;
+$root = getcwd();
+$autoloader = dirname(__DIR__) . '/vendor/autoload.php';
 
-// bundler as vendor
+// autoload classes of bundler
 if(file_exists(dirname(dirname(dirname(dirname(__DIR__)))) . '/vendor/autoload.php')) {
-    $root = dirname(dirname(dirname(dirname(__DIR__))));
-    $vendor = $root . '/vendor/elnebuloso/bundler';
+    $autoloader = dirname(dirname(dirname(dirname(__DIR__)))) . '/vendor/autoload.php';
 }
 
-// bundler itself
-elseif(file_exists(dirname(__DIR__) . '/vendor/autoload.php')) {
-    $root = dirname(__DIR__);
-    $vendor = $root;
+if(realpath($root) === false) {
+    exit('unable to determine your project root path: ' . $root . PHP_EOL);
 }
 
-if(is_null($root)) {
-    exit('unable to determine root folder' . PHP_EOL);
+if(realpath($autoloader) === false) {
+    exit('unable to determine bundler installation path' . $autoloader . PHP_EOL);
 }
+
+$root = realpath($root);
+$autoloader = realpath($autoloader);
+
+// autoloading
+require_once $autoloader;
 
 // this makes our life easier when dealing with paths.
 // everything is relative to the application root now.
 chdir($root);
-
-// autoloading
-require_once 'vendor/autoload.php';
 
 use Bundler\Command\FileCommand;
 use Bundler\Command\JavascriptCommand;
