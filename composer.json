@@ -1,5 +1,5 @@
 {
-    "version": "5.2.0",
+    "version": "5.2.1",
     "name": "elnebuloso\/bundler",
     "type": "library",
     "license": "MIT",
@@ -20,10 +20,10 @@
         }
     ],
     "require": {
-        "php": ">=5.3",
+        "php": ">=5.3.3",
         "elnebuloso\/flex-file-selector": "1.*",
-        "symfony\/console": "*",
-        "symfony\/yaml": "*"
+        "symfony\/console": "~2.5",
+        "symfony\/yaml": "~2.5"
     },
     "autoload": {
         "psr-0": {
