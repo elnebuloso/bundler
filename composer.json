@@ -1,5 +1,5 @@
 {
-    "version": "5.2.1",
+    "version": "5.2.2",
     "name": "elnebuloso\/bundler",
     "type": "library",
     "license": "MIT",
@@ -31,6 +31,6 @@
         }
     },
     "bin": [
-        "bin\/bundler.php"
+        "bin\/bundler"
     ]
 }
