@@ -9,6 +9,7 @@ target: ./build
 # $VERSION
 # $OPTION
 directory: $DATETIME
+archive: tar
 
 # packages, define multiple packages here
 bundle:
