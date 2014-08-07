@@ -4,7 +4,7 @@ folder: .
 # path where the files are copied to
 target: ./build
 
-# directory under target, if empty, no directory
+# directory under target, if empty, no directory, files / folders are copied directly into target
 # $DATETIME
 # $VERSION
 # $OPTION
