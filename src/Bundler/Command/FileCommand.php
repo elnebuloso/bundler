@@ -101,6 +101,20 @@ class FileCommand extends AbstractCommand {
 
             $this->bundle($this->fileSelector);
         }
+
+        if(array_key_exists('archive', $this->manifestDefinition)) {
+            if($this->manifestDefinition['archive'] == 'tar') {
+                $archiveName = "{$this->outputDirectory}.tar.gz";
+
+                $this->output->writeln("<comment>creating archive: {$archiveName}</comment>");
+                $this->output->writeln("");
+
+                $command = "tar cvzf {$archiveName} -C {$this->outputDirectory} .";
+                exec($command);
+                // untar simple with
+                // mkdir $directory && tar xvzf $filename -C $directory/
+            }
+        }
     }
 
     /**
