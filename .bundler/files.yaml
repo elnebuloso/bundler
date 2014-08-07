@@ -8,7 +8,7 @@ target: /var/builds/bundler
 # $DATETIME
 # $VERSION
 # $OPTION
-directory: $DATETIME
+directory: $VERSION
 archive: tar
 
 # define include / exclude pattern

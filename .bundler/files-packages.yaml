@@ -8,7 +8,7 @@ target: ./build
 # $DATETIME
 # $VERSION
 # $OPTION
-directory: $DATETIME
+directory: $VERSION
 archive: tar
 
 # packages, define multiple packages here
