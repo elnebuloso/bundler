@@ -34,6 +34,7 @@ target: ./build
 # $VERSION
 # $OPTION
 directory: $DATETIME
+archive: tar
 
 # define include / exclude pattern
 include:
