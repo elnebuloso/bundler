@@ -11,6 +11,11 @@
         <whitelist>
             <directory>./</directory>
             <exclude>
+                <directory>./.bundler</directory>
+                <directory>./bin</directory>
+                <directory>./build</directory>
+                <directory>./public</directory>
+                <directory>./resources</directory>
                 <directory>./tests</directory>
                 <directory>./vendor</directory>
             </exclude>
