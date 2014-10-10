@@ -24,11 +24,6 @@ class FilePackage implements Package {
     private $version;
 
     /**
-     * @var string
-     */
-    private $archive;
-
-    /**
      * @var array
      */
     private $includes;
@@ -81,20 +76,6 @@ class FilePackage implements Package {
     }
 
     /**
-     * @param string $archive
-     */
-    public function setArchive($archive) {
-        $this->archive = $archive;
-    }
-
-    /**
-     * @return string
-     */
-    public function getArchive() {
-        return $this->archive;
-    }
-
-    /**
      * @param array $includes
      */
     public function setIncludes(array $includes) {
@@ -131,7 +112,6 @@ class FilePackage implements Package {
         $package = new self($name);
         $package->setTo($array['to']);
         $package->setVersion($array['version']);
-        $package->setArchive($array['archive']);
         $package->setIncludes($array['include']);
         $package->setExcludes($array['exclude']);
 

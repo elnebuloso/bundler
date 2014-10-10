@@ -19,7 +19,6 @@ packages:
     baz:
         to: build
         version: file
-        archive: tar
         include:
             - bin/*
             - resources/*

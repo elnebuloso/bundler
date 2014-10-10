@@ -133,7 +133,23 @@ class FileCommand extends AbstractCommand {
         $this->writeInfo("copying files {$this->copyMethod}", true, false);
 
         $timeStart = microtime(true);
-        $packageDir = $this->package->getTo() . '/' . $this->package->getName();
+
+        $packageDir[] = $this->package->getTo();
+        switch($this->package->getVersion()) {
+            case 'datetime':
+                $packageDir[] = date('YmdHis');
+                break;
+
+            case 'file':
+                if(($version = file_get_contents($this->dir . '/VERSION'))) {
+                    $packageDir[] = trim($version);
+                }
+                break;
+        }
+
+        $packageDir[] = $this->package->getName();
+        $packageDir = implode('/', $packageDir);
+
         $this->writeInfo("removing package directory {$packageDir}", false, true);
 
         $fs = new Filesystem();
@@ -145,7 +161,9 @@ class FileCommand extends AbstractCommand {
         foreach($this->fileSelector->getFiles() as $file) {
             $source = $file;
             $destination = $packageDir . '/' . str_replace($this->dir . '/', '', $source);
+
             $this->copy($source, $destination);
+
             $this->writeInfo($destination);
         }
 
