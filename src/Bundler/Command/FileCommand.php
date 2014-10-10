@@ -1,160 +1,177 @@
 <?php
 namespace Bundler\Command;
 
+use Bundler\FileBundler;
+use Bundler\FileSelector;
+use Bundler\Model\Package\FilePackage;
 use Exception;
-use Flex\FileSelector\FileSelector;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Class FileCommand
  *
- * @package Bundler\Command
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
 class FileCommand extends AbstractCommand {
 
     /**
+     * @var OutputInterface
+     */
+    protected $output;
+
+    /**
+     * @var FileBundler
+     */
+    private $fileBundler;
+
+    /**
+     * @var FilePackage
+     */
+    private $package;
+
+    /**
+     * @var FileSelector
+     */
+    private $fileSelector;
+
+    /**
      * @var string
      */
-    private $outputDirectory;
+    private $copyMethod;
 
     /**
      * @return void
      */
     protected function configure() {
-        $this->manifest = "files.yaml";
-
-        parent::configure();
-
         $this->setName('bundle:files');
         $this->setDescription('bundling files');
-
-        $this->addOption('directory', 'd', InputOption::VALUE_OPTIONAL, 'string containing directory under bundling folder', 'src');
     }
 
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @throws Exception
+     * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
         parent::execute($input, $output);
 
-        $this->output->writeln("<comment>bundling files</comment>");
-        $this->output->writeln("");
+        $this->writeComment("bundling files", true, true);
 
-        $this->outputDirectory = $this->target;
+        $timeStart = microtime(true);
 
-        if(array_key_exists('directory', $this->manifestDefinition)) {
-            switch($this->manifestDefinition['directory']) {
-                case '$DATETIME':
-                    $this->outputDirectory = $this->target . '/' . date('YmdHis');
-                    break;
+        $this->readConfiguration();
+        $this->bundlePackages();
 
-                case '$VERSION':
-                    if(($version = file_get_contents($this->root . '/VERSION'))) {
-                        $version = trim($version);
+        $timeEnd = microtime(true);
+        $time = $timeEnd - $timeStart;
 
-                        if(!empty($version)) {
-                            $this->outputDirectory = $this->target . '/' . $version;
-                        }
-                    }
-                    break;
+        $this->writeComment("bundling files in {$time} seconds", true, true);
+    }
 
-                case '$OPTION':
-                    $this->outputDirectory = $this->target . '/' . $input->getOption('directory');
-                    break;
-            }
+    /**
+     * @throws Exception
+     */
+    private function readConfiguration() {
+        $this->writeInfo('read configuration');
+
+        $yaml = $this->dir . '/.bundler/files.yaml';
+
+        if(!realpath($yaml)) {
+            throw new Exception("missing configuration yaml file: {$yaml}");
         }
 
-        $this->output->writeln("  <info>output directory: {$this->outputDirectory}</info>");
-        $this->output->writeln("");
+        $this->fileBundler = FileBundler::createFromYaml($this->dir, $yaml);
+        $this->copyMethod = (shell_exec('which cp')) ? 'native' : 'php';
+    }
 
-        if(file_exists($this->outputDirectory)) {
-            if(!$this->removeDirectory($this->outputDirectory)) {
-                throw new Exception("unable to delete output directory: {$this->outputDirectory}");
-            }
-        }
+    /**
+     * @return void
+     */
+    private function bundlePackages() {
+        $this->writeInfo('bundle packages');
 
-        if(!mkdir($this->outputDirectory, 0777, true)) {
-            throw new Exception("unable to create output directory: {$this->outputDirectory}");
-        }
+        foreach($this->fileBundler->getPackages() as $this->package) {
+            $timeStart = microtime(true);
 
-        if(array_key_exists('bundle', $this->manifestDefinition)) {
-            $this->selectFilesByPackages();
-
-            foreach($this->fileSelectors as $this->currentPackage => $this->fileSelector) {
-                $this->output->writeln("<comment>bundling files by package: {$this->currentPackage}</comment>");
-                $this->output->writeln("");
-
-                $this->bundle($this->fileSelector, $this->currentPackage);
-            }
-        }
-
-        if(!array_key_exists('bundle', $this->manifestDefinition)) {
+            $this->writeComment("bundling package: {$this->package->getName()}", true, true);
             $this->selectFiles();
+            $this->copyFiles();
 
-            $this->output->writeln("<comment>bundling files</comment>");
-            $this->output->writeln("");
+            $timeEnd = microtime(true);
+            $time = $timeEnd - $timeStart;
 
-            $this->bundle($this->fileSelector);
-        }
-
-        if(array_key_exists('archive', $this->manifestDefinition)) {
-            if($this->manifestDefinition['archive'] == 'tar') {
-                $archiveName = "{$this->outputDirectory}.tar.gz";
-
-                $this->output->writeln("<comment>creating archive: {$archiveName}</comment>");
-                $this->output->writeln("");
-
-                $command = "tar cvzf {$archiveName} -C {$this->outputDirectory} .";
-                exec($command);
-                // untar simple with
-                // mkdir $directory && tar xvzf $filename -C $directory/
-            }
+            $this->writeComment("bundling package: {$this->package->getName()} in {$time} seconds", true);
         }
     }
 
     /**
-     * @param FileSelector $fileSelector
-     * @param string $package
-     * @throws Exception
+     * @return void
      */
-    private function bundle(FileSelector $fileSelector, $package = null) {
-        $progress = $this->getHelperSet()->get('progress');
-        $progress->start($this->output, $this->fileSelector->getFilesCount());
+    private function selectFiles() {
+        $this->writeInfo("selecting files");
 
-        foreach($this->fileSelector->getFiles() as $file) {
-            $destination = array();
-            $destination[] = $this->outputDirectory;
+        $timeStart = microtime(true);
 
-            if(!empty($package)) {
-                $destination[] = $package;
-            }
+        $this->fileSelector = new FileSelector();
+        $this->fileSelector->setDir($this->dir);
+        $this->fileSelector->setIncludes($this->package->getIncludes());
+        $this->fileSelector->setExcludes($this->package->getExcludes());
+        $this->fileSelector->select();
 
-            $destination[] = str_replace($this->folder . '/', '', $file);
-            $destination = implode('/', $destination);
+        $timeEnd = microtime(true);
+        $time = $timeEnd - $timeStart;
 
-            $directory = dirname($destination);
+        $this->writeInfo("selecting {$this->fileSelector->getFilesCount()} files in {$time} seconds");
+    }
 
-            if(!file_exists($directory)) {
-                if(!mkdir($directory, 0777, true)) {
-                    throw new Exception("unable to create directory for file copy: {$directory}");
-                }
-            }
+    /**
+     * @return void
+     */
+    private function copyFiles() {
+        $this->writeInfo("copying files {$this->copyMethod}", true, false);
 
-            if(!copy($file, $destination)) {
-                throw new Exception("unable to copy file to destination: {$destination}");
-            }
+        $timeStart = microtime(true);
+        $packageDir = $this->package->getTo() . '/' . $this->package->getName();
+        $this->writeInfo("removing package directory {$packageDir}", false, true);
 
-            $progress->advance();
+        $fs = new Filesystem();
+
+        if($fs->exists($packageDir)) {
+            $fs->remove($packageDir);
         }
 
-        $progress->finish();
-        $this->output->writeln("");
+        foreach($this->fileSelector->getFiles() as $file) {
+            $source = $file;
+            $destination = $packageDir . '/' . str_replace($this->dir . '/', '', $source);
+            $this->copy($source, $destination);
+            $this->writeInfo($destination);
+        }
 
-        $this->outputFileSelector();
+        $timeEnd = microtime(true);
+        $time = $timeEnd - $timeStart;
+
+        $this->writeInfo("copying {$this->fileSelector->getFilesCount()} files in {$time} seconds", true);
+    }
+
+    /**
+     * @param string $source
+     * @param string $destination
+     */
+    private function copy($source, $destination) {
+        @mkdir(dirname($destination), 0777, true);
+
+        if($this->copyMethod == 'native') {
+            shell_exec("cp -r $source $destination");
+        }
+
+        if($this->copyMethod == 'php') {
+            $sourceHandle = fopen($source, 'r');
+            $destinationHandle = fopen($destination, 'w+');
+            stream_copy_to_stream($sourceHandle, $destinationHandle);
+            fclose($sourceHandle);
+            fclose($destinationHandle);
+        }
     }
 }

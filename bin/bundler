@@ -31,22 +31,22 @@ require_once $autoloader;
 chdir($root);
 
 use Bundler\Command\FileCommand;
-use Bundler\Command\JavascriptCommand;
-use Bundler\Command\StylesheetCommand;
+//use Bundler\Command\JavascriptCommand;
+//use Bundler\Command\StylesheetCommand;
 use Symfony\Component\Console\Application;
 
 $console = new Application();
 
 $command = new FileCommand();
-$command->setRoot($root);
+$command->setDir($root);
 $console->add($command);
 
-$command = new StylesheetCommand();
-$command->setRoot($root);
-$console->add($command);
-
-$command = new JavascriptCommand();
-$command->setRoot($root);
-$console->add($command);
+//$command = new StylesheetCommand();
+//$command->setRoot($root);
+//$console->add($command);
+//
+//$command = new JavascriptCommand();
+//$command->setRoot($root);
+//$console->add($command);
 
 $console->run();

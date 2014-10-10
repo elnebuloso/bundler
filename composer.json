@@ -1,9 +1,8 @@
 {
-    "version": "5.4.0",
     "name": "elnebuloso\/bundler",
     "type": "library",
     "license": "MIT",
-    "description": "bundling files n' stuff",
+    "description": "bundle your project files, your stylesheets and your javascripts",
     "keywords": [
         "bundling",
         "minifying",
@@ -20,10 +19,14 @@
         }
     ],
     "require": {
-        "php": ">=5.3.3",
-        "elnebuloso\/flex-file-selector": "1.*",
+        "php": "~5.3",
         "symfony\/console": "~2.5",
-        "symfony\/yaml": "~2.5"
+        "symfony\/config": "~2.5",
+        "symfony\/yaml": "~2.5",
+        "symfony\/filesystem": "~2.5"
+    },
+    "require-dev": {
+        "satooshi\/php-coveralls": "dev-master"
     },
     "autoload": {
         "psr-0": {

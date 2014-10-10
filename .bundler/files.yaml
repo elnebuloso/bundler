@@ -1,19 +1,28 @@
-# path from which the files are collected
-folder: .
-
-# path where the files are copied to
-target: /var/builds/bundler
-
-# directory under target, if empty, no directory, files / folders are copied directly into target
-# $DATETIME
-# $VERSION
-# $OPTION
-directory: $VERSION
-archive: tar
-
-# define include / exclude pattern
-include:
-  - src/.*
-  - vendor/.*
-exclude:
-  - ^.+README.md
+packages:
+    foo:
+        to: build
+        version: datetime
+        include:
+            - public/.*
+            - src/.*
+            - vendor/.*
+        exclude:
+            - ./public/js/README.md
+    bar:
+        to: build
+        version: file
+        include:
+            - resources/*
+            - src/*
+            - vendor/*
+        exclude:
+    baz:
+        to: build
+        version: file
+        archive: tar
+        include:
+            - bin/*
+            - resources/*
+            - src/*
+            - vendor/*
+        exclude:
