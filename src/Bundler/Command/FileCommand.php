@@ -27,11 +27,6 @@ class FileCommand extends AbstractCommand {
     private $package;
 
     /**
-     * @var FileSelector
-     */
-    private $fileSelector;
-
-    /**
      * @var string
      */
     private $copyMethod;

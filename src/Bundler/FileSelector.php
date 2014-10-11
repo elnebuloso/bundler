@@ -185,10 +185,12 @@ class FileSelector {
             $this->includedFiles = array_merge($this->includedFiles, $files);
         }
 
-        foreach($this->excludes as $pattern) {
-            foreach($this->includedFiles as $key => $file) {
-                if(preg_match('`' . $pattern . '`', $file)) {
-                    $this->excludedFiles[$key] = $file;
+        if(!empty($this->excludes)) {
+            foreach($this->excludes as $pattern) {
+                foreach($this->includedFiles as $key => $file) {
+                    if(preg_match('`' . $pattern . '`', $file)) {
+                        $this->excludedFiles[$key] = $file;
+                    }
                 }
             }
         }
