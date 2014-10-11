@@ -8,10 +8,10 @@ if [ ! -x $java_bin ]; then
    exit 1;
 fi;
 
-lib_dir=$(readlink -f `dirname $0`/../third-party/google-closure-compiler);
+lib_dir=$(readlink -f `dirname $0`/../resources/google-closure-compiler);
 
 if [ "" = "$lib_dir" ]; then
-    echo "Resource directory `dirname $0`/../third-party/google-closure-compiler not found.";
+    echo "Resource directory `dirname $0`/../resources/google-closure-compiler not found.";
 	exit 2;
 fi;
 
