@@ -1,8 +1,8 @@
 <?php
 namespace Bundler\Command;
 
-use Bundler\JavascriptBundler;
 use Bundler\Package\JavascriptPackage;
+use Bundler\Package\JavascriptPackagist;
 use Exception;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class JavascriptCommand extends AbstractCommand {
 
     /**
-     * @var JavascriptBundler
+     * @var JavascriptPackagist
      */
     private $bundler;
 
@@ -65,7 +65,7 @@ class JavascriptCommand extends AbstractCommand {
             throw new Exception("missing configuration yaml file: {$yaml}");
         }
 
-        $this->bundler = JavascriptBundler::createFromYaml($this->dir, $yaml);
+        $this->bundler = JavascriptPackagist::createFromYaml($this->dir, $yaml);
     }
 
     /**

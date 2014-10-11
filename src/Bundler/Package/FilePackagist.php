@@ -1,31 +1,20 @@
 <?php
-namespace Bundler;
+namespace Bundler\Package;
 
-use Bundler\Config\JavascriptConfig;
-use Bundler\Package\JavascriptPackage;
+use Bundler\Config\FileConfig;
 use Exception;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * Class JavascriptBundler
+ * Class FilePackagist
  *
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
-class JavascriptBundler {
+class FilePackagist {
 
     /**
-     * @var string
-     */
-    private $dir;
-
-    /**
-     * @var array
-     */
-    private $config;
-
-    /**
-     * @var JavascriptPackage[]
+     * @var FilePackage[]
      */
     private $packages;
 
@@ -35,37 +24,32 @@ class JavascriptBundler {
      * @throws Exception
      */
     public function __construct($dir, array $config) {
-        $this->dir = $dir;
-        $this->config = $config;
-
-        foreach($this->config['packages'] as $name => $package) {
-            $this->packages[] = JavascriptPackage::createFromArray($name, $package);
+        foreach($config['packages'] as $name => $package) {
+            $this->packages[] = FilePackage::createFromArray($name, $package);
         }
 
         if(realpath($dir) === false) {
-            throw new Exception("the given dir is invalid: {$this->dir}");
+            throw new Exception("the given dir is invalid: {$dir}");
         }
-
-        $this->dir = realpath($dir);
     }
 
     /**
      * @param string $dir
      * @param string $yaml
-     * @return JavascriptBundler
+     * @return FilePackagist
      */
     public static function createFromYaml($dir, $yaml) {
         $config = Yaml::parse($yaml);
 
         $processor = new Processor();
-        $configuration = new JavascriptConfig();
+        $configuration = new FileConfig();
         $processedConfiguration = $processor->processConfiguration($configuration, array($config));
 
         return new self($dir, $processedConfiguration);
     }
 
     /**
-     * @return JavascriptPackage[]
+     * @return FilePackage[]
      */
     public function getPackages() {
         return $this->packages;

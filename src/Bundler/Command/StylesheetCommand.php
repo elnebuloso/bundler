@@ -1,8 +1,8 @@
 <?php
 namespace Bundler\Command;
 
-use Bundler\StylesheetBundler;
 use Bundler\Package\StylesheetPackage;
+use Bundler\Package\StylesheetPackagist;
 use Exception;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class StylesheetCommand extends AbstractCommand {
 
     /**
-     * @var StylesheetBundler
+     * @var StylesheetPackagist
      */
     private $bundler;
 
@@ -65,7 +65,7 @@ class StylesheetCommand extends AbstractCommand {
             throw new Exception("missing configuration yaml file: {$yaml}");
         }
 
-        $this->bundler = StylesheetBundler::createFromYaml($this->dir, $yaml);
+        $this->bundler = StylesheetPackagist::createFromYaml($this->dir, $yaml);
     }
 
     /**

@@ -1,31 +1,20 @@
 <?php
-namespace Bundler;
+namespace Bundler\Package;
 
-use Bundler\Config\StylesheetConfig;
-use Bundler\Package\StylesheetPackage;
+use Bundler\Config\JavascriptConfig;
 use Exception;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * Class StylesheetBundler
+ * Class JavascriptPackagist
  *
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
-class StylesheetBundler {
+class JavascriptPackagist {
 
     /**
-     * @var string
-     */
-    private $dir;
-
-    /**
-     * @var array
-     */
-    private $config;
-
-    /**
-     * @var StylesheetPackage[]
+     * @var JavascriptPackage[]
      */
     private $packages;
 
@@ -35,37 +24,32 @@ class StylesheetBundler {
      * @throws Exception
      */
     public function __construct($dir, array $config) {
-        $this->dir = $dir;
-        $this->config = $config;
-
-        foreach($this->config['packages'] as $name => $package) {
-            $this->packages[] = StylesheetPackage::createFromArray($name, $package);
+        foreach($config['packages'] as $name => $package) {
+            $this->packages[] = JavascriptPackage::createFromArray($name, $package);
         }
 
         if(realpath($dir) === false) {
-            throw new Exception("the given dir is invalid: {$this->dir}");
+            throw new Exception("the given dir is invalid: {$dir}");
         }
-
-        $this->dir = realpath($dir);
     }
 
     /**
      * @param string $dir
      * @param string $yaml
-     * @return JavascriptBundler
+     * @return JavascriptPackagist
      */
     public static function createFromYaml($dir, $yaml) {
         $config = Yaml::parse($yaml);
 
         $processor = new Processor();
-        $configuration = new StylesheetConfig();
+        $configuration = new JavascriptConfig();
         $processedConfiguration = $processor->processConfiguration($configuration, array($config));
 
         return new self($dir, $processedConfiguration);
     }
 
     /**
-     * @return StylesheetPackage[]
+     * @return JavascriptPackage[]
      */
     public function getPackages() {
         return $this->packages;

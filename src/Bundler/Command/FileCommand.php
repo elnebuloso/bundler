@@ -1,9 +1,9 @@
 <?php
 namespace Bundler\Command;
 
-use Bundler\FileBundler;
 use Bundler\FileSelector;
 use Bundler\Package\FilePackage;
+use Bundler\Package\FilePackagist;
 use Exception;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -17,7 +17,7 @@ use Symfony\Component\Filesystem\Filesystem;
 class FileCommand extends AbstractCommand {
 
     /**
-     * @var FileBundler
+     * @var FilePackagist
      */
     private $bundler;
 
@@ -77,7 +77,7 @@ class FileCommand extends AbstractCommand {
             throw new Exception("missing configuration yaml file: {$yaml}");
         }
 
-        $this->bundler = FileBundler::createFromYaml($this->dir, $yaml);
+        $this->bundler = FilePackagist::createFromYaml($this->dir, $yaml);
         $this->copyMethod = (shell_exec('which cp')) ? 'native' : 'php';
     }
 
