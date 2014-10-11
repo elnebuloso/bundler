@@ -17,11 +17,6 @@ use Symfony\Component\Filesystem\Filesystem;
 class FileCommand extends AbstractCommand {
 
     /**
-     * @var OutputInterface
-     */
-    protected $output;
-
-    /**
      * @var FileBundler
      */
     private $fileBundler;

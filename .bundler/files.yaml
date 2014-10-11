@@ -1,23 +1,39 @@
+# packages, define multiple packages here
 packages:
+
+    # package name: foo
     foo:
-        to: build
+        # target directory, relative to the root from which the files are collected, or full path
+        # builds
+        # /builds
+        to: /var/builds/bundler
+
+        # version directory under target, if empty, no directory, files / folders are copied directly into target
+        # datetime (directory by YmdHis)
+        # file (directory by VERSION File Content)
         version: datetime
+
+        # define include / exclude pattern
         include:
             - public/.*
             - src/.*
             - vendor/.*
         exclude:
             - ./public/js/README.md
+
+    # package name: bar
     bar:
-        to: build
+        to: /var/builds/bundler
         version: file
         include:
             - resources/*
             - src/*
             - vendor/*
         exclude:
+
+    # package name: baz
     baz:
-        to: build
+        to: /var/builds/bundler
         version: file
         include:
             - bin/*

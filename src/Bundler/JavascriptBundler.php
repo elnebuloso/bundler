@@ -1,18 +1,18 @@
 <?php
 namespace Bundler;
 
-use Bundler\Config\FileConfig;
-use Bundler\Model\Package\FilePackage;
+use Bundler\Config\JavascriptConfig;
+use Bundler\Model\Package\JavascriptPackage;
 use Exception;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * Class FileBundler
+ * Class JavascriptBundler
  *
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
-class FileBundler {
+class JavascriptBundler {
 
     /**
      * @var string
@@ -25,7 +25,7 @@ class FileBundler {
     private $config;
 
     /**
-     * @var FilePackage[]
+     * @var JavascriptPackage[]
      */
     private $packages;
 
@@ -39,7 +39,7 @@ class FileBundler {
         $this->config = $config;
 
         foreach($this->config['packages'] as $name => $package) {
-            $this->packages[] = FilePackage::createFromArray($name, $package);
+            $this->packages[] = JavascriptPackage::createFromArray($name, $package);
         }
 
         if(realpath($dir) === false) {
@@ -52,20 +52,20 @@ class FileBundler {
     /**
      * @param string $dir
      * @param string $yaml
-     * @return FileBundler
+     * @return JavascriptBundler
      */
     public static function createFromYaml($dir, $yaml) {
         $config = Yaml::parse($yaml);
 
         $processor = new Processor();
-        $configuration = new FileConfig();
+        $configuration = new JavascriptConfig();
         $processedConfiguration = $processor->processConfiguration($configuration, array($config));
 
         return new self($dir, $processedConfiguration);
     }
 
     /**
-     * @return FilePackage[]
+     * @return JavascriptPackage[]
      */
     public function getPackages() {
         return $this->packages;

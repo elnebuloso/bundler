@@ -1,0 +1,18 @@
+# packages, define multiple packages here
+packages:
+
+    # package name: package-google-closure-compiler
+    javascriptFoo:
+
+         # public target directory, relative to the root from which the files are collected
+         to: public/js
+
+         # the compiler to minify the javascripts included
+         # google-closure-compiler
+         compiler: google-closure-compiler
+
+         # define include pattern
+         include:
+             - public/vendor/jquery/jquery/1.11.0/jquery-1.11.0.js
+             - public/vendor/twitter/bootstrap/3.1.0/js/bootstrap.js
+

@@ -1,0 +1,18 @@
+# packages, define multiple packages here
+packages:
+
+    # package name: package-google-closure-compiler
+    stylesheetFoo:
+
+         # public target directory, relative to the root from which the files are collected
+         to: public/js
+
+         # the compiler to minify the stylesheets included
+         # yuicompressor
+         compiler: yuicompressor
+
+         # define include pattern
+         include:
+             - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap.css
+             - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap-theme.css
+
