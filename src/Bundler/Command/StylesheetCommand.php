@@ -154,7 +154,19 @@ class StylesheetCommand extends AbstractCommand {
      * @return string
      */
     private function changeUrlPath($baseUrl, $content) {
-        return preg_replace('/url\(\s*[\'"]?\/?(.+?)[\'"]?\s*\)/i', 'url(' . $baseUrl . '/$1)', $content);
+        preg_match_all('/url\(\s*[\'"]?\/?(.+?)[\'"]?\s*\)/i', $content, $matches);
+
+        $from = array();
+        $with = array();
+
+        foreach($matches[0] as $match) {
+            if(strpos($match, 'http') === false) {
+                $from[] = $match;
+                $with[] = preg_replace('/url\(\s*[\'"]?\/?(.+?)[\'"]?\s*\)/i', 'url(' . $baseUrl . '/$1)', $match);
+            }
+        }
+
+        return str_replace($from, $with, $content);
     }
 
     /**
