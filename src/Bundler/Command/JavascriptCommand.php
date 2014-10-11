@@ -120,7 +120,6 @@ class JavascriptCommand extends AbstractCommand {
 
         foreach($this->fileSelector->getFiles() as $file) {
             $this->content[] = file_get_contents($file);
-
             $this->writeInfo($file);
         }
 
@@ -145,7 +144,7 @@ class JavascriptCommand extends AbstractCommand {
      * @throws Exception
      * @return void
      */
-    protected function compileWithGoogleClosureCompiler() {
+    private function compileWithGoogleClosureCompiler() {
         $command = $this->resources . "/../bin/google-closure-compiler --compilation_level=WHITESPACE_ONLY --warning_level=QUIET --js={$this->destinationMax} --js_output_file={$this->destinationMin}";
         exec($command);
     }

@@ -1,3 +1,7 @@
+body {
+    background: url(./http://sciencelakes.com/data_images/out/26/8856597-daisies-green-background.jpg);
+}
+
 /*!
  * Bootstrap v3.1.0 (http://getbootstrap.com)
  * Copyright 2011-2014 Twitter, Inc.
@@ -2367,8 +2371,8 @@ input[type="button"].btn-block {
 @font-face {
   font-family: 'Glyphicons Halflings';
 
-  src: url(../vendor/twitter/bootstrap/3.1.0/css//../fonts/glyphicons-halflings-regular.eot);
-  src: url(../vendor/twitter/bootstrap/3.1.0/css//../fonts/glyphicons-halflings-regular.eot?#iefix) format('embedded-opentype'), url(../vendor/twitter/bootstrap/3.1.0/css//../fonts/glyphicons-halflings-regular.woff) format('woff'), url(../vendor/twitter/bootstrap/3.1.0/css//../fonts/glyphicons-halflings-regular.ttf) format('truetype'), url(../vendor/twitter/bootstrap/3.1.0/css//../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular) format('svg');
+  src: url(../vendor/twitter/bootstrap/3.1.0/css/../fonts/glyphicons-halflings-regular.eot);
+  src: url(../vendor/twitter/bootstrap/3.1.0/css/../fonts/glyphicons-halflings-regular.eot?#iefix) format('embedded-opentype'), url(../vendor/twitter/bootstrap/3.1.0/css/../fonts/glyphicons-halflings-regular.woff) format('woff'), url(../vendor/twitter/bootstrap/3.1.0/css/../fonts/glyphicons-halflings-regular.ttf) format('truetype'), url(../vendor/twitter/bootstrap/3.1.0/css/../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular) format('svg');
 }
 .glyphicon {
   position: relative;

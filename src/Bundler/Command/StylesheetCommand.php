@@ -7,6 +7,7 @@ use Bundler\Package\StylesheetPackagist;
 use Exception;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Class StylesheetCommand
@@ -118,14 +119,50 @@ class StylesheetCommand extends AbstractCommand {
         $this->destinationMax = "{$this->dir}/{$this->package->getTo()}/{$this->package->getName()}.bundler.max.css";
         $this->destinationMin = "{$this->dir}/{$this->package->getTo()}/{$this->package->getName()}.bundler.min.css";
 
-        foreach($this->fileSelector->getFiles() as $file) {
-            $this->content[] = file_get_contents($file);
+        $fs = new Filesystem();
 
+        foreach($this->fileSelector->getFiles() as $file) {
+            $path = $fs->makePathRelative(dirname($file), dirname($this->destinationMax));
+            $path = trim($path, '/');
+
+            $css = file_get_contents($file);
+            $css = $this->changeUrlPath($path, $css);
+
+            $this->content[] = $css;
             $this->writeInfo($file);
         }
 
-        $this->writeInfo("compressing files", true, false);
+        // create max file
+        $this->content = implode(PHP_EOL . PHP_EOL, $this->content);
+        file_put_contents($this->destinationMax, $this->content);
+
+        switch($this->package->getCompiler()) {
+            case "yuicompressor":
+                $this->compileWithYuiCompressor();
+                $this->writeInfo("compiled by yui compressor", true, false);
+                break;
+        }
+
         $this->writeInfo("destinationMax: {$this->destinationMax}");
-        $this->writeInfo("destinationMin: {$this->destinationMin}");
+        $this->writeInfo("destinationMin: {$this->destinationMin}", false, true);
+        $this->outputBundlingFilesCompression();
+    }
+
+    /**
+     * @param $baseUrl
+     * @param $content
+     * @return string
+     */
+    private function changeUrlPath($baseUrl, $content) {
+        return preg_replace('/url\(\s*[\'"]?\/?(.+?)[\'"]?\s*\)/i', 'url(' . $baseUrl . '/$1)', $content);
+    }
+
+    /**
+     * @return void
+     * @throws Exception
+     */
+    private function compileWithYuiCompressor() {
+        $command = $this->resources . "/../bin/yuicompressor --type css --line-break 5000 -o {$this->destinationMin} {$this->destinationMax}";
+        exec($command);
     }
 }

@@ -13,6 +13,7 @@ packages:
 
          # define include pattern
          include:
+             - public/css/base.css$
              - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap.css$
              - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap-theme.css$
 
@@ -21,5 +22,6 @@ packages:
          to: public/css
          compiler: yuicompressor
          include:
+             - public/css/base.css$
              - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap.css$
              - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap-theme.css$
