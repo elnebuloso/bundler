@@ -115,8 +115,8 @@ class JavascriptCommand extends AbstractCommand {
         $this->writeInfo("compressing files", true, false);
 
         $this->content = array();
-        $this->destinationMax = "{$this->dir}/{$this->package->getTo()}/{$this->package->getName()}.bundler.max.js";
-        $this->destinationMin = "{$this->dir}/{$this->package->getTo()}/{$this->package->getName()}.bundler.min.js";
+        $this->destinationMax = "{$this->dir}/{$this->package->getPublic()}/{$this->package->getTo()}/{$this->package->getName()}.bundler.max.js";
+        $this->destinationMin = "{$this->dir}/{$this->package->getPublic()}/{$this->package->getTo()}/{$this->package->getName()}.bundler.min.js";
 
         foreach($this->fileSelector->getFiles() as $file) {
             $this->content[] = file_get_contents($file);

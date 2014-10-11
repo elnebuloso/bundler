@@ -16,6 +16,11 @@ abstract class AbstractPublicPackage {
     /**
      * @var string
      */
+    private $public;
+
+    /**
+     * @var string
+     */
     private $to;
 
     /**
@@ -40,6 +45,20 @@ abstract class AbstractPublicPackage {
      */
     public function getName() {
         return $this->name;
+    }
+
+    /**
+     * @param string $public
+     */
+    public function setPublic($public) {
+        $this->public = $public;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPublic() {
+        return $this->public;
     }
 
     /**

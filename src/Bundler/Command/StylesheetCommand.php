@@ -116,8 +116,8 @@ class StylesheetCommand extends AbstractCommand {
         $this->writeInfo("compressing files", true, false);
 
         $this->content = array();
-        $this->destinationMax = "{$this->dir}/{$this->package->getTo()}/{$this->package->getName()}.bundler.max.css";
-        $this->destinationMin = "{$this->dir}/{$this->package->getTo()}/{$this->package->getName()}.bundler.min.css";
+        $this->destinationMax = "{$this->dir}/{$this->package->getPublic()}/{$this->package->getTo()}/{$this->package->getName()}.bundler.max.css";
+        $this->destinationMin = "{$this->dir}/{$this->package->getPublic()}/{$this->package->getTo()}/{$this->package->getName()}.bundler.min.css";
 
         $fs = new Filesystem();
 

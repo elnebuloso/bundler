@@ -25,6 +25,7 @@ class StylesheetConfig implements ConfigurationInterface {
                 ->requiresAtLeastOneElement()
                     ->prototype('array')
                         ->children()
+                            ->scalarNode('public')->isRequired()->cannotBeEmpty()->end()
                             ->scalarNode('to')->isRequired()->cannotBeEmpty()->end()
                             ->scalarNode('compiler')
                                 ->validate()

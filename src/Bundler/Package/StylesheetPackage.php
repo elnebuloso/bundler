@@ -15,6 +15,7 @@ class StylesheetPackage extends AbstractPublicPackage {
      */
     public static function createFromArray($name, array $array) {
         $package = new self($name);
+        $package->setPublic($array['public']);
         $package->setTo($array['to']);
         $package->setCompiler($array['compiler']);
         $package->setIncludes($array['include']);

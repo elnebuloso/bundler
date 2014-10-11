@@ -4,8 +4,11 @@ packages:
     # package name: javascriptFoo
     javascriptFoo:
 
-         # public target directory, relative to the root from which the files are collected
-         to: public/js
+         # public directory, relative to the root from which the files are collected
+         public: public
+
+         # folder under the public directory
+         to: js
 
          # the compiler to minify the javascripts included
          # google-closure-compiler
@@ -18,7 +21,8 @@ packages:
 
     # package name: javascriptBar
     javascriptBar:
-         to: public/js
+         public: public
+         to: js
          compiler: google-closure-compiler
          include:
              - public/vendor/jquery/jquery/1.11.0/jquery-1.11.0.js$

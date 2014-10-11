@@ -4,8 +4,11 @@ packages:
     # package name: stylesheetFoo
     stylesheetFoo:
 
-         # public target directory, relative to the root from which the files are collected
-         to: public/css
+         # public directory, relative to the root from which the files are collected
+         public: public
+
+         # folder under the public directory
+         to: css
 
          # the compiler to minify the stylesheets included
          # yuicompressor
@@ -19,7 +22,8 @@ packages:
 
     # package name: stylesheetBar
     stylesheetBar:
-         to: public/css
+         public: public
+         to: css
          compiler: yuicompressor
          include:
              - public/css/base.css$
