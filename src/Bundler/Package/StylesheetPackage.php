@@ -1,5 +1,5 @@
 <?php
-namespace Bundler\Model\Package;
+namespace Bundler\Package;
 
 /**
  * Class StylesheetPackage
@@ -11,7 +11,7 @@ class StylesheetPackage extends AbstractPublicPackage {
     /**
      * @param string $name
      * @param array $array
-     * @return FilePackage
+     * @return StylesheetPackage
      */
     public static function createFromArray($name, array $array) {
         $package = new self($name);

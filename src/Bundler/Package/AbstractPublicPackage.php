@@ -1,12 +1,12 @@
 <?php
-namespace Bundler\Model\Package;
+namespace Bundler\Package;
 
 /**
- * Class FilePackage
+ * Class AbstractPublicPackage
  *
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
-class FilePackage implements Package {
+abstract class AbstractPublicPackage {
 
     /**
      * @var string
@@ -21,17 +21,12 @@ class FilePackage implements Package {
     /**
      * @var string
      */
-    private $version;
+    private $compiler;
 
     /**
      * @var array
      */
     private $includes;
-
-    /**
-     * @var array
-     */
-    private $excludes;
 
     /**
      * @param string $name
@@ -62,17 +57,17 @@ class FilePackage implements Package {
     }
 
     /**
-     * @param string $version
+     * @param string $compiler
      */
-    public function setVersion($version) {
-        $this->version = $version;
+    public function setCompiler($compiler) {
+        $this->compiler = $compiler;
     }
 
     /**
      * @return string
      */
-    public function getVersion() {
-        return $this->version;
+    public function getCompiler() {
+        return $this->compiler;
     }
 
     /**
@@ -87,34 +82,5 @@ class FilePackage implements Package {
      */
     public function getIncludes() {
         return $this->includes;
-    }
-
-    /**
-     * @param array $excludes
-     */
-    public function setExcludes(array $excludes) {
-        $this->excludes = $excludes;
-    }
-
-    /**
-     * @return array
-     */
-    public function getExcludes() {
-        return $this->excludes;
-    }
-
-    /**
-     * @param string $name
-     * @param array $array
-     * @return FilePackage
-     */
-    public static function createFromArray($name, array $array) {
-        $package = new self($name);
-        $package->setTo($array['to']);
-        $package->setVersion($array['version']);
-        $package->setIncludes($array['include']);
-        $package->setExcludes($array['exclude']);
-
-        return $package;
     }
 }

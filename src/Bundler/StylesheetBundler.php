@@ -2,7 +2,7 @@
 namespace Bundler;
 
 use Bundler\Config\StylesheetConfig;
-use Bundler\Model\Package\StylesheetPackage;
+use Bundler\Package\StylesheetPackage;
 use Exception;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Yaml\Yaml;

@@ -2,7 +2,7 @@
 namespace Bundler\Command;
 
 use Bundler\JavascriptBundler;
-use Bundler\Model\Package\JavascriptPackage;
+use Bundler\Package\JavascriptPackage;
 use Exception;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

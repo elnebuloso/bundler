@@ -1,13 +1,12 @@
 <?php
-namespace Bundler\Model\Package;
+namespace Bundler\Package;
 
 /**
- * Class AbstractPublicPackage
+ * Class FilePackage
  *
- * @package Bundler\Model\Package
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
-abstract class AbstractPublicPackage implements Package {
+class FilePackage {
 
     /**
      * @var string
@@ -22,12 +21,17 @@ abstract class AbstractPublicPackage implements Package {
     /**
      * @var string
      */
-    private $compiler;
+    private $version;
 
     /**
      * @var array
      */
     private $includes;
+
+    /**
+     * @var array
+     */
+    private $excludes;
 
     /**
      * @param string $name
@@ -58,17 +62,17 @@ abstract class AbstractPublicPackage implements Package {
     }
 
     /**
-     * @param string $compiler
+     * @param string $version
      */
-    public function setCompiler($compiler) {
-        $this->compiler = $compiler;
+    public function setVersion($version) {
+        $this->version = $version;
     }
 
     /**
      * @return string
      */
-    public function getCompiler() {
-        return $this->compiler;
+    public function getVersion() {
+        return $this->version;
     }
 
     /**
@@ -83,5 +87,34 @@ abstract class AbstractPublicPackage implements Package {
      */
     public function getIncludes() {
         return $this->includes;
+    }
+
+    /**
+     * @param array $excludes
+     */
+    public function setExcludes(array $excludes) {
+        $this->excludes = $excludes;
+    }
+
+    /**
+     * @return array
+     */
+    public function getExcludes() {
+        return $this->excludes;
+    }
+
+    /**
+     * @param string $name
+     * @param array $array
+     * @return FilePackage
+     */
+    public static function createFromArray($name, array $array) {
+        $package = new self($name);
+        $package->setTo($array['to']);
+        $package->setVersion($array['version']);
+        $package->setIncludes($array['include']);
+        $package->setExcludes($array['exclude']);
+
+        return $package;
     }
 }

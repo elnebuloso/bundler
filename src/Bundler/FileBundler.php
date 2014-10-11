@@ -2,7 +2,7 @@
 namespace Bundler;
 
 use Bundler\Config\FileConfig;
-use Bundler\Model\Package\FilePackage;
+use Bundler\Package\FilePackage;
 use Exception;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Yaml\Yaml;

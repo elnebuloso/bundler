@@ -2,7 +2,7 @@
 namespace Bundler;
 
 use Bundler\Config\JavascriptConfig;
-use Bundler\Model\Package\JavascriptPackage;
+use Bundler\Package\JavascriptPackage;
 use Exception;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Yaml\Yaml;

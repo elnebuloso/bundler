@@ -3,7 +3,7 @@ namespace Bundler\Command;
 
 use Bundler\FileBundler;
 use Bundler\FileSelector;
-use Bundler\Model\Package\FilePackage;
+use Bundler\Package\FilePackage;
 use Exception;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -19,7 +19,7 @@ class FileCommand extends AbstractCommand {
     /**
      * @var FileBundler
      */
-    private $fileBundler;
+    private $bundler;
 
     /**
      * @var FilePackage
@@ -77,7 +77,7 @@ class FileCommand extends AbstractCommand {
             throw new Exception("missing configuration yaml file: {$yaml}");
         }
 
-        $this->fileBundler = FileBundler::createFromYaml($this->dir, $yaml);
+        $this->bundler = FileBundler::createFromYaml($this->dir, $yaml);
         $this->copyMethod = (shell_exec('which cp')) ? 'native' : 'php';
     }
 
@@ -87,7 +87,7 @@ class FileCommand extends AbstractCommand {
     private function bundlePackages() {
         $this->writeInfo('bundle packages');
 
-        foreach($this->fileBundler->getPackages() as $this->package) {
+        foreach($this->bundler->getPackages() as $this->package) {
             $timeStart = microtime(true);
 
             $this->writeComment("bundling package: {$this->package->getName()}", true, true);
