@@ -1,8 +1,6 @@
 <?php
 namespace Bundler\Package;
 
-use Bundler\FileSystem\FileSelector;
-
 /**
  * Class PackageInterface
  *
@@ -21,17 +19,17 @@ interface Package {
     public function getName();
 
     /**
-     * @return FileSelector
-     */
-    public function getFileSelector();
-
-    /**
      * @return void
      */
     public function selectFiles();
 
     /**
+     * @return array
+     */
+    public function getSelectedFiles();
+
+    /**
      * @return int
      */
-    public function getFilesCount();
+    public function getSelectedFilesCount();
 }

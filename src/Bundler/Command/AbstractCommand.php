@@ -103,7 +103,7 @@ abstract class AbstractCommand extends Command {
             $benchmarkFiles->start();
             $this->currentPackage->selectFiles();
             $benchmarkFiles->stop();
-            $this->writeInfo("selecting files: {$this->currentPackage->getFilesCount()} files in {$benchmarkFiles->getTime()} seconds");
+            $this->writeInfo("selecting files: {$this->currentPackage->getSelectedFilesCount()} files in {$benchmarkFiles->getTime()} seconds");
 
             $this->bundleCurrentPackage();
 

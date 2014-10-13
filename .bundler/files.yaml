@@ -11,7 +11,7 @@ packages:
         # version directory under target, if empty, no directory, files / folders are copied directly into target
         # datetime (directory by YmdHis)
         # file (directory by VERSION File Content)
-        version: datetime
+        version: file
 
         # define include / exclude pattern
         include:

@@ -38,9 +38,7 @@ class FileCopy {
      * @throws Exception
      */
     public function copyFile($source, $destination) {
-        if(!mkdir(dirname($destination), 0777, true)) {
-            throw new Exception('unable to create path: ' . dirname($destination));
-        }
+        @mkdir(dirname($destination), 0777, true);
 
         switch($this->copyMethod) {
             case self::METHOD_NATIVE:

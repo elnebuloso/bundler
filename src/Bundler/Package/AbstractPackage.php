@@ -118,13 +118,6 @@ abstract class AbstractPackage implements Package {
     }
 
     /**
-     * @return FileSelector
-     */
-    public function getFileSelector() {
-        return $this->fileSelector;
-    }
-
-    /**
      * @return void
      */
     public function selectFiles() {
@@ -138,7 +131,14 @@ abstract class AbstractPackage implements Package {
     /**
      * @return int
      */
-    public function getFilesCount() {
+    public function getSelectedFilesCount() {
         return $this->fileSelector->getFilesCount();
+    }
+
+    /**
+     * @return array
+     */
+    public function getSelectedFiles() {
+        return $this->fileSelector->getFiles();
     }
 }

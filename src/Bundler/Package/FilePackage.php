@@ -26,6 +26,11 @@ class FilePackage extends AbstractPackage {
     private $version;
 
     /**
+     * @var string
+     */
+    private $targetDirectory;
+
+    /**
      * @param string $version
      */
     public function setVersion($version) {
@@ -60,25 +65,39 @@ class FilePackage extends AbstractPackage {
      * @throws Exception
      */
     public function getTargetDirectory() {
+        if(!is_null($this->targetDirectory)) {
+            return $this->targetDirectory;
+        }
+
         if(realpath($this->getTarget()) === false) {
+            $this->targetDirectory = null;
             throw new Exception('wrong target directory: ' . $this->getTarget());
         }
 
-        $targetDirectory[] = rtrim(realpath($this->getTarget()), '/');
+        $this->targetDirectory[] = rtrim(realpath($this->getTarget()), '/');
 
         switch($this->getVersion()) {
             case self::VERSION_TYPE_DATETIME:
-                $targetDirectory[] = date('YmdHis');
+                $this->targetDirectory[] = date('YmdHis');
                 break;
 
             case self::VERSION_TYPE_FILE:
                 if(($version = file_get_contents($this->getRoot() . '/VERSION'))) {
-                    $targetDirectory[] = trim($version);
+                    $this->targetDirectory[] = trim($version);
                 }
         }
 
-        $targetDirectory[] = $this->getName();
+        $this->targetDirectory[] = $this->getName();
+        $this->targetDirectory = implode('/', $this->targetDirectory);
 
-        return implode('/', $targetDirectory);
+        return $this->targetDirectory;
+    }
+
+    /**
+     * @param string $sourceFilePath
+     * @return string
+     */
+    public function getDestinationFilePath($sourceFilePath) {
+        return $this->getTargetDirectory() . '/' . str_replace($this->getRoot() . '/', '', $sourceFilePath);
     }
 }
