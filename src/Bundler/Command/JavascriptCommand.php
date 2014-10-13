@@ -44,6 +44,14 @@ class JavascriptCommand extends AbstractPublicCommand {
     /**
      * @return void
      */
-    public function execBundler() {
+    public function initCommand() {
+        // intentionally left blank
+    }
+
+    /**
+     * @return void
+     */
+    public function bundleCurrentPackage() {
+        // TODO: Implement bundlePackage() method.
     }
 }

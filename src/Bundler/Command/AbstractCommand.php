@@ -4,6 +4,7 @@ namespace Bundler\Command;
 use Bundler\AbstractBundler;
 use Bundler\FileBundler;
 use Bundler\JavascriptBundler;
+use Bundler\Package\Package;
 use Bundler\StylesheetBundler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -29,22 +30,27 @@ abstract class AbstractCommand extends Command {
     /**
      * @var string
      */
-    private $root;
+    protected $root;
 
     /**
      * @var string
      */
-    private $yaml;
+    protected $yaml;
 
     /**
      * @var Benchmark
      */
-    private $benchmark;
+    protected $benchmark;
 
     /**
      * @var AbstractBundler
      */
-    private $bundler;
+    protected $bundler;
+
+    /**
+     * @var Package
+     */
+    protected $currentPackage;
 
     /**
      * @param string $root
@@ -54,38 +60,10 @@ abstract class AbstractCommand extends Command {
     }
 
     /**
-     * @return string
-     */
-    public function getRoot() {
-        return $this->root;
-    }
-
-    /**
      * @param string $yaml
      */
     public function setYaml($yaml) {
         $this->yaml = $yaml;
-    }
-
-    /**
-     * @return string
-     */
-    public function getYaml() {
-        return $this->yaml;
-    }
-
-    /**
-     * @param AbstractBundler $bundler
-     */
-    public function setBundler(AbstractBundler $bundler) {
-        $this->bundler = $bundler;
-    }
-
-    /**
-     * @return AbstractBundler
-     */
-    public function getBundler() {
-        return $this->bundler;
     }
 
     /**
@@ -110,7 +88,20 @@ abstract class AbstractCommand extends Command {
         $this->benchmark->start();
         $this->writeComment($this->getCommandDescription() . " ...", true, true);
         $this->setupBundler();
-        $this->execBundler();
+        $this->initCommand();
+
+        // bundle each package
+        foreach($this->bundler->getPackages() as $this->currentPackage) {
+            $benchmark = new Benchmark();
+            $benchmark->start();
+
+            $this->writeComment("bundling package: {$this->currentPackage->getName()}", true, true);
+            $this->bundleCurrentPackage();
+
+            $benchmark->stop();
+            $this->writeComment("bundling package: {$this->currentPackage->getName()} in {$benchmark->getTime()} seconds", true);
+        }
+
         $this->benchmark->stop();
         $this->writeComment($this->getCommandDescription() . " in {$this->benchmark->getTime()} seconds", false, true);
     }
@@ -152,17 +143,17 @@ abstract class AbstractCommand extends Command {
     private function setupBundler() {
         if($this instanceof FileCommand) {
             $this->writeInfo('setting up file bundler', false, true);
-            $this->bundler = new FileBundler($this->getRoot(), $this->getYaml());
+            $this->bundler = new FileBundler($this->root, $this->yaml);
         }
 
         if($this instanceof JavascriptCommand) {
             $this->writeInfo('setting up javascript bundler', false, true);
-            $this->bundler = new JavascriptBundler($this->getRoot(), $this->getYaml());
+            $this->bundler = new JavascriptBundler($this->root, $this->yaml);
         }
 
         if($this instanceof StylesheetCommand) {
             $this->writeInfo('setting up stylesheet bundler', false, true);
-            $this->bundler = new StylesheetBundler($this->getRoot(), $this->getYaml());
+            $this->bundler = new StylesheetBundler($this->root, $this->yaml);
         }
     }
 
@@ -179,5 +170,10 @@ abstract class AbstractCommand extends Command {
     /**
      * @return void
      */
-    abstract public function execBundler();
+    abstract public function initCommand();
+
+    /**
+     * @return void
+     */
+    abstract public function bundleCurrentPackage();
 }

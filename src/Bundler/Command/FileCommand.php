@@ -1,6 +1,7 @@
 <?php
 namespace Bundler\Command;
 
+use Bundler\Package\Package;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -44,6 +45,14 @@ class FileCommand extends AbstractCommand {
     /**
      * @return void
      */
-    public function execBundler() {
+    public function initCommand() {
+        // intentionally left blank
+    }
+
+    /**
+     * @return void
+     */
+    public function bundleCurrentPackage() {
+        // TODO: Implement bundlePackage() method.
     }
 }
