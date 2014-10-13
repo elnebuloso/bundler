@@ -10,7 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
-class AbstractCommand extends Command {
+abstract class AbstractCommand extends Command {
 
     /**
      * @var InputInterface
@@ -85,20 +85,22 @@ class AbstractCommand extends Command {
     protected function execute(InputInterface $input, OutputInterface $output) {
         $this->setInput($input);
         $this->setOutput($output);
+
+        $this->runBundler();
     }
 
     /**
      * @param string $message
      */
     public function writeComment($message) {
-        $this->output->writeln("<comment>" . $message . "</comment>");
+        $this->getOutput()->writeln("<comment>" . $message . "</comment>");
     }
 
     /**
      * @param string $message
      */
     public function writeInfo($message) {
-        $this->output->writeln("  <info>" . $message . "</info>");
+        $this->getOutput()->writeln("  <info>" . $message . "</info>");
     }
 
     /**

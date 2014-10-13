@@ -38,15 +38,15 @@ use Symfony\Component\Console\Application;
 $console = new Application();
 
 $command = new FileCommand();
-$command->setDir($root);
+$command->setRoot($root);
 $console->add($command);
 
 $command = new JavascriptCommand();
-$command->setDir($root);
+$command->setRoot($root);
 $console->add($command);
 
 $command = new StylesheetCommand();
-$command->setDir($root);
+$command->setRoot($root);
 $console->add($command);
 
 $console->run();
