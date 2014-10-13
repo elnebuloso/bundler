@@ -72,4 +72,20 @@ class GoogleClosureCompiler implements Compiler {
     public function getWarningLevel() {
         return $this->warningLevel;
     }
+
+    /**
+     * @param string $source
+     * @param string $destination
+     * @return void
+     */
+    public function compile($source, $destination) {
+        $command[] = $this->getExecCommand();
+        $command[] = "--compilation_level={$this->getCompilationLevel()}";
+        $command[] = "--warning_level={$this->getWarningLevel()}";
+        $command[] = "--js={$source}";
+        $command[] = "--js_output_file={$destination}";
+        $command = implode(" ", $command);
+
+        exec($command);
+    }
 }

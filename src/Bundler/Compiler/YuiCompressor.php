@@ -53,4 +53,12 @@ class YuiCompressor implements Compiler {
     public function getLineBreak() {
         return $this->lineBreak;
     }
+
+    /**
+     * @param string $source
+     * @param string $destination
+     * @return int
+     */
+    public function compile($source, $destination) {
+    }
 }

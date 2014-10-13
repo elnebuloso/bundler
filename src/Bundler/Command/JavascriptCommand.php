@@ -1,6 +1,7 @@
 <?php
 namespace Bundler\Command;
 
+use Bundler\Package\JavascriptPackage;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -10,6 +11,11 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
 class JavascriptCommand extends AbstractPublicCommand {
+
+    /**
+     * @var JavascriptPackage;
+     */
+    protected $currentPackage;
 
     /**
      * @return void
@@ -45,13 +51,26 @@ class JavascriptCommand extends AbstractPublicCommand {
      * @return void
      */
     public function initCommand() {
-        // intentionally left blank
+        $this->cacheFilename = dirname($this->yaml) . '/javascript.php';
     }
 
     /**
      * @return void
      */
-    public function bundleCurrentPackage() {
-        // TODO: Implement bundlePackage() method.
+    public function compress() {
+        $this->writeInfo("compressing files");
+
+        $benchmark = new Benchmark();
+        $benchmark->start();
+
+        foreach($this->currentPackage->getSelectedFiles() as $sourceFilePath) {
+            $this->content[] = file_get_contents($sourceFilePath);
+            $this->writeInfo('- ' . $sourceFilePath);
+        }
+
+        $this->createFiles();
+
+        $benchmark->stop();
+        $this->writeInfo("compressing files in {$benchmark->getTime()} seconds");
     }
 }

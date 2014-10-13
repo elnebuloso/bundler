@@ -51,6 +51,20 @@ abstract class AbstractPublicPackage extends AbstractPackage {
     /**
      * @return string
      */
+    public function getDestinationMax() {
+        return "{$this->getRoot()}/{$this->getPublic()}/{$this->getTarget()}/{$this->getFilenameMaxFile()}";
+    }
+
+    /**
+     * @return string
+     */
+    public function getDestinationMin() {
+        return "{$this->getRoot()}/{$this->getPublic()}/{$this->getTarget()}/{$this->getFilenameMinFile()}";
+    }
+
+    /**
+     * @return string
+     */
     abstract public function getFilenameMaxFile();
 
     /**

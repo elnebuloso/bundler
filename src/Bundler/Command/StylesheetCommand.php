@@ -1,6 +1,7 @@
 <?php
 namespace Bundler\Command;
 
+use Bundler\Package\StylesheetPackage;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -10,6 +11,11 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
 class StylesheetCommand extends AbstractPublicCommand {
+
+    /**
+     * @var StylesheetPackage;
+     */
+    protected $currentPackage;
 
     /**
      * @return void
@@ -45,13 +51,13 @@ class StylesheetCommand extends AbstractPublicCommand {
      * @return void
      */
     public function initCommand() {
-        // intentionally left blank
+        $this->cacheFilename = dirname($this->yaml) . '/stylesheet.php';
     }
 
     /**
      * @return void
      */
-    public function bundleCurrentPackage() {
-        // TODO: Implement bundlePackage() method.
+    public function compress() {
+        $this->writeInfo("compressing files");
     }
 }

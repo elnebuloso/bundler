@@ -12,4 +12,11 @@ interface Compiler {
      * @return string
      */
     public function getExecCommand();
+
+    /**
+     * @param string $source
+     * @param string $destination
+     * @return int
+     */
+    public function compile($source, $destination);
 }
