@@ -28,6 +28,16 @@ abstract class AbstractCommand extends Command {
     private $root;
 
     /**
+     * @var string
+     */
+    private $yaml;
+
+    /**
+     * @var Benchmark
+     */
+    private $benchmark;
+
+    /**
      * @param string $root
      */
     public function setRoot($root) {
@@ -42,9 +52,25 @@ abstract class AbstractCommand extends Command {
     }
 
     /**
+     * @param string $yaml
+     */
+    public function setYaml($yaml) {
+        $this->yaml = $yaml;
+    }
+
+    /**
+     * @return string
+     */
+    public function getYaml() {
+        return $this->yaml;
+    }
+
+    /**
      * @return void
      */
     protected function configure() {
+        $this->benchmark = new Benchmark();
+
         $this->setName($this->getCommandName());
         $this->setDescription($this->getCommandName());
     }
@@ -58,8 +84,11 @@ abstract class AbstractCommand extends Command {
         $this->input = $input;
         $this->output = $output;
 
-        $this->writeComment('running bundler: ' . $this->getCommandDescription(), true, true);
+        $this->benchmark->start();
+        $this->writeComment($this->getCommandDescription(). " ...", true, true);
         $this->runBundler();
+        $this->benchmark->stop();
+        $this->writeComment($this->getCommandDescription() . " in {$this->benchmark->getTime()} seconds", false, true);
     }
 
     /**
