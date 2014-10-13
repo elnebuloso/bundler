@@ -1,6 +1,7 @@
 <?php
 namespace Bundler\Config;
 
+use Bundler\Package\FilePackage;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -31,8 +32,8 @@ class FileConfig implements ConfigurationInterface {
                  ->scalarNode('version')
                  ->validate()
                  ->ifNotInArray(array(
-                     'datetime',
-                     'file'
+                     FilePackage::VERSION_TYPE_DATETIME,
+                     FilePackage::VERSION_TYPE_FILE,
                  ))
                  ->thenInvalid('invalid version type "%s"')
                  ->end()

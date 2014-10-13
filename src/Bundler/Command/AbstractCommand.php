@@ -85,8 +85,9 @@ abstract class AbstractCommand extends Command {
         $this->input = $input;
         $this->output = $output;
 
+        $this->output->writeln('');
         $this->benchmark->start();
-        $this->writeComment($this->getCommandDescription() . " ...", true, true);
+        $this->writeComment($this->getCommandDescription() . " ...");
         $this->setupBundler();
         $this->initCommand();
 
@@ -95,46 +96,38 @@ abstract class AbstractCommand extends Command {
             $benchmark = new Benchmark();
             $benchmark->start();
 
-            $this->writeComment("bundling package: {$this->currentPackage->getName()}", true, true);
+            $this->writeComment("bundling package: {$this->currentPackage->getName()}");
+
+            $this->writeInfo("selecting files");
+            $benchmarkFiles = new Benchmark();
+            $benchmarkFiles->start();
+            $this->currentPackage->selectFiles();
+            $benchmarkFiles->stop();
+            $this->writeInfo("selecting files: {$this->currentPackage->getFilesCount()} files in {$benchmarkFiles->getTime()} seconds");
+
             $this->bundleCurrentPackage();
 
             $benchmark->stop();
-            $this->writeComment("bundling package: {$this->currentPackage->getName()} in {$benchmark->getTime()} seconds", true);
+            $this->writeComment("bundling package: {$this->currentPackage->getName()} in {$benchmark->getTime()} seconds");
         }
 
         $this->benchmark->stop();
-        $this->writeComment($this->getCommandDescription() . " in {$this->benchmark->getTime()} seconds", false, true);
+        $this->writeComment($this->getCommandDescription() . " in {$this->benchmark->getTime()} seconds");
+        $this->output->writeln('');
     }
 
     /**
      * @param string $message
-     * @param bool $newLineBefore
-     * @param bool $newLineAfter
      */
-    public function writeComment($message, $newLineBefore = false, $newLineAfter = false) {
-        $this->writeNewLine($newLineBefore);
+    public function writeComment($message) {
         $this->output->writeln("<comment>" . $message . "</comment>");
-        $this->writeNewLine($newLineAfter);
     }
 
     /**
      * @param string $message
-     * @param bool $newLineBefore
-     * @param bool $newLineAfter
      */
-    public function writeInfo($message, $newLineBefore = false, $newLineAfter = false) {
-        $this->writeNewLine($newLineBefore);
+    public function writeInfo($message) {
         $this->output->writeln("  <info>" . $message . "</info>");
-        $this->writeNewLine($newLineAfter);
-    }
-
-    /**
-     * @param bool $newLine
-     */
-    public function writeNewLine($newLine = false) {
-        if($newLine) {
-            $this->output->writeln("");
-        }
     }
 
     /**
@@ -142,17 +135,17 @@ abstract class AbstractCommand extends Command {
      */
     private function setupBundler() {
         if($this instanceof FileCommand) {
-            $this->writeInfo('setting up file bundler', false, true);
+            $this->writeInfo('setting up file bundler');
             $this->bundler = new FileBundler($this->root, $this->yaml);
         }
 
         if($this instanceof JavascriptCommand) {
-            $this->writeInfo('setting up javascript bundler', false, true);
+            $this->writeInfo('setting up javascript bundler');
             $this->bundler = new JavascriptBundler($this->root, $this->yaml);
         }
 
         if($this instanceof StylesheetCommand) {
-            $this->writeInfo('setting up stylesheet bundler', false, true);
+            $this->writeInfo('setting up stylesheet bundler');
             $this->bundler = new StylesheetBundler($this->root, $this->yaml);
         }
     }

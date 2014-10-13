@@ -134,4 +134,11 @@ abstract class AbstractPackage implements Package {
         $this->fileSelector->setExcludes($this->getExcludes());
         $this->fileSelector->select();
     }
+
+    /**
+     * @return int
+     */
+    public function getFilesCount() {
+        return $this->fileSelector->getFilesCount();
+    }
 }

@@ -29,4 +29,9 @@ interface Package {
      * @return void
      */
     public function selectFiles();
+
+    /**
+     * @return int
+     */
+    public function getFilesCount();
 }

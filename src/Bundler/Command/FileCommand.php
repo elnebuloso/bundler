@@ -1,9 +1,10 @@
 <?php
 namespace Bundler\Command;
 
-use Bundler\Package\Package;
+use Bundler\Package\FilePackage;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Class FileCommand
@@ -11,6 +12,16 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
 class FileCommand extends AbstractCommand {
+
+    /**
+     * @var FilePackage;
+     */
+    protected $currentPackage;
+
+    /**
+     * @var string
+     */
+    protected $copyMethod = 'native';
 
     /**
      * @return void
@@ -46,13 +57,30 @@ class FileCommand extends AbstractCommand {
      * @return void
      */
     public function initCommand() {
-        // intentionally left blank
+        $this->copyMethod = (shell_exec('which cp')) ? 'native' : 'php';
     }
 
     /**
      * @return void
      */
     public function bundleCurrentPackage() {
-        // TODO: Implement bundlePackage() method.
+        $this->cleanupTargetDirectory();
+    }
+
+    private function cleanupTargetDirectory() {
+        $benchmark = new Benchmark();
+        $benchmark->start();
+
+        $targetDirectory = $this->currentPackage->getTargetDirectory();
+        $this->writeInfo("cleaning up target directory: {$targetDirectory}");
+
+        $fs = new Filesystem();
+
+        if($fs->exists($targetDirectory)) {
+            $fs->remove($targetDirectory);
+        }
+
+        $benchmark->stop();
+        $this->writeInfo("cleaning up target directory: {$targetDirectory} in {$benchmark->getTime()} seconds");
     }
 }
