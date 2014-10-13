@@ -44,6 +44,6 @@ class FileCommand extends AbstractCommand {
     /**
      * @return void
      */
-    public function runBundler() {
+    public function execBundler() {
     }
 }

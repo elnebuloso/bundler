@@ -44,6 +44,6 @@ class StylesheetCommand extends AbstractPublicCommand {
     /**
      * @return void
      */
-    public function runBundler() {
+    public function execBundler() {
     }
 }

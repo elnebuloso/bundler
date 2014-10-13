@@ -8,7 +8,7 @@ use Bundler\Compiler\Compiler;
  *
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
-class AbstractPublicPackage extends AbstractPackage {
+abstract class AbstractPublicPackage extends AbstractPackage {
 
     /**
      * @var string

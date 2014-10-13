@@ -1,6 +1,10 @@
 <?php
 namespace Bundler\Command;
 
+use Bundler\AbstractBundler;
+use Bundler\FileBundler;
+use Bundler\JavascriptBundler;
+use Bundler\StylesheetBundler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -38,6 +42,11 @@ abstract class AbstractCommand extends Command {
     private $benchmark;
 
     /**
+     * @var AbstractBundler
+     */
+    private $bundler;
+
+    /**
      * @param string $root
      */
     public function setRoot($root) {
@@ -66,6 +75,20 @@ abstract class AbstractCommand extends Command {
     }
 
     /**
+     * @param AbstractBundler $bundler
+     */
+    public function setBundler(AbstractBundler $bundler) {
+        $this->bundler = $bundler;
+    }
+
+    /**
+     * @return AbstractBundler
+     */
+    public function getBundler() {
+        return $this->bundler;
+    }
+
+    /**
      * @return void
      */
     protected function configure() {
@@ -85,8 +108,9 @@ abstract class AbstractCommand extends Command {
         $this->output = $output;
 
         $this->benchmark->start();
-        $this->writeComment($this->getCommandDescription(). " ...", true, true);
-        $this->runBundler();
+        $this->writeComment($this->getCommandDescription() . " ...", true, true);
+        $this->setupBundler();
+        $this->execBundler();
         $this->benchmark->stop();
         $this->writeComment($this->getCommandDescription() . " in {$this->benchmark->getTime()} seconds", false, true);
     }
@@ -123,6 +147,26 @@ abstract class AbstractCommand extends Command {
     }
 
     /**
+     * @return void
+     */
+    private function setupBundler() {
+        if($this instanceof FileCommand) {
+            $this->writeInfo('setting up file bundler', false, true);
+            $this->bundler = new FileBundler($this->getRoot(), $this->getYaml());
+        }
+
+        if($this instanceof JavascriptCommand) {
+            $this->writeInfo('setting up javascript bundler', false, true);
+            $this->bundler = new JavascriptBundler($this->getRoot(), $this->getYaml());
+        }
+
+        if($this instanceof StylesheetCommand) {
+            $this->writeInfo('setting up stylesheet bundler', false, true);
+            $this->bundler = new StylesheetBundler($this->getRoot(), $this->getYaml());
+        }
+    }
+
+    /**
      * @return string
      */
     abstract public function getCommandName();
@@ -135,5 +179,5 @@ abstract class AbstractCommand extends Command {
     /**
      * @return void
      */
-    abstract public function runBundler();
+    abstract public function execBundler();
 }

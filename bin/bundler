@@ -39,14 +39,17 @@ $console = new Application();
 
 $command = new FileCommand();
 $command->setRoot($root);
+$command->setYaml($root . '/.bundler/files.yaml');
 $console->add($command);
 
 $command = new JavascriptCommand();
 $command->setRoot($root);
+$command->setYaml($root . '/.bundler/javascript.yaml');
 $console->add($command);
 
 $command = new StylesheetCommand();
 $command->setRoot($root);
+$command->setYaml($root . '/.bundler/stylesheet.yaml');
 $console->add($command);
 
 $console->run();
