@@ -4,16 +4,17 @@ packages:
     # package name: foo
     foo:
         # target directory, relative to the root from which the files are collected, or full path
-        # builds
-        # /builds
+        # e.g. builds
+        # e.g. /builds
         target: /var/builds/bundler
 
         # version directory under target, if empty, no directory, files / folders are copied directly into target
-        # datetime (directory by YmdHis)
-        # file (directory by VERSION File Content)
+        # e.g. datetime (directory by YmdHis)
+        # e.g. file (directory by VERSION File Content)
         version: file
 
         # define include / exclude pattern
+        # all include / exclude definitions are regular expressions
         include:
             - public/.*
             - src/.*
@@ -21,7 +22,6 @@ packages:
         exclude:
             - ./public/js/README.md
 
-    # package name: bar
     bar:
         target: /var/builds/bundler
         version: file
@@ -30,8 +30,6 @@ packages:
             - src/*
             - vendor/*
         exclude:
-
-    # package name: baz
     baz:
         target: /var/builds/bundler
         version: file
