@@ -15,45 +15,17 @@ abstract class AbstractCommand extends Command {
     /**
      * @var InputInterface
      */
-    private $input;
+    protected $input;
 
     /**
      * @var OutputInterface
      */
-    private $output;
+    protected $output;
 
     /**
      * @var string
      */
     private $root;
-
-    /**
-     * @param InputInterface $input
-     */
-    public function setInput($input) {
-        $this->input = $input;
-    }
-
-    /**
-     * @return InputInterface
-     */
-    public function getInput() {
-        return $this->input;
-    }
-
-    /**
-     * @param OutputInterface $output
-     */
-    public function setOutput($output) {
-        $this->output = $output;
-    }
-
-    /**
-     * @return OutputInterface
-     */
-    public function getOutput() {
-        return $this->output;
-    }
 
     /**
      * @param string $root
@@ -83,24 +55,42 @@ abstract class AbstractCommand extends Command {
      * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
-        $this->setInput($input);
-        $this->setOutput($output);
+        $this->input = $input;
+        $this->output = $output;
 
+        $this->writeComment('running bundler: ' . $this->getCommandDescription(), true, true);
         $this->runBundler();
     }
 
     /**
      * @param string $message
+     * @param bool $newLineBefore
+     * @param bool $newLineAfter
      */
-    public function writeComment($message) {
-        $this->getOutput()->writeln("<comment>" . $message . "</comment>");
+    public function writeComment($message, $newLineBefore = false, $newLineAfter = false) {
+        $this->writeNewLine($newLineBefore);
+        $this->output->writeln("<comment>" . $message . "</comment>");
+        $this->writeNewLine($newLineAfter);
     }
 
     /**
      * @param string $message
+     * @param bool $newLineBefore
+     * @param bool $newLineAfter
      */
-    public function writeInfo($message) {
-        $this->getOutput()->writeln("  <info>" . $message . "</info>");
+    public function writeInfo($message, $newLineBefore = false, $newLineAfter = false) {
+        $this->writeNewLine($newLineBefore);
+        $this->output->writeln("  <info>" . $message . "</info>");
+        $this->writeNewLine($newLineAfter);
+    }
+
+    /**
+     * @param bool $newLine
+     */
+    public function writeNewLine($newLine = false) {
+        if($newLine) {
+            $this->output->writeln("");
+        }
     }
 
     /**

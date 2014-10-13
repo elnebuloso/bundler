@@ -7,7 +7,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Class StylesheetCommand
  *
- * @package Bundler\Command
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
 class StylesheetCommand extends AbstractPublicCommand {
@@ -46,8 +45,5 @@ class StylesheetCommand extends AbstractPublicCommand {
      * @return void
      */
     public function runBundler() {
-        $this->getOutput()->writeln("");
-        $this->writeComment('starting ' . $this->getCommandDescription());
-        $this->getOutput()->writeln("");
     }
 }

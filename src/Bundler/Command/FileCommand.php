@@ -45,8 +45,5 @@ class FileCommand extends AbstractCommand {
      * @return void
      */
     public function runBundler() {
-        $this->getOutput()->writeln("");
-        $this->writeComment('starting ' . $this->getCommandDescription());
-        $this->getOutput()->writeln("");
     }
 }
