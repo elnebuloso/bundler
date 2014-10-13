@@ -6,60 +6,12 @@ namespace Bundler\Package;
  *
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
-class FilePackage {
-
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var string
-     */
-    private $to;
+class FilePackage extends AbstractPackage {
 
     /**
      * @var string
      */
     private $version;
-
-    /**
-     * @var array
-     */
-    private $includes;
-
-    /**
-     * @var array
-     */
-    private $excludes;
-
-    /**
-     * @param string $name
-     */
-    public function __construct($name) {
-        $this->name = $name;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName() {
-        return $this->name;
-    }
-
-    /**
-     * @param string $to
-     */
-    public function setTo($to) {
-        $this->to = $to;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTo() {
-        return $this->to;
-    }
 
     /**
      * @param string $version
@@ -76,41 +28,14 @@ class FilePackage {
     }
 
     /**
-     * @param array $includes
-     */
-    public function setIncludes(array $includes) {
-        $this->includes = $includes;
-    }
-
-    /**
-     * @return array
-     */
-    public function getIncludes() {
-        return $this->includes;
-    }
-
-    /**
-     * @param array $excludes
-     */
-    public function setExcludes(array $excludes) {
-        $this->excludes = $excludes;
-    }
-
-    /**
-     * @return array
-     */
-    public function getExcludes() {
-        return $this->excludes;
-    }
-
-    /**
+     * @param string $root
      * @param string $name
      * @param array $array
      * @return FilePackage
      */
-    public static function createFromArray($name, array $array) {
-        $package = new self($name);
-        $package->setTo($array['to']);
+    public static function createFromArray($root, $name, array $array) {
+        $package = new self($root, $name);
+        $package->setTarget($array['target']);
         $package->setVersion($array['version']);
         $package->setIncludes($array['include']);
         $package->setExcludes($array['exclude']);

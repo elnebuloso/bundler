@@ -8,11 +8,13 @@ packages:
          public: public
 
          # folder under the public directory
-         to: css
+         target: css
 
          # the compiler to minify the stylesheets included
-         # yuicompressor
-         compiler: yuicompressor
+         # yuiCompressor
+         compiler:
+             yuiCompressor:
+                 lineBreak: 5000
 
          # define include pattern
          include:
@@ -23,8 +25,10 @@ packages:
     # package name: stylesheetBar
     stylesheetBar:
          public: public
-         to: css
-         compiler: yuicompressor
+         target: css
+         compiler:
+             yuiCompressor:
+                 lineBreak: 5000
          include:
              - public/css/base.css$
              - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap.css$

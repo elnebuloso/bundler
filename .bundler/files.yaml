@@ -6,7 +6,7 @@ packages:
         # target directory, relative to the root from which the files are collected, or full path
         # builds
         # /builds
-        to: /var/builds/bundler
+        target: /var/builds/bundler
 
         # version directory under target, if empty, no directory, files / folders are copied directly into target
         # datetime (directory by YmdHis)
@@ -23,7 +23,7 @@ packages:
 
     # package name: bar
     bar:
-        to: /var/builds/bundler
+        target: /var/builds/bundler
         version: file
         include:
             - resources/*
@@ -33,7 +33,7 @@ packages:
 
     # package name: baz
     baz:
-        to: /var/builds/bundler
+        target: /var/builds/bundler
         version: file
         include:
             - bin/*

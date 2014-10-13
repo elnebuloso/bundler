@@ -1,17 +1,14 @@
 <?php
 namespace Bundler\Package;
 
+use Bundler\Compiler\Compiler;
+
 /**
  * Class AbstractPublicPackage
  *
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
-abstract class AbstractPublicPackage {
-
-    /**
-     * @var string
-     */
-    private $name;
+class AbstractPublicPackage extends AbstractPackage {
 
     /**
      * @var string
@@ -19,33 +16,9 @@ abstract class AbstractPublicPackage {
     private $public;
 
     /**
-     * @var string
-     */
-    private $to;
-
-    /**
-     * @var string
+     * @var Compiler
      */
     private $compiler;
-
-    /**
-     * @var array
-     */
-    private $includes;
-
-    /**
-     * @param string $name
-     */
-    public function __construct($name) {
-        $this->name = $name;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName() {
-        return $this->name;
-    }
 
     /**
      * @param string $public
@@ -62,44 +35,26 @@ abstract class AbstractPublicPackage {
     }
 
     /**
-     * @param string $to
-     */
-    public function setTo($to) {
-        $this->to = $to;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTo() {
-        return $this->to;
-    }
-
-    /**
-     * @param string $compiler
+     * @param Compiler $compiler
      */
     public function setCompiler($compiler) {
         $this->compiler = $compiler;
     }
 
     /**
-     * @return string
+     * @return Compiler
      */
     public function getCompiler() {
         return $this->compiler;
     }
 
     /**
-     * @param array $includes
+     * @return string
      */
-    public function setIncludes(array $includes) {
-        $this->includes = $includes;
-    }
+    abstract public function getFilenameMaxFile();
 
     /**
-     * @return array
+     * @return string
      */
-    public function getIncludes() {
-        return $this->includes;
-    }
+    abstract public function getFilenameMinFile();
 }

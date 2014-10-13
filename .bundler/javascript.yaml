@@ -8,11 +8,14 @@ packages:
          public: public
 
          # folder under the public directory
-         to: js
+         target: js
 
          # the compiler to minify the javascripts included
-         # google-closure-compiler
-         compiler: google-closure-compiler
+         # googleClosureCompiler
+         compiler:
+             googleClosureCompiler:
+                 compilationLevel: WHITESPACE_ONLY
+                 warningLevel: QUIET
 
          # define include pattern
          include:
@@ -22,8 +25,11 @@ packages:
     # package name: javascriptBar
     javascriptBar:
          public: public
-         to: js
-         compiler: google-closure-compiler
+         target: js
+         compiler:
+             googleClosureCompiler:
+                 compilationLevel: WHITESPACE_ONLY
+                 warningLevel: QUIET
          include:
              - public/vendor/jquery/jquery/1.11.0/jquery-1.11.0.js$
              - public/vendor/twitter/bootstrap/3.1.0/js/bootstrap.js$

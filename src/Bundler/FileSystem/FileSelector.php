@@ -1,5 +1,5 @@
 <?php
-namespace Bundler;
+namespace Bundler\FileSystem;
 
 use Exception;
 
