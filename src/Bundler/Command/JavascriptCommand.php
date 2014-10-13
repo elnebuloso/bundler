@@ -50,7 +50,8 @@ class JavascriptCommand extends AbstractPublicCommand {
     /**
      * @return void
      */
-    public function initCommand() {
+    public function preCommand() {
+        $this->cache = array();
         $this->cacheFilename = dirname($this->yaml) . '/javascript.php';
     }
 

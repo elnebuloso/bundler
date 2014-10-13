@@ -45,7 +45,6 @@ abstract class AbstractPublicCommand extends AbstractCommand {
      */
     public function bundleCurrentPackage() {
         $this->content = array();
-        $this->cache = array();
         $this->destinationMax = $this->currentPackage->getDestinationMax();
         $this->destinationMin = $this->currentPackage->getDestinationMin();
 
@@ -73,6 +72,24 @@ abstract class AbstractPublicCommand extends AbstractCommand {
         $this->writeInfo("org:   {$org} bytes");
         $this->writeInfo("new:   {$new} bytes");
         $this->writeInfo("ratio: {$ratio}");
+
+        // storing cache informations
+        $this->cache[$this->currentPackage->getName()] = array(
+            'md5' => md5(file_get_contents($this->destinationMin)),
+            'max' => $this->currentPackage->getTarget() . '/' . $this->currentPackage->getFilenameMaxFile(),
+            'min' => $this->currentPackage->getTarget() . '/' . $this->currentPackage->getFilenameMinFile()
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function postCommand() {
+        file_put_contents($this->cacheFilename, '<?php return ' . var_export($this->cache, true) . ";" . PHP_EOL);
+
+        $this->output->writeln("");
+        $this->writeInfo("created file: {$this->cacheFilename}");
+        $this->output->writeln("");
     }
 
     /**

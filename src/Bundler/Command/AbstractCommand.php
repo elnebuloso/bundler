@@ -89,7 +89,7 @@ abstract class AbstractCommand extends Command {
         $this->benchmark->start();
         $this->writeComment($this->getCommandDescription() . " ...");
         $this->setupBundler();
-        $this->initCommand();
+        $this->preCommand();
 
         // bundle each package
         foreach($this->bundler->getPackages() as $this->currentPackage) {
@@ -110,6 +110,8 @@ abstract class AbstractCommand extends Command {
             $benchmark->stop();
             $this->writeComment("bundling package: {$this->currentPackage->getName()} in {$benchmark->getTime()} seconds");
         }
+
+        $this->postCommand();
 
         $this->benchmark->stop();
         $this->writeComment($this->getCommandDescription() . " in {$this->benchmark->getTime()} seconds");
@@ -163,7 +165,12 @@ abstract class AbstractCommand extends Command {
     /**
      * @return void
      */
-    abstract public function initCommand();
+    abstract public function preCommand();
+
+    /**
+     * @return void
+     */
+    abstract public function postCommand();
 
     /**
      * @return void

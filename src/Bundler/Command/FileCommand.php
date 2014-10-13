@@ -57,8 +57,15 @@ class FileCommand extends AbstractCommand {
     /**
      * @return void
      */
-    public function initCommand() {
+    public function preCommand() {
         $this->copyMethod = (shell_exec('which cp')) ? 'native' : 'php';
+    }
+
+    /**
+     * @return void
+     */
+    public function postCommand() {
+        // intentionally left blank
     }
 
     /**
