@@ -10,7 +10,7 @@ use Exception;
  *
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
-abstract class AbstractMarkup implements Markup {
+abstract class AbstractMarkup {
 
     /**
      * @var string
@@ -78,12 +78,9 @@ abstract class AbstractMarkup implements Markup {
 
     /**
      * @param boolean $minified
-     * @return Markup
      */
     public function setMinified($minified) {
         $this->minified = $minified;
-
-        return $this;
     }
 
     /**
@@ -95,12 +92,9 @@ abstract class AbstractMarkup implements Markup {
 
     /**
      * @param boolean $development
-     * @return Markup
      */
     public function setDevelopment($development) {
         $this->development = $development;
-
-        return $this;
     }
 
     /**
@@ -112,12 +106,9 @@ abstract class AbstractMarkup implements Markup {
 
     /**
      * @param boolean $versionized
-     * @return Markup
      */
     public function setVersionized($versionized) {
         $this->versionized = $versionized;
-
-        return $this;
     }
 
     /**
