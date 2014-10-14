@@ -4,6 +4,7 @@ namespace Bundler\Command;
 use Bundler\Package\StylesheetPackage;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Class StylesheetCommand
@@ -60,5 +61,46 @@ class StylesheetCommand extends AbstractPublicCommand {
      */
     public function compress() {
         $this->writeInfo("compressing files");
+
+        $benchmark = new Benchmark();
+        $benchmark->start();
+
+        $fs = new Filesystem();
+
+        foreach($this->currentPackage->getSelectedFiles() as $sourceFilePath) {
+            $path = $fs->makePathRelative(dirname($sourceFilePath), dirname($this->destinationMax));
+            $path = trim($path, '/');
+
+            $css = file_get_contents($sourceFilePath);
+            $this->content[] = $this->changeUrlPath($path, $css);
+
+            $this->writeInfo('- ' . $sourceFilePath);
+        }
+
+        $this->createFiles();
+
+        $benchmark->stop();
+        $this->writeInfo("compressing files in {$benchmark->getTime()} seconds");
+    }
+
+    /**
+     * @param $baseUrl
+     * @param $content
+     * @return string
+     */
+    private function changeUrlPath($baseUrl, $content) {
+        preg_match_all('/url\(\s*[\'"]?\/?(.+?)[\'"]?\s*\)/i', $content, $matches);
+
+        $from = array();
+        $with = array();
+
+        foreach($matches[0] as $match) {
+            if(strpos($match, 'http') === false) {
+                $from[] = $match;
+                $with[] = preg_replace('/url\(\s*[\'"]?\/?(.+?)[\'"]?\s*\)/i', 'url(' . $baseUrl . '/$1)', $match);
+            }
+        }
+
+        return str_replace($from, $with, $content);
     }
 }

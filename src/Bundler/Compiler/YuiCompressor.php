@@ -60,5 +60,14 @@ class YuiCompressor implements Compiler {
      * @return int
      */
     public function compile($source, $destination) {
+        $command[] = $this->getExecCommand();
+        $command[] = "--type css";
+        $command[] = "--line-break {$this->getLineBreak()}";
+        $command[] = "-o";
+        $command[] = $destination;
+        $command[] = $source;
+        $command = implode(" ", $command);
+
+        exec($command);
     }
 }
