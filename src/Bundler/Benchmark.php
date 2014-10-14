@@ -1,5 +1,5 @@
 <?php
-namespace Bundler\Command;
+namespace Bundler;
 
 /**
  * Class Benchmark
