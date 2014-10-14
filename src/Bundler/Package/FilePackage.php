@@ -1,7 +1,10 @@
 <?php
 namespace Bundler\Package;
 
+use Bundler\Benchmark;
+use Bundler\FileSystem\FileCopy;
 use Exception;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Class FilePackage
@@ -28,7 +31,7 @@ class FilePackage extends AbstractPackage {
     /**
      * @var string
      */
-    private $targetDirectory;
+    private $copyMethod = 'native';
 
     /**
      * @param string $version
@@ -45,52 +48,31 @@ class FilePackage extends AbstractPackage {
     }
 
     /**
-     * @param string $root
-     * @param string $name
-     * @param array $array
-     * @return FilePackage
-     */
-    public static function createFromArray($root, $name, array $array) {
-        $package = new self($root, $name);
-        $package->setTarget($array['target']);
-        $package->setVersion($array['version']);
-        $package->setIncludes($array['include']);
-        $package->setExcludes($array['exclude']);
-
-        return $package;
-    }
-
-    /**
      * @return string
      * @throws Exception
      */
     public function getTargetDirectory() {
-        if(!is_null($this->targetDirectory)) {
-            return $this->targetDirectory;
-        }
-
         if(realpath($this->getTarget()) === false) {
-            $this->targetDirectory = null;
             throw new Exception('wrong target directory: ' . $this->getTarget());
         }
 
-        $this->targetDirectory[] = rtrim(realpath($this->getTarget()), '/');
+        $targetDirectory[] = rtrim(realpath($this->getTarget()), '/');
 
         switch($this->getVersion()) {
             case self::VERSION_TYPE_DATETIME:
-                $this->targetDirectory[] = date('YmdHis');
+                $targetDirectory[] = date('YmdHis');
                 break;
 
             case self::VERSION_TYPE_FILE:
                 if(($version = file_get_contents($this->getRoot() . '/VERSION'))) {
-                    $this->targetDirectory[] = trim($version);
+                    $targetDirectory[] = trim($version);
                 }
         }
 
-        $this->targetDirectory[] = $this->getName();
-        $this->targetDirectory = implode('/', $this->targetDirectory);
+        $targetDirectory[] = $this->getName();
+        $targetDirectory = implode('/', $targetDirectory);
 
-        return $this->targetDirectory;
+        return $targetDirectory;
     }
 
     /**
@@ -99,5 +81,62 @@ class FilePackage extends AbstractPackage {
      */
     public function getDestinationFilePath($sourceFilePath) {
         return $this->getTargetDirectory() . '/' . str_replace($this->getRoot() . '/', '', $sourceFilePath);
+    }
+
+    /**
+     * @return void
+     */
+    protected function bundlePackage() {
+        $this->copyMethod = (shell_exec('which cp')) ? 'native' : 'php';
+
+        $this->cleanupTargetDirectory();
+        $this->copyFiles();
+    }
+
+    /**
+     * @return void
+     */
+    private function cleanupTargetDirectory() {
+        $targetDirectory = $this->getTargetDirectory();
+        $this->logDebug("cleaning up target directory: {$targetDirectory}");
+
+        $benchmark = new Benchmark();
+        $benchmark->start();
+
+        $fs = new Filesystem();
+
+        if($fs->exists($targetDirectory)) {
+            $fs->remove($targetDirectory);
+        }
+
+        $benchmark->stop();
+        $this->logDebug("cleaning up target directory: {$targetDirectory} in {$benchmark->getTime()} seconds");
+    }
+
+    /**
+     * @return void
+     */
+    private function copyFiles() {
+        $fileCopy = new FileCopy();
+
+        $benchmark = new Benchmark();
+        $benchmark->start();
+
+        $this->logDebug("copying files");
+
+        $i = 1;
+        $total = $this->getSelectedFilesCount();
+
+        foreach($this->getSelectedFiles() as $sourceFilePath) {
+            $destinationFilePath = $this->getDestinationFilePath($sourceFilePath);
+            $fileCopy->copyFile($sourceFilePath, $destinationFilePath);
+
+            $number = str_pad($i, strlen($total), '0', STR_PAD_LEFT);
+            $this->logDebug("{$number} / {$total} {$destinationFilePath}");
+            $i++;
+        }
+
+        $benchmark->stop();
+        $this->logDebug("copying files {$total} in {$benchmark->getTime()} seconds");
     }
 }

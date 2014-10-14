@@ -11,12 +11,12 @@ interface Package {
     /**
      * @return string
      */
-    public function getRoot();
+    public function getName();
 
     /**
      * @return string
      */
-    public function getName();
+    public function getRoot();
 
     /**
      * @return void
@@ -34,7 +34,7 @@ interface Package {
     public function getSelectedFilesCount();
 
     /**
-     * @return array
+     * @return void
      */
-    public function getIncludes();
+    public function bundle();
 }

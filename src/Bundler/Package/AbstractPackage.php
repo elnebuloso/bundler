@@ -1,8 +1,11 @@
 <?php
 namespace Bundler\Package;
 
+use Bundler\Benchmark;
 use Bundler\FileSystem\FileSelector;
 use Exception;
+use Symfony\Component\Console\Output\OutputInterface;
+use Zend\Log\LoggerInterface;
 
 /**
  * Class AbstractPackage
@@ -14,12 +17,12 @@ abstract class AbstractPackage implements Package {
     /**
      * @var string
      */
-    private $root;
+    private $name;
 
     /**
      * @var string
      */
-    private $name;
+    private $root;
 
     /**
      * @var string
@@ -37,35 +40,39 @@ abstract class AbstractPackage implements Package {
     private $excludes;
 
     /**
-     * @var
+     * @var FileSelector
      */
-    protected $fileSelector;
+    private $fileSelector;
 
     /**
-     * @param string $root
-     * @param string $name
-     * @throws Exception
+     * @var LoggerInterface
      */
-    public function __construct($root, $name) {
-        $this->root = realpath($root);
-        $this->name = trim($name);
+    private $logger;
 
-        if($this->root === false) {
-            throw new Exception('invalid root path: ' . $this->root);
-        }
+    /**
+     * @var OutputInterface
+     */
+    private $output;
 
-        if(empty($this->name)) {
-            throw new Exception('the package name cannot be empty');
-        }
-
+    /**
+     * @return AbstractPackage
+     */
+    public function __construct() {
+        $this->includes = array();
+        $this->excludes = array();
         $this->fileSelector = new FileSelector();
     }
 
     /**
-     * @return string
+     * @param string $name
+     * @throws Exception
      */
-    public function getRoot() {
-        return $this->root;
+    public function setName($name) {
+        $this->name = trim($name);
+
+        if(empty($this->name)) {
+            throw new Exception('the package name cannot be empty');
+        }
     }
 
     /**
@@ -73,6 +80,25 @@ abstract class AbstractPackage implements Package {
      */
     public function getName() {
         return $this->name;
+    }
+
+    /**
+     * @param string $root
+     * @throws Exception
+     */
+    public function setRoot($root) {
+        $this->root = realpath($root);
+
+        if($this->root === false) {
+            throw new Exception('invalid root path: ' . $root);
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function getRoot() {
+        return $this->root;
     }
 
     /**
@@ -92,7 +118,7 @@ abstract class AbstractPackage implements Package {
     /**
      * @param array $includes
      */
-    public function setIncludes($includes) {
+    public function setIncludes(array $includes) {
         $this->includes = $includes;
     }
 
@@ -106,7 +132,7 @@ abstract class AbstractPackage implements Package {
     /**
      * @param array $excludes
      */
-    public function setExcludes($excludes) {
+    public function setExcludes(array $excludes) {
         $this->excludes = $excludes;
     }
 
@@ -118,14 +144,51 @@ abstract class AbstractPackage implements Package {
     }
 
     /**
+     * @param LoggerInterface $logger
+     */
+    public function setLogger($logger = null) {
+        $this->logger = $logger;
+    }
+
+    /**
+     * @return LoggerInterface
+     */
+    public function getLogger() {
+        return $this->logger;
+    }
+
+    /**
+     * @param OutputInterface $output
+     */
+    public function setOutput($output = null) {
+        $this->output = $output;
+    }
+
+    /**
+     * @return OutputInterface
+     */
+    public function getOutput() {
+        return $this->output;
+    }
+
+    /**
      * @return void
      */
     public function selectFiles() {
+        $this->logDebug("selecting files");
+
+        $benchmark = new Benchmark();
+        $benchmark->start();
+
         $this->fileSelector = new FileSelector();
         $this->fileSelector->setDir($this->root);
         $this->fileSelector->setIncludes($this->getIncludes());
         $this->fileSelector->setExcludes($this->getExcludes());
         $this->fileSelector->select();
+
+        $benchmark->stop();
+
+        $this->logDebug("selecting files: {$this->getSelectedFilesCount()} files in {$benchmark->getTime()} seconds");
     }
 
     /**
@@ -141,4 +204,49 @@ abstract class AbstractPackage implements Package {
     public function getSelectedFiles() {
         return $this->fileSelector->getFiles();
     }
+
+    /**
+     * @param string $message
+     */
+    public function logInfo($message) {
+        if(!is_null($this->getLogger())) {
+            $this->logger->info($message);
+        }
+        elseif(!is_null($this->getOutput())) {
+            $this->output->writeln("<comment>" . $message . "</comment>");
+        }
+    }
+
+    /**
+     * @param string $message
+     */
+    public function logDebug($message) {
+        if(!is_null($this->getLogger())) {
+            $this->logger->debug($message);
+        }
+        elseif(!is_null($this->getOutput())) {
+            $this->output->writeln("  <info>" . $message . "</info>");
+        }
+    }
+
+    /**
+     * @return void
+     */
+    public function bundle() {
+        $this->logInfo("bundling package: {$this->getName()}");
+
+        $benchmark = new Benchmark();
+        $benchmark->start();
+
+        $this->selectFiles();
+        $this->bundlePackage();
+
+        $benchmark->stop();
+        $this->logInfo("bundling package: {$this->getName()} in {$benchmark->getTime()} seconds");
+    }
+
+    /**
+     * @return void
+     */
+    abstract protected function bundlePackage();
 }

@@ -2,7 +2,6 @@
 namespace Bundler\Package;
 
 use Bundler\Compiler\Compiler;
-use Bundler\FileSystem\FileSelector;
 
 /**
  * Class AbstractPublicPackage
@@ -17,14 +16,9 @@ abstract class AbstractPublicPackage extends AbstractPackage {
     private $public;
 
     /**
-     * @var Compiler
+     * @var Compiler[]
      */
-    private $compiler;
-
-    /**
-     * @var
-     */
-    protected $fileSelector;
+    private $compilers;
 
     /**
      * @param string $public
@@ -43,48 +37,14 @@ abstract class AbstractPublicPackage extends AbstractPackage {
     /**
      * @param Compiler $compiler
      */
-    public function setCompiler($compiler) {
-        $this->compiler = $compiler;
+    public function addCompiler(Compiler $compiler) {
+        $this->compilers[] = $compiler;
     }
 
     /**
-     * @return Compiler
+     * @return Compiler[]
      */
-    public function getCompiler() {
-        return $this->compiler;
+    public function getCompilers() {
+        return $this->compilers;
     }
-
-    /**
-     * @return void
-     */
-    public function selectFiles() {
-        $this->fileSelector = new FileSelector();
-        $this->fileSelector->setDir($this->getRoot() . '/' . $this->getPublic());
-        $this->fileSelector->setIncludes($this->getIncludes());
-        $this->fileSelector->select();
-    }
-
-    /**
-     * @return string
-     */
-    public function getDestinationMax() {
-        return "{$this->getRoot()}/{$this->getPublic()}/{$this->getTarget()}/{$this->getFilenameMaxFile()}";
-    }
-
-    /**
-     * @return string
-     */
-    public function getDestinationMin() {
-        return "{$this->getRoot()}/{$this->getPublic()}/{$this->getTarget()}/{$this->getFilenameMinFile()}";
-    }
-
-    /**
-     * @return string
-     */
-    abstract public function getFilenameMaxFile();
-
-    /**
-     * @return string
-     */
-    abstract public function getFilenameMinFile();
 }
