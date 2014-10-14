@@ -23,7 +23,8 @@
         "symfony\/console": "~2.5",
         "symfony\/config": "~2.5",
         "symfony\/yaml": "~2.5",
-        "symfony\/filesystem": "~2.5"
+        "symfony\/filesystem": "~2.5",
+        "zendframework\/zend-log": "~2.3"
     },
     "require-dev": {
         "satooshi\/php-coveralls": "dev-master"

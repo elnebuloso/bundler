@@ -12,7 +12,7 @@ packages:
 
          # the compiler to minify the stylesheets included
          # yuiCompressor
-         compiler:
+         compilers:
              yuiCompressor:
                  lineBreak: 5000
 
@@ -26,7 +26,7 @@ packages:
     stylesheetBar:
          public: public
          target: css
-         compiler:
+         compilers:
              yuiCompressor:
                  lineBreak: 5000
          include:

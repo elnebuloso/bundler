@@ -24,20 +24,7 @@ class YuiCompressor implements Compiler {
      * @throws Exception
      */
     public function __construct() {
-        $path = dirname(__DIR__) . '/../../bin/yuicompressor';
-
-        $this->execCommand = realpath($path);
-
-        if($this->execCommand === false) {
-            throw new Exception('invalid exec command on path: ' . $path);
-        }
-    }
-
-    /**
-     * @return string
-     */
-    public function getExecCommand() {
-        return $this->execCommand;
+        $this->execCommand = realpath(dirname(__DIR__) . '/../../bin/yuicompressor');
     }
 
     /**
@@ -60,7 +47,7 @@ class YuiCompressor implements Compiler {
      * @return int
      */
     public function compile($source, $destination) {
-        $command[] = $this->getExecCommand();
+        $command[] = $this->execCommand;
         $command[] = "--type css";
         $command[] = "--line-break {$this->getLineBreak()}";
         $command[] = "-o";

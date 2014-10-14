@@ -12,7 +12,7 @@ packages:
 
          # the compiler to minify the javascripts included
          # googleClosureCompiler
-         compiler:
+         compilers:
              googleClosureCompiler:
                  compilationLevel: WHITESPACE_ONLY
                  warningLevel: QUIET
@@ -26,7 +26,7 @@ packages:
     javascriptBar:
          public: public
          target: js
-         compiler:
+         compilers:
              googleClosureCompiler:
                  compilationLevel: WHITESPACE_ONLY
                  warningLevel: QUIET

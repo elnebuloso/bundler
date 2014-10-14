@@ -29,20 +29,7 @@ class GoogleClosureCompiler implements Compiler {
      * @throws Exception
      */
     public function __construct() {
-        $path = dirname(__DIR__) . '/../../bin/google-closure-compiler';
-
-        $this->execCommand = realpath($path);
-
-        if($this->execCommand === false) {
-            throw new Exception('invalid exec command on path: ' . $path);
-        }
-    }
-
-    /**
-     * @return string
-     */
-    public function getExecCommand() {
-        return $this->execCommand;
+        $this->execCommand = realpath(dirname(__DIR__) . '/../../bin/google-closure-compiler');
     }
 
     /**
@@ -79,7 +66,7 @@ class GoogleClosureCompiler implements Compiler {
      * @return void
      */
     public function compile($source, $destination) {
-        $command[] = $this->getExecCommand();
+        $command[] = $this->execCommand;
         $command[] = "--compilation_level={$this->getCompilationLevel()}";
         $command[] = "--warning_level={$this->getWarningLevel()}";
         $command[] = "--js={$source}";

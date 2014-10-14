@@ -16,9 +16,9 @@ packages:
         # define include / exclude pattern
         # all include / exclude definitions are regular expressions
         include:
-            - public/.*
+            #- public/.*
             - src/.*
-            - vendor/.*
+            #- vendor/.*
         exclude:
             - ./public/js/README.md
 
@@ -26,16 +26,16 @@ packages:
         target: /var/builds/bundler
         version: file
         include:
-            - resources/*
+            #- resources/*
             - src/*
-            - vendor/*
+            #- vendor/*
         exclude:
     baz:
         target: /var/builds/bundler
         version: file
         include:
-            - bin/*
-            - resources/*
+            #- bin/*
+            #- resources/*
             - src/*
-            - vendor/*
+            #- vendor/*
         exclude:

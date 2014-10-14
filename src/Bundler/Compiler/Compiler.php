@@ -9,9 +9,14 @@ namespace Bundler\Compiler;
 interface Compiler {
 
     /**
-     * @return string
+     * @var string
      */
-    public function getExecCommand();
+    const TYPE_GOOGLE_CLOSURE_COMPILER = 'googleClosureCompiler';
+
+    /**
+     * @var string
+     */
+    const TYPE_YUI_COMPRESSOR = 'yuiCompressor';
 
     /**
      * @param string $source
