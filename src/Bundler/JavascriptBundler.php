@@ -1,32 +1,20 @@
 <?php
 namespace Bundler;
 
-use Bundler\Config\JavascriptConfig;
-use Bundler\Package\JavascriptPackage;
-use Symfony\Component\Config\Definition\Processor;
-use Symfony\Component\Yaml\Yaml;
-
 /**
  * Class JavascriptBundler
  *
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
-class JavascriptBundler extends AbstractBundler {
+class JavascriptBundler extends AbstractBundler implements Bundler {
 
     /**
-     * @param string $root
-     * @param string $yaml
+     * @var string
      */
-    public function __construct($root, $yaml) {
-        parent::__construct($root, $yaml);
+    protected $title = 'bundling javascript ...';
 
-        $config = Yaml::parse($yaml);
-        $processor = new Processor();
-        $configuration = new JavascriptConfig();
-        $processedConfiguration = $processor->processConfiguration($configuration, array($config));
-
-        foreach($processedConfiguration['packages'] as $name => $package) {
-            $this->addPackage(JavascriptPackage::createFromArray($this->getRoot(), $name, $package));
-        }
-    }
+    /**
+     * @var string
+     */
+    protected $type = self::TYPE_JAVASCRIPT;
 }
