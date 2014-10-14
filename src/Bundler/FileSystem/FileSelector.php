@@ -46,7 +46,9 @@ class FileSelector {
     private $excludedFoldersFromScanning = array(
         '.git',
         '.svn',
-        '.idea'
+        '.idea',
+        '.',
+        '..'
     );
 
     /**
@@ -246,11 +248,6 @@ class FileSelector {
      */
     private function scanFolder($dir) {
         $files = array();
-
-        $this->excludedFoldersFromScanning = array_merge($this->excludedFoldersFromScanning, array(
-            '.',
-            '..'
-        ));
 
         foreach(scandir($dir) as $file) {
             if(in_array($file, $this->excludedFoldersFromScanning)) {
