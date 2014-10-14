@@ -32,4 +32,9 @@ interface Package {
      * @return int
      */
     public function getSelectedFilesCount();
+
+    /**
+     * @return array
+     */
+    public function getIncludes();
 }

@@ -10,22 +10,11 @@ chdir(dirname(__DIR__));
 // autoloading
 require_once 'vendor/autoload.php';
 
-use Bundler\JavascriptMarkup;
-use Bundler\StylesheetMarkup;
+use Bundler\Markup\JavascriptMarkup;
+use Bundler\Markup\StylesheetMarkup;
 
 $stylesheetMarkup = new StylesheetMarkup();
-$stylesheetMarkup->setYaml('.bundler/stylesheet.yaml');
-$stylesheetMarkup->setHost('/');
-$stylesheetMarkup->setPublic('public/css');
-$stylesheetMarkup->setMinified(true);
-$stylesheetMarkup->setDevelopment(false);
-
 $javascriptMarkup = new JavascriptMarkup();
-$javascriptMarkup->setYaml('.bundler/javascript.yaml');
-$javascriptMarkup->setHost('/');
-$javascriptMarkup->setPublic('public/js');
-$javascriptMarkup->setMinified(true);
-$javascriptMarkup->setDevelopment(false);
 ?>
 
 <!DOCTYPE html>
@@ -37,7 +26,7 @@ $javascriptMarkup->setDevelopment(false);
     <title>elnebuloso/bundler</title>
 
     <!-- Bootstrap -->
-    <?php echo $stylesheetMarkup->get('package-yuicompressor'); ?>
+    <?php echo $stylesheetMarkup->setDevelopment(true)->getMarkup('stylesheetFoo'); ?>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -54,6 +43,6 @@ $javascriptMarkup->setDevelopment(false);
     </h1>
 </div>
 
-<?php echo $javascriptMarkup->get('package-google-closure-compiler'); ?>
+<?php echo $javascriptMarkup->setDevelopment(true)->getMarkup('javascriptFoo'); ?>
 </body>
 </html>

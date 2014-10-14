@@ -10,7 +10,8 @@ namespace Bundler\Markup;
 interface Markup {
 
     /**
+     * @param string $package
      * @return string
      */
-    public function getMarkup();
+    public function getMarkup($package);
 }

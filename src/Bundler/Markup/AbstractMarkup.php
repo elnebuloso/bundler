@@ -2,6 +2,7 @@
 namespace Bundler\Markup;
 
 use Bundler\JavascriptBundler;
+use Bundler\StylesheetBundler;
 use Exception;
 
 /**
@@ -126,9 +127,22 @@ abstract class AbstractMarkup implements Markup {
     /**
      * @param $package
      * @return array
-     * @throws Exception
      */
     protected function getFiles($package) {
+        if($this->getDevelopment()) {
+            return $this->getFilesDevelopment($package);
+        }
+        else {
+            return $this->getFilesCached($package);
+        }
+    }
+
+    /**
+     * @param $package
+     * @return array
+     * @throws Exception
+     */
+    private function getFilesCached($package) {
         $cacheFilename = null;
 
         if($this instanceof JavascriptMarkup) {
@@ -164,7 +178,7 @@ abstract class AbstractMarkup implements Markup {
      * @return array
      * @throws Exception
      */
-    protected function getFilesDevelopment($package) {
+    private function getFilesDevelopment($package) {
         $bundler = null;
 
         if($this instanceof JavascriptMarkup) {
@@ -174,7 +188,7 @@ abstract class AbstractMarkup implements Markup {
 
         if($this instanceof StylesheetMarkup) {
             $yaml = $this->getBundlerDirectory() . '/stylesheet.yaml';
-            $bundler = new JavascriptBundler(dirname($this->getBundlerDirectory()), $yaml);
+            $bundler = new StylesheetBundler(dirname($this->getBundlerDirectory()), $yaml);
         }
 
         if(is_null($bundler)) {
@@ -182,10 +196,18 @@ abstract class AbstractMarkup implements Markup {
         }
 
         $package = $bundler->getPackageByName($package);
+
         if(is_null($package)) {
             throw new Exception('missing package definition');
         }
 
-//        foreach($bundler->getPackages() as )
+        $files = array();
+
+        foreach($package->getIncludes() as $file) {
+            $filename = rtrim($this->getHost() . $file, '$');
+            $files[] = $filename;
+        }
+
+        return $files;
     }
 }
