@@ -19,8 +19,8 @@ packages:
 
          # define include pattern
          include:
-             - public/vendor/jquery/jquery/1.11.0/jquery-1.11.0.js$
-             - public/vendor/twitter/bootstrap/3.1.0/js/bootstrap.js$
+             - vendor/jquery/jquery/1.11.0/jquery-1.11.0.js$
+             - vendor/twitter/bootstrap/3.1.0/js/bootstrap.js$
 
     # package name: javascriptBar
     javascriptBar:
@@ -31,6 +31,6 @@ packages:
                  compilationLevel: WHITESPACE_ONLY
                  warningLevel: QUIET
          include:
-             - public/vendor/jquery/jquery/1.11.0/jquery-1.11.0.js$
-             - public/vendor/twitter/bootstrap/3.1.0/js/bootstrap.js$
-             - public/js/document.ready.js$
+             - vendor/jquery/jquery/1.11.0/jquery-1.11.0.js$
+             - vendor/twitter/bootstrap/3.1.0/js/bootstrap.js$
+             - js/document.ready.js$

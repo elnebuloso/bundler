@@ -16,11 +16,11 @@ packages:
              yuiCompressor:
                  lineBreak: 5000
 
-         # define include pattern
+         # define include pattern (all relative under public directory)
          include:
-             - public/css/base.css$
-             - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap.css$
-             - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap-theme.css$
+             - css/base.css$
+             - vendor/twitter/bootstrap/3.1.0/css/bootstrap.css$
+             - vendor/twitter/bootstrap/3.1.0/css/bootstrap-theme.css$
 
     # package name: stylesheetBar
     stylesheetBar:
@@ -30,6 +30,6 @@ packages:
              yuiCompressor:
                  lineBreak: 5000
          include:
-             - public/css/base.css$
-             - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap.css$
-             - public/vendor/twitter/bootstrap/3.1.0/css/bootstrap-theme.css$
+             - css/base.css$
+             - vendor/twitter/bootstrap/3.1.0/css/bootstrap.css$
+             - vendor/twitter/bootstrap/3.1.0/css/bootstrap-theme.css$

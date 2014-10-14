@@ -2,6 +2,7 @@
 namespace Bundler\Package;
 
 use Bundler\Compiler\Compiler;
+use Bundler\FileSystem\FileSelector;
 
 /**
  * Class AbstractPublicPackage
@@ -19,6 +20,11 @@ abstract class AbstractPublicPackage extends AbstractPackage {
      * @var Compiler
      */
     private $compiler;
+
+    /**
+     * @var
+     */
+    protected $fileSelector;
 
     /**
      * @param string $public
@@ -46,6 +52,16 @@ abstract class AbstractPublicPackage extends AbstractPackage {
      */
     public function getCompiler() {
         return $this->compiler;
+    }
+
+    /**
+     * @return void
+     */
+    public function selectFiles() {
+        $this->fileSelector = new FileSelector();
+        $this->fileSelector->setDir($this->getRoot() . '/' . $this->getPublic());
+        $this->fileSelector->setIncludes($this->getIncludes());
+        $this->fileSelector->select();
     }
 
     /**

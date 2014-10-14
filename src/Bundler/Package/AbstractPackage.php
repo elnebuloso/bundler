@@ -39,7 +39,7 @@ abstract class AbstractPackage implements Package {
     /**
      * @var
      */
-    private $fileSelector;
+    protected $fileSelector;
 
     /**
      * @param string $root
@@ -123,8 +123,8 @@ abstract class AbstractPackage implements Package {
     public function selectFiles() {
         $this->fileSelector = new FileSelector();
         $this->fileSelector->setDir($this->root);
-        $this->fileSelector->setIncludes((array) $this->getIncludes());
-        $this->fileSelector->setExcludes((array) $this->getExcludes());
+        $this->fileSelector->setIncludes($this->getIncludes());
+        $this->fileSelector->setExcludes($this->getExcludes());
         $this->fileSelector->select();
     }
 
