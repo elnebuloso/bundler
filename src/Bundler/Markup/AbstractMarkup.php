@@ -112,9 +112,12 @@ abstract class AbstractMarkup implements Markup {
 
     /**
      * @param boolean $versionized
+     * @return Markup
      */
     public function setVersionized($versionized) {
         $this->versionized = $versionized;
+
+        return $this;
     }
 
     /**

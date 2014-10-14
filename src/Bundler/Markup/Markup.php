@@ -10,6 +10,18 @@ namespace Bundler\Markup;
 interface Markup {
 
     /**
+     * @param boolean $minified
+     * @return Markup
+     */
+    public function setMinified($minified);
+
+    /**
+     * @param boolean $development
+     * @return Markup
+     */
+    public function setDevelopment($development);
+
+    /**
      * @param string $package
      * @return string
      */

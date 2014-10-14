@@ -26,7 +26,7 @@ $javascriptMarkup = new JavascriptMarkup();
     <title>elnebuloso/bundler</title>
 
     <!-- Bootstrap -->
-    <?php echo $stylesheetMarkup->setDevelopment(true)->getMarkup('stylesheetFoo'); ?>
+    <?php echo $stylesheetMarkup->setDevelopment(true)->setMinified(true)->getMarkup('stylesheetFoo'); ?>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -43,6 +43,6 @@ $javascriptMarkup = new JavascriptMarkup();
     </h1>
 </div>
 
-<?php echo $javascriptMarkup->setDevelopment(true)->getMarkup('javascriptFoo'); ?>
+<?php echo $javascriptMarkup->setDevelopment(true)->setMinified(true)->getMarkup('javascriptFoo'); ?>
 </body>
 </html>
