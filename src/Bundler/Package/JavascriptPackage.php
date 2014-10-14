@@ -38,6 +38,8 @@ class JavascriptPackage extends AbstractPublicPackage {
             $this->logDebug("- {$sourceFilePath}");
         }
 
+        $this->createCompressedFiles();
+
         $benchmark->stop();
         $this->logDebug("compressing files in {$benchmark->getTime()} seconds");
     }

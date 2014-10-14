@@ -91,16 +91,18 @@ abstract class AbstractPublicPackage extends AbstractPackage {
     /**
      * @return void
      */
-    protected function createFiles() {
+    protected function createCompressedFiles() {
         // create max file
         $this->content = implode(PHP_EOL . PHP_EOL, $this->content);
         file_put_contents($this->destinationMax, $this->content);
         file_put_contents($this->destinationMin, $this->content);
 
         foreach($this->getCompilers() as $compiler) {
-            $compile = file_put_contents($this->destinationMin . '.tmp', file_get_contents($this->destinationMin));
-            $compiler->compile($compile, $this->destinationMin);
+            copy($this->destinationMin, $this->destinationMin . '.tmp');
+            $compiler->compile($this->destinationMin . '.tmp', $this->destinationMin);
         }
+
+        unlink($this->destinationMin . '.tmp');
 
         $this->logDebug("created file: {$this->destinationMax}");
         $this->logDebug("created file: {$this->destinationMin}");
