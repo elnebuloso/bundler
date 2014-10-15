@@ -1,10 +1,7 @@
 <?php
 namespace Bundler\Command;
 
-use Bundler\Bundler;
-use Bundler\FileBundler;
-use Bundler\JavascriptBundler;
-use Bundler\StylesheetBundler;
+use Bundler\BundlerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -17,29 +14,28 @@ use Symfony\Component\Console\Output\OutputInterface;
 abstract class AbstractCommand extends Command {
 
     /**
-     * @var InputInterface
+     * @var string
      */
-    protected $input;
-
-    /**
-     * @var OutputInterface
-     */
-    protected $output;
+    private $yaml;
 
     /**
      * @var string
      */
-    protected $root;
+    private $root;
 
     /**
-     * @var string
+     * @param string $yaml
      */
-    protected $yaml;
+    public function setYaml($yaml) {
+        $this->yaml = $yaml;
+    }
 
     /**
-     * @var Bundler
+     * @return string
      */
-    protected $bundler;
+    public function getYaml() {
+        return $this->yaml;
+    }
 
     /**
      * @param string $root
@@ -49,10 +45,10 @@ abstract class AbstractCommand extends Command {
     }
 
     /**
-     * @param string $yaml
+     * @return string
      */
-    public function setYaml($yaml) {
-        $this->yaml = $yaml;
+    public function getRoot() {
+        return $this->root;
     }
 
     /**
@@ -69,33 +65,23 @@ abstract class AbstractCommand extends Command {
      * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
-        $this->input = $input;
-        $this->output = $output;
-
-        if($this instanceof FileCommand) {
-            $this->bundler = new FileBundler($this->yaml);
-        }
-
-        if($this instanceof JavascriptCommand) {
-            $this->bundler = new JavascriptBundler($this->yaml);
-        }
-
-        if($this instanceof StylesheetCommand) {
-            $this->bundler = new StylesheetBundler($this->yaml);
-        }
-
-        $this->bundler->setOutput($output);
-        $this->bundler->configure();
-        $this->bundler->bundle();
+        $bundler = $this->getBundler();
+        $bundler->setConsoleOutput($output);
+        $bundler->bundle();
     }
 
     /**
      * @return string
      */
-    abstract public function getCommandName();
+    abstract protected function getCommandName();
 
     /**
      * @return string
      */
-    abstract public function getCommandDescription();
+    abstract protected function getCommandDescription();
+
+    /**
+     * @return BundlerInterface
+     */
+    abstract protected function getBundler();
 }

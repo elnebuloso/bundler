@@ -1,6 +1,9 @@
 <?php
 namespace Bundler\Command;
 
+use Bundler\BundlerInterface;
+use Bundler\JavascriptBundler;
+
 /**
  * Class JavascriptCommand
  *
@@ -20,5 +23,12 @@ class JavascriptCommand extends AbstractCommand {
      */
     public function getCommandDescription() {
         return 'bundling javascript';
+    }
+
+    /**
+     * @return BundlerInterface
+     */
+    protected function getBundler() {
+        return new JavascriptBundler($this->getYaml());
     }
 }

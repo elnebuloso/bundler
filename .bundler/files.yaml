@@ -18,7 +18,6 @@ packages:
         include:
             - public/.*
             - src/.*
-            - vendor/.*
         exclude:
             - ./public/js/README.md
 
@@ -27,5 +26,5 @@ packages:
         target: /var/builds/bundler
         version: file
         include:
-            - src/*
+            - public/.*
         exclude:

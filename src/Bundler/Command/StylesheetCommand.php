@@ -1,6 +1,9 @@
 <?php
 namespace Bundler\Command;
 
+use Bundler\BundlerInterface;
+use Bundler\StylesheetBundler;
+
 /**
  * Class StylesheetCommand
  *
@@ -20,5 +23,12 @@ class StylesheetCommand extends AbstractCommand {
      */
     public function getCommandDescription() {
         return 'bundling stylesheet';
+    }
+
+    /**
+     * @return BundlerInterface
+     */
+    protected function getBundler() {
+        return new StylesheetBundler($this->getYaml());
     }
 }

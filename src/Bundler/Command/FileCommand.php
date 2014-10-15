@@ -1,6 +1,9 @@
 <?php
 namespace Bundler\Command;
 
+use Bundler\BundlerInterface;
+use Bundler\FileBundler;
+
 /**
  * Class FileCommand
  *
@@ -11,14 +14,21 @@ class FileCommand extends AbstractCommand {
     /**
      * @return string
      */
-    public function getCommandName() {
+    protected function getCommandName() {
         return 'bundle:files';
     }
 
     /**
      * @return string
      */
-    public function getCommandDescription() {
+    protected function getCommandDescription() {
         return 'bundling files';
+    }
+
+    /**
+     * @return BundlerInterface
+     */
+    protected function getBundler() {
+        return new FileBundler($this->getYaml());
     }
 }
