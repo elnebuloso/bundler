@@ -22,20 +22,10 @@ packages:
         exclude:
             - ./public/js/README.md
 
+    # package name: bar
     bar:
         target: /var/builds/bundler
         version: file
         include:
-            - resources/*
             - src/*
-            - vendor/*
-        exclude:
-    baz:
-        target: /var/builds/bundler
-        version: file
-        include:
-            - bin/*
-            - resources/*
-            - src/*
-            - vendor/*
         exclude:
