@@ -26,12 +26,12 @@ class FilePackage extends AbstractPackage {
     /**
      * @var string
      */
-    private $version;
+    protected $copyMethod = 'native';
 
     /**
      * @var string
      */
-    private $copyMethod = 'native';
+    private $version;
 
     /**
      * @param string $version
@@ -79,7 +79,7 @@ class FilePackage extends AbstractPackage {
      * @param string $sourceFilePath
      * @return string
      */
-    public function getDestinationFilePath($sourceFilePath) {
+    public function getTargetFile($sourceFilePath) {
         return $this->getTargetDirectory() . '/' . str_replace($this->getRoot() . '/', '', $sourceFilePath);
     }
 
@@ -96,7 +96,7 @@ class FilePackage extends AbstractPackage {
     /**
      * @return void
      */
-    private function cleanupTargetDirectory() {
+    protected function cleanupTargetDirectory() {
         $targetDirectory = $this->getTargetDirectory();
         $this->logDebug("cleaning up target directory: {$targetDirectory}");
 
@@ -116,7 +116,7 @@ class FilePackage extends AbstractPackage {
     /**
      * @return void
      */
-    private function copyFiles() {
+    protected function copyFiles() {
         $fileCopy = new FileCopy();
 
         $benchmark = new Benchmark();
@@ -127,12 +127,12 @@ class FilePackage extends AbstractPackage {
         $i = 1;
         $total = $this->getSelectedFilesCount();
 
-        foreach($this->getSelectedFiles() as $sourceFilePath) {
-            $destinationFilePath = $this->getDestinationFilePath($sourceFilePath);
-            $fileCopy->copyFile($sourceFilePath, $destinationFilePath);
+        foreach($this->getSelectedFiles() as $sourceFile) {
+            $targetFile = $this->getTargetFile($sourceFile);
+            $fileCopy->copyFile($sourceFile, $targetFile);
 
             $number = str_pad($i, strlen($total), '0', STR_PAD_LEFT);
-            $this->logDebug("{$number} / {$total} {$destinationFilePath}");
+            $this->logDebug("{$number} / {$total} {$targetFile}");
             $i++;
         }
 

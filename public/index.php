@@ -14,7 +14,14 @@ use Bundler\Markup\JavascriptMarkup;
 use Bundler\Markup\StylesheetMarkup;
 
 $stylesheetMarkup = new StylesheetMarkup();
+$stylesheetMarkup->setDevelopment(true);
+$stylesheetMarkup->setMinified(true);
+$stylesheetMarkup->setVersionized(true);
+
 $javascriptMarkup = new JavascriptMarkup();
+$javascriptMarkup->setDevelopment(true);
+$javascriptMarkup->setMinified(true);
+$stylesheetMarkup->setVersionized(true);
 ?>
 
 <!DOCTYPE html>
@@ -26,7 +33,7 @@ $javascriptMarkup = new JavascriptMarkup();
     <title>elnebuloso/bundler</title>
 
     <!-- Bootstrap -->
-    <?php echo $stylesheetMarkup->setDevelopment(true)->setMinified(true)->getMarkup('stylesheetFoo'); ?>
+    <?php echo $stylesheetMarkup->getMarkup('stylesheetFoo'); ?>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -43,6 +50,6 @@ $javascriptMarkup = new JavascriptMarkup();
     </h1>
 </div>
 
-<?php echo $javascriptMarkup->setDevelopment(true)->setMinified(true)->getMarkup('javascriptFoo'); ?>
+<?php echo $javascriptMarkup->getMarkup('javascriptFoo'); ?>
 </body>
 </html>

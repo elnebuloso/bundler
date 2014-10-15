@@ -14,14 +14,14 @@ class StylesheetPackage extends AbstractPublicPackage {
     /**
      * @return string
      */
-    protected function getFilenameMaxFile() {
+    public function getFilenameMaxFile() {
         return $this->getName() . '.max.css';
     }
 
     /**
      * @return string
      */
-    protected function getFilenameMinFile() {
+    public function getFilenameMinFile() {
         return $this->getName() . '.min.css';
     }
 
@@ -36,14 +36,14 @@ class StylesheetPackage extends AbstractPublicPackage {
 
         $fs = new Filesystem();
 
-        foreach($this->getSelectedFiles() as $sourceFilePath) {
-            $path = $fs->makePathRelative(dirname($sourceFilePath), dirname($this->destinationMax));
+        foreach($this->getSelectedFiles() as $sourceFile) {
+            $path = $fs->makePathRelative(dirname($sourceFile), dirname($this->destinationMax));
             $path = trim($path, '/');
 
-            $css = file_get_contents($sourceFilePath);
-            $this->content[] = $this->changeUrlPath($path, $css);
+            $css = file_get_contents($sourceFile);
+            $this->content[] = $this->changeCssUrls($path, $css);
 
-            $this->logDebug('- ' . $sourceFilePath);
+            $this->logDebug('- ' . $sourceFile);
         }
 
         $this->createCompressedFiles();
@@ -57,7 +57,7 @@ class StylesheetPackage extends AbstractPublicPackage {
      * @param $content
      * @return string
      */
-    private function changeUrlPath($baseUrl, $content) {
+    protected function changeCssUrls($baseUrl, $content) {
         preg_match_all('/url\(\s*[\'"]?\/?(.+?)[\'"]?\s*\)/i', $content, $matches);
 
         $from = array();

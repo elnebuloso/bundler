@@ -37,4 +37,9 @@ interface Package {
      * @return void
      */
     public function bundle();
+
+    /**
+     * @return array
+     */
+    public function getIncludes();
 }

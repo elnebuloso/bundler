@@ -177,17 +177,20 @@ abstract class AbstractMarkup {
 
         if($this instanceof JavascriptMarkup) {
             $yaml = $this->getBundlerDirectory() . '/javascript.yaml';
-            $bundler = new JavascriptBundler(dirname($this->getBundlerDirectory()), $yaml);
+            $bundler = new JavascriptBundler($yaml);
         }
 
         if($this instanceof StylesheetMarkup) {
             $yaml = $this->getBundlerDirectory() . '/stylesheet.yaml';
-            $bundler = new StylesheetBundler(dirname($this->getBundlerDirectory()), $yaml);
+            $bundler = new StylesheetBundler($yaml);
         }
+
 
         if(is_null($bundler)) {
             throw new Exception('missing bundler definition');
         }
+
+        $bundler->configure();
 
         $package = $bundler->getPackageByName($package);
 

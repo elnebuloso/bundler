@@ -13,14 +13,14 @@ class JavascriptPackage extends AbstractPublicPackage {
     /**
      * @return string
      */
-    protected function getFilenameMaxFile() {
+    public function getFilenameMaxFile() {
         return $this->getName() . '.max.js';
     }
 
     /**
      * @return string
      */
-    protected function getFilenameMinFile() {
+    public function getFilenameMinFile() {
         return $this->getName() . '.min.js';
     }
 
@@ -33,9 +33,9 @@ class JavascriptPackage extends AbstractPublicPackage {
         $benchmark = new Benchmark();
         $benchmark->start();
 
-        foreach($this->getSelectedFiles() as $sourceFilePath) {
-            $this->content[] = file_get_contents($sourceFilePath);
-            $this->logDebug("- {$sourceFilePath}");
+        foreach($this->getSelectedFiles() as $sourceFile) {
+            $this->content[] = file_get_contents($sourceFile);
+            $this->logDebug("- {$sourceFile}");
         }
 
         $this->createCompressedFiles();

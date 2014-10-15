@@ -78,6 +78,16 @@ abstract class AbstractPublicPackage extends AbstractPackage {
     }
 
     /**
+     * @return string
+     */
+    abstract public function getFilenameMaxFile();
+
+    /**
+     * @return string
+     */
+    abstract public function getFilenameMinFile();
+
+    /**
      * @return void
      */
     protected function bundlePackage() {
@@ -87,6 +97,11 @@ abstract class AbstractPublicPackage extends AbstractPackage {
 
         $this->compress();
     }
+
+    /**
+     * @return void
+     */
+    abstract protected function compress();
 
     /**
      * @return void
@@ -114,19 +129,4 @@ abstract class AbstractPublicPackage extends AbstractPackage {
         $this->logDebug("new:   {$new} bytes");
         $this->logDebug("ratio: {$ratio}");
     }
-
-    /**
-     * @return string
-     */
-    abstract protected function getFilenameMaxFile();
-
-    /**
-     * @return string
-     */
-    abstract protected function getFilenameMinFile();
-
-    /**
-     * @return void
-     */
-    abstract protected function compress();
 }

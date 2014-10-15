@@ -214,7 +214,16 @@ abstract class AbstractBundler implements Bundler {
             $package->bundle();
         }
 
+        $this->postBundle();
+
         $benchmark->stop();
         $this->logInfo("{$this->title} in {$benchmark->getTime()} seconds");
+    }
+
+    /**
+     * @return void
+     */
+    protected function postBundle() {
+        // intentionally left blank
     }
 }
