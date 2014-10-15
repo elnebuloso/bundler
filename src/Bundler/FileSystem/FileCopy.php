@@ -1,8 +1,6 @@
 <?php
 namespace Bundler\FileSystem;
 
-use Exception;
-
 /**
  * Class FileCopy
  *
@@ -26,7 +24,7 @@ class FileCopy {
     private $copyMethod;
 
     /**
-     * @return FileCopy
+     * @return self
      */
     public function __construct() {
         $this->copyMethod = (shell_exec('which cp')) ? self::METHOD_NATIVE : self::METHOD_PHP;
@@ -35,7 +33,6 @@ class FileCopy {
     /**
      * @param string $source
      * @param string $destination
-     * @throws Exception
      */
     public function copyFile($source, $destination) {
         @mkdir(dirname($destination), 0777, true);

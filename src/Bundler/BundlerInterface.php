@@ -8,7 +8,6 @@ use Zend\Log\LoggerInterface;
 /**
  * Class Bundler
  *
- * @package Bundler
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
 interface BundlerInterface {

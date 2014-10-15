@@ -1,8 +1,6 @@
 <?php
 namespace Bundler\Compiler;
 
-use Exception;
-
 /**
  * Class YuiCompressor
  *
@@ -21,7 +19,7 @@ class YuiCompressor implements Compiler {
     private $lineBreak = 5000;
 
     /**
-     * @throws Exception
+     * @return self
      */
     public function __construct() {
         $this->execCommand = realpath(__DIR__ . '/../../../bin/yuicompressor');

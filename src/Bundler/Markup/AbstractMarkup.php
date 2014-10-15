@@ -3,7 +3,6 @@ namespace Bundler\Markup;
 
 use Bundler\JavascriptBundler;
 use Bundler\StylesheetBundler;
-use Exception;
 
 /**
  * Class AbstractMarkup
@@ -38,7 +37,7 @@ abstract class AbstractMarkup {
     private $versionized;
 
     /**
-     * @return AbstractMarkup
+     * @return self
      */
     public function __construct() {
         $this->setBundlerDirectory('./.bundler');
@@ -134,7 +133,7 @@ abstract class AbstractMarkup {
     /**
      * @param $package
      * @return array
-     * @throws Exception
+     * @throws MarkupException
      */
     private function getFilesCached($package) {
         $cacheFilename = null;
@@ -148,13 +147,13 @@ abstract class AbstractMarkup {
         }
 
         if(is_null($cacheFilename)) {
-            throw new Exception('missing cache file');
+            throw new MarkupException('missing cache file', 4000);
         }
 
         $cache = include $cacheFilename;
 
         if(!array_key_exists($package, $cache)) {
-            throw new Exception('missing package in cache file');
+            throw new MarkupException('missing package in cache file', 4001);
         }
 
         $type = $this->getMinified() ? "min" : "max";
@@ -170,7 +169,7 @@ abstract class AbstractMarkup {
     /**
      * @param $package
      * @return array
-     * @throws Exception
+     * @throws MarkupException
      */
     private function getFilesDevelopment($package) {
         $bundler = null;
@@ -185,9 +184,8 @@ abstract class AbstractMarkup {
             $bundler = new StylesheetBundler($yaml);
         }
 
-
         if(is_null($bundler)) {
-            throw new Exception('missing bundler definition');
+            throw new MarkupException('missing bundler definition');
         }
 
         $bundler->configure();
@@ -195,7 +193,7 @@ abstract class AbstractMarkup {
         $package = $bundler->getPackageByName($package);
 
         if(is_null($package)) {
-            throw new Exception('missing package definition');
+            throw new MarkupException('missing package definition');
         }
 
         $files = array();

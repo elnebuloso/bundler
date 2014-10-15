@@ -3,7 +3,6 @@ namespace Bundler;
 
 use Bundler\Package\PackageInterface;
 use Bundler\Tools\Benchmark;
-use Exception;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -50,13 +49,13 @@ abstract class AbstractBundler implements BundlerInterface {
     /**
      * @param string $yaml
      * @param string $root
-     * @throws Exception
+     * @throws BundlerException
      */
     public function __construct($yaml, $root = null) {
         $this->yaml = realpath($yaml);
 
         if($this->yaml === false) {
-            throw new Exception('unable to find configuration: ' . $yaml);
+            throw new BundlerException('unable to find configuration: ' . $yaml, 1000);
         }
 
         // no root given from which the files are collected, we take the parent folder from ./.bundler
@@ -65,7 +64,7 @@ abstract class AbstractBundler implements BundlerInterface {
         }
 
         if(realpath($this->root) === false) {
-            throw new Exception('invalid root path: ' . $this->root);
+            throw new BundlerException('invalid root path: ' . $this->root, 1001);
         }
     }
 

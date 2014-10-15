@@ -34,6 +34,6 @@ class CompilerFactory {
                 break;
         }
 
-        throw new CompilerFactoryException('invalid compiler type: ' . $type);
+        throw new CompilerFactoryException('invalid compiler type: ' . $type, 2000);
     }
 }

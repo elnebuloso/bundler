@@ -54,7 +54,7 @@ abstract class AbstractPackage implements PackageInterface {
     private $fileSelector;
 
     /**
-     * @return AbstractPackage
+     * @return self
      */
     public function __construct() {
         $this->includes = array();
@@ -70,7 +70,7 @@ abstract class AbstractPackage implements PackageInterface {
         $this->name = trim($name);
 
         if(empty($this->name)) {
-            throw new PackageException('the package name cannot be empty');
+            throw new PackageException('the package name cannot be empty', 5000);
         }
     }
 
@@ -89,7 +89,7 @@ abstract class AbstractPackage implements PackageInterface {
         $this->root = realpath($root);
 
         if($this->root === false) {
-            throw new PackageException('invalid root path: ' . $root);
+            throw new PackageException('invalid root path: ' . $root, 5001);
         }
     }
 

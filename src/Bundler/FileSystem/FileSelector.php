@@ -1,8 +1,6 @@
 <?php
 namespace Bundler\FileSystem;
 
-use Exception;
-
 /**
  * Class FileSelector
  *
@@ -164,19 +162,19 @@ class FileSelector {
     }
 
     /**
-     * @throws Exception
+     * @throws FileSelectorException
      */
     public function select() {
         if(empty($this->dir)) {
-            throw new Exception('missing folder for selecting files');
+            throw new FileSelectorException('missing folder for selecting files', 3000);
         }
 
         if(realpath($this->dir) === false) {
-            throw new Exception("folder: {$this->dir} not found.");
+            throw new FileSelectorException("folder: {$this->dir} not found.", 3001);
         }
 
         if(empty($this->includes)) {
-            throw new Exception('missing pattern(s) for files to include');
+            throw new FileSelectorException('missing pattern(s) for files to include', 3002);
         }
 
         $this->includedFiles = array();

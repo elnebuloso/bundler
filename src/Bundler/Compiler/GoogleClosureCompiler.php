@@ -1,8 +1,6 @@
 <?php
 namespace Bundler\Compiler;
 
-use Exception;
-
 /**
  * Class GoogleClosureCompiler
  *
@@ -26,7 +24,7 @@ class GoogleClosureCompiler implements Compiler {
     private $warningLevel = 'QUIET';
 
     /**
-     * @throws Exception
+     * @return self
      */
     public function __construct() {
         $this->execCommand = realpath(__DIR__ . '/../../../bin/google-closure-compiler');

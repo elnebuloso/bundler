@@ -63,7 +63,7 @@ class FilePackage extends AbstractPackage {
      */
     private function getTargetDirectory() {
         if(realpath($this->getTarget()) === false) {
-            throw new PackageException('wrong target directory: ' . $this->getTarget());
+            throw new PackageException('wrong target directory: ' . $this->getTarget(), 5002);
         }
 
         $targetDirectory[] = rtrim(realpath($this->getTarget()), '/');
