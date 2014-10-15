@@ -17,9 +17,12 @@ packages:
 
         # define include / exclude pattern
         # all include / exclude definitions are regular expressions
+        # single files are terminated by $
         include:
             - public/.*
+            - public/index.php$
             - src/.*
+            - VERSION$
         exclude:
             - ./public/js/README.md
 
@@ -29,6 +32,8 @@ packages:
         version: file
         include:
             - public/.*
+            - public/index.php$
+            - VERSION$
         exclude:
 
     # package name: baz
@@ -37,4 +42,6 @@ packages:
         version: datetime
         include:
             - public/.*
+            - public/index.php$
+            - VERSION$
         exclude:
