@@ -47,4 +47,72 @@ abstract class AbstractPublicPackage extends AbstractPackage {
     public function getCompilers() {
         return $this->compilers;
     }
+
+    /**
+     * @return string
+     */
+    public function getDestinationMax() {
+        return "{$this->getRoot()}/{$this->getTarget()}/{$this->getFilenameMaxFile()}";
+    }
+
+    /**
+     * @return string
+     */
+    public function getDestinationMin() {
+        return "{$this->getRoot()}/{$this->getTarget()}/{$this->getFilenameMinFile()}";
+    }
+
+    /**
+     * @return void
+     */
+    protected function bundlePackage() {
+        $this->compress();
+    }
+
+    /**
+     * @return string
+     */
+    abstract protected function getFilenameMaxFile();
+
+    /**
+     * @return string
+     */
+    abstract protected function getFilenameMinFile();
+
+    /**
+     * @return void
+     */
+    abstract protected function compress();
+
+    /**
+     * @param array $content
+     * @return void
+     */
+    protected function compressContent(array $content) {
+        $content = implode(PHP_EOL . PHP_EOL, $content);
+        $tempFilename = $this->getDestinationMin() . '.tmp';
+
+        file_put_contents($this->getDestinationMax(), $content);
+        file_put_contents($this->getDestinationMin(), $content);
+
+        if(!is_null($this->getCompilers())) {
+            foreach($this->getCompilers() as $compiler) {
+                copy($this->getDestinationMin(), $tempFilename);
+                $compiler->compile($tempFilename, $this->getDestinationMin());
+            }
+        }
+
+        unlink($tempFilename);
+
+        $this->logDebug("created file: {$this->getDestinationMax()}");
+        $this->logDebug("created file: {$this->getDestinationMin()}");
+
+        $org = strlen(file_get_contents($this->getDestinationMax()));
+        $new = strlen(file_get_contents($this->getDestinationMin()));
+        $ratio = !empty($org) ? $new / $org : 0;
+
+        $this->logDebug("org:   {$org} bytes");
+        $this->logDebug("new:   {$new} bytes");
+        $this->logDebug("ratio: {$ratio}");
+    }
 }

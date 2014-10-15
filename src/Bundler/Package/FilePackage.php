@@ -40,10 +40,20 @@ class FilePackage extends AbstractPackage {
     }
 
     /**
+     * @return void
+     */
+    protected function bundlePackage() {
+        $this->copyMethod = (shell_exec('which cp')) ? 'native' : 'php';
+
+        $this->cleanupTargetDirectory();
+        $this->bundleFiles();
+    }
+
+    /**
      * @param string $sourceFile
      * @return string
      */
-    public function getTargetFile($sourceFile) {
+    private function getTargetFile($sourceFile) {
         return $this->getTargetDirectory() . DIRECTORY_SEPARATOR . str_replace($this->getRoot() . DIRECTORY_SEPARATOR, '', $sourceFile);
     }
 
@@ -51,7 +61,7 @@ class FilePackage extends AbstractPackage {
      * @return string
      * @throws PackageException
      */
-    public function getTargetDirectory() {
+    private function getTargetDirectory() {
         if(realpath($this->getTarget()) === false) {
             throw new PackageException('wrong target directory: ' . $this->getTarget());
         }
@@ -79,7 +89,7 @@ class FilePackage extends AbstractPackage {
     /**
      * @return void
      */
-    public function cleanupTargetDirectory() {
+    private function cleanupTargetDirectory() {
         $targetDirectory = $this->getTargetDirectory();
 
         $this->logDebug("cleanup target directory: {$targetDirectory}");
@@ -101,7 +111,7 @@ class FilePackage extends AbstractPackage {
     /**
      * @return void
      */
-    public function bundleFiles() {
+    private function bundleFiles() {
         $this->logDebug("bundle files");
 
         $benchmark = new Benchmark();
@@ -124,15 +134,5 @@ class FilePackage extends AbstractPackage {
         $benchmark->stop();
 
         $this->logDebug("bundle files {$total} in {$benchmark->getTime()} seconds");
-    }
-
-    /**
-     * @return void
-     */
-    protected function bundlePackage() {
-        $this->copyMethod = (shell_exec('which cp')) ? 'native' : 'php';
-
-        $this->cleanupTargetDirectory();
-        $this->bundleFiles();
     }
 }

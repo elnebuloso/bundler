@@ -1,6 +1,8 @@
 <?php
 namespace Bundler\Package;
 
+use Bundler\Tools\Benchmark;
+
 /**
  * Class JavascriptPackage
  *
@@ -9,9 +11,39 @@ namespace Bundler\Package;
 class JavascriptPackage extends AbstractPublicPackage {
 
     /**
+     * @return string
+     */
+    protected function getFilenameMaxFile() {
+        return $this->getName() . '.max.js';
+    }
+
+    /**
+     * @return string
+     */
+    protected function getFilenameMinFile() {
+        return $this->getName() . '.min.js';
+    }
+
+    /**
      * @return void
      */
-    protected function bundlePackage() {
-        // TODO: Implement bundlePackage() method.
+    protected function compress() {
+        $this->logDebug("compressing files to single file");
+
+        $benchmark = new Benchmark();
+        $benchmark->start();
+
+        $content = array();
+
+        foreach($this->getSelectedFiles() as $sourceFile) {
+            $content[] = file_get_contents($sourceFile);
+            $this->logDebug("- {$sourceFile}");
+        }
+
+        $this->compressContent($content);
+
+        $benchmark->stop();
+
+        $this->logDebug("compressing files to single file in {$benchmark->getTime()} seconds");
     }
 }
