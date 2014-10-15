@@ -29,7 +29,7 @@ class GoogleClosureCompiler implements Compiler {
      * @throws Exception
      */
     public function __construct() {
-        $this->execCommand = realpath(dirname(__DIR__) . '/../../bin/google-closure-compiler');
+        $this->execCommand = realpath(__DIR__ . '/../../../bin/google-closure-compiler');
     }
 
     /**

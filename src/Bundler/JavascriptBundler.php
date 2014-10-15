@@ -62,6 +62,20 @@ class JavascriptBundler extends AbstractBundler {
      * @return void
      */
     protected function postBundle() {
-        // intentionally left blank
+        $cache = array();
+        $cacheFilename = dirname($this->getYaml()) . '/javascript.php';
+
+        $this->logDebug("creating cache file: " . $cacheFilename);
+
+        foreach($this->getPackages() as $package) {
+            /** @var JavascriptPackage $package */
+            $cache[$package->getName()] = array(
+                'md5' => md5(file_get_contents($package->getDestinationMin())),
+                'max' => $package->getTarget() . '/' . $package->getFilenameMaxFile(),
+                'min' => $package->getTarget() . '/' . $package->getFilenameMinFile()
+            );
+        }
+
+        file_put_contents($cacheFilename, '<?php return ' . var_export($cache, true) . ";" . PHP_EOL);
     }
 }

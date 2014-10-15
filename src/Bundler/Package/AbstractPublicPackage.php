@@ -63,26 +63,14 @@ abstract class AbstractPublicPackage extends AbstractPackage {
     }
 
     /**
-     * @return void
+     * @return string
      */
-    protected function bundlePackage() {
-        $this->compress();
-    }
+    abstract public function getFilenameMaxFile();
 
     /**
      * @return string
      */
-    abstract protected function getFilenameMaxFile();
-
-    /**
-     * @return string
-     */
-    abstract protected function getFilenameMinFile();
-
-    /**
-     * @return void
-     */
-    abstract protected function compress();
+    abstract public function getFilenameMinFile();
 
     /**
      * @param array $content

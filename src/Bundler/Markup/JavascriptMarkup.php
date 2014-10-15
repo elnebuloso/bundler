@@ -9,13 +9,13 @@ namespace Bundler\Markup;
 class JavascriptMarkup extends AbstractMarkup {
 
     /**
-     * @param string $package
+     * @param $packageName
      * @return string
      */
-    public function getMarkup($package) {
+    public function getMarkup($packageName) {
         $markup = array();
 
-        foreach($this->getFiles($package) as $file) {
+        foreach($this->getFiles($packageName) as $file) {
             $markup[] = '<script src="' . $file . '"></script>';
         }
 

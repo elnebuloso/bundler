@@ -14,21 +14,21 @@ class StylesheetPackage extends AbstractPublicPackage {
     /**
      * @return string
      */
-    protected function getFilenameMaxFile() {
+    public function getFilenameMaxFile() {
         return $this->getName() . '.max.css';
     }
 
     /**
      * @return string
      */
-    protected function getFilenameMinFile() {
+    public function getFilenameMinFile() {
         return $this->getName() . '.min.css';
     }
 
     /**
      * @return void
      */
-    protected function compress() {
+    protected function bundlePackage() {
         $this->logDebug("compressing files to single file");
 
         $benchmark = new Benchmark();

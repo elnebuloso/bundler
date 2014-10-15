@@ -225,7 +225,7 @@ class FileSelector {
      * @return string
      */
     private function optimizeFolder($dir, $pattern) {
-        $subFolders = explode('/', $pattern);
+        $subFolders = explode(DIRECTORY_SEPARATOR, $pattern);
 
         foreach($subFolders as $subFolder) {
             if(preg_match('`^[a-zA-Z._0-9]`', $subFolder)) {

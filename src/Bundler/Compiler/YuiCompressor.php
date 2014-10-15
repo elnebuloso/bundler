@@ -24,7 +24,7 @@ class YuiCompressor implements Compiler {
      * @throws Exception
      */
     public function __construct() {
-        $this->execCommand = realpath(dirname(__DIR__) . '/../../bin/yuicompressor');
+        $this->execCommand = realpath(__DIR__ . '/../../../bin/yuicompressor');
     }
 
     /**

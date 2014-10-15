@@ -207,4 +207,10 @@ abstract class AbstractMarkup {
 
         return $files;
     }
+
+    /**
+     * @param $packageName
+     * @return string
+     */
+    abstract public function getMarkup($packageName);
 }
