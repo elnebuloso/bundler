@@ -8,10 +8,12 @@ packages:
         # e.g. /builds
         target: /var/builds/bundler
 
-        # version directory under target, if empty, no directory, files / folders are copied directly into target
+        # version directory under target
+        # if empty, no directory, files / folders are copied directly into target
+        #
         # e.g. datetime (directory by YmdHis)
         # e.g. file (directory by VERSION File Content)
-        version: file
+        version:
 
         # define include / exclude pattern
         # all include / exclude definitions are regular expressions
@@ -25,6 +27,14 @@ packages:
     bar:
         target: /var/builds/bundler
         version: file
+        include:
+            - public/.*
+        exclude:
+
+    # package name: baz
+    baz:
+        target: /var/builds/bundler
+        version: datetime
         include:
             - public/.*
         exclude:

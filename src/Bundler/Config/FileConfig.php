@@ -30,12 +30,15 @@ class FileConfig implements ConfigurationInterface {
                  ->cannotBeEmpty()
                  ->end()
                  ->scalarNode('version')
+                 ->isRequired()
                  ->validate()
                  ->ifNotInArray(array(
                      FilePackage::VERSION_TYPE_DATETIME,
                      FilePackage::VERSION_TYPE_FILE,
                  ))
-                 ->thenInvalid('invalid version type "%s"')
+                 ->then(function () {
+                     return null;
+                 })
                  ->end()
                  ->end()
                  ->arrayNode('include')
