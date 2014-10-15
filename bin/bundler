@@ -1,55 +1,50 @@
 #!/usr/bin/env php
 <?php
-// error reporting
-ini_set('error_reporting', E_ALL);
-ini_set('display_errors', 'on');
-
-$root = getcwd();
-$autoloader = dirname(__DIR__) . '/vendor/autoload.php';
-
-// autoload classes of bundler
-if(file_exists(dirname(dirname(dirname(dirname(__DIR__)))) . '/vendor/autoload.php')) {
-    $autoloader = dirname(dirname(dirname(dirname(__DIR__)))) . '/vendor/autoload.php';
-}
-
-if(realpath($root) === false) {
-    exit('unable to determine your project root path: ' . $root . PHP_EOL);
-}
-
-if(realpath($autoloader) === false) {
-    exit('unable to determine bundler installation path' . $autoloader . PHP_EOL);
-}
-
-$root = realpath($root);
-$autoloader = realpath($autoloader);
-
-// autoloading
-require_once $autoloader;
-
-// this makes our life easier when dealing with paths.
-// everything is relative to the application root now.
-chdir($root);
-
 use Bundler\Command\FileCommand;
 use Bundler\Command\JavascriptCommand;
 use Bundler\Command\StylesheetCommand;
 use Symfony\Component\Console\Application;
 
-$console = new Application();
+// error reporting
+ini_set('error_reporting', E_ALL);
+ini_set('display_errors', 'on');
 
-$command = new FileCommand();
-$command->setRoot($root);
-$command->setYaml($root . '/.bundler/files.yaml');
-$console->add($command);
+try {
+    $root = getcwd();
 
-$command = new JavascriptCommand();
-$command->setRoot($root);
-$command->setYaml($root . '/.bundler/javascript.yaml');
-$console->add($command);
+    if(($autoloader = realpath(__DIR__ . '/../vendor/autoload.php')) === false) {
+        if(($autoloader = realpath(__DIR__ . '/../../../../vendor/autoload.php')) === false) {
+            throw new Exception("Unable to determine autoloader.", 100);
+        }
+    }
 
-$command = new StylesheetCommand();
-$command->setRoot($root);
-$command->setYaml($root . '/.bundler/stylesheet.yaml');
-$console->add($command);
+    // autoloading
+    require_once $autoloader;
 
-$console->run();
+    // this makes our life easier when dealing with paths.
+    // everything is relative to the application root now.
+    chdir($root);
+
+    $console = new Application();
+
+    $command = new FileCommand();
+    $command->setRoot($root);
+    $command->setYaml($root . '/.bundler/files.yaml');
+    $console->add($command);
+
+    $command = new JavascriptCommand();
+    $command->setRoot($root);
+    $command->setYaml($root . '/.bundler/javascript.yaml');
+    $console->add($command);
+
+    $command = new StylesheetCommand();
+    $command->setRoot($root);
+    $command->setYaml($root . '/.bundler/stylesheet.yaml');
+    $console->add($command);
+
+    exit($console->run());
+}
+catch(Exception $e) {
+    echo $e->getMessage() . PHP_EOL;
+    exit($e->getCode());
+}

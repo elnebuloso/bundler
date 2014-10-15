@@ -1,4 +1,7 @@
 <?php
+use Bundler\Markup\JavascriptMarkup;
+use Bundler\Markup\StylesheetMarkup;
+
 // error reporting
 ini_set('error_reporting', E_ALL);
 ini_set('display_errors', 'on');
@@ -9,9 +12,6 @@ chdir(dirname(__DIR__));
 
 // autoloading
 require_once 'vendor/autoload.php';
-
-use Bundler\Markup\JavascriptMarkup;
-use Bundler\Markup\StylesheetMarkup;
 
 $stylesheetMarkup = new StylesheetMarkup();
 $stylesheetMarkup->setDevelopment(true);

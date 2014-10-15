@@ -1,8 +1,8 @@
 #!/usr/bin/env php
 <?php
-/**
- * this file demonstrates how to use the bundler in another context than running the console command
- */
+/** this file demonstrates how to use the bundler in another context than running the console command */
+
+use Bundler\FileBundler;
 
 // error reporting
 ini_set('error_reporting', E_ALL);
@@ -14,8 +14,6 @@ chdir(dirname(__DIR__));
 
 // autoloading
 require_once 'vendor/autoload.php';
-
-use Bundler\FileBundler;
 
 $writer = new Zend\Log\Writer\Stream('php://output');
 $logger = new Zend\Log\Logger();
