@@ -28,18 +28,18 @@ try {
     $console = new Application();
 
     $command = new FileCommand();
-    $command->setRoot($root);
     $command->setYaml($root . '/.bundler/files.yaml');
+    $command->setRoot($root);
     $console->add($command);
 
     $command = new JavascriptCommand();
-    $command->setRoot($root);
     $command->setYaml($root . '/.bundler/javascript.yaml');
+    $command->setRoot($root);
     $console->add($command);
 
     $command = new StylesheetCommand();
-    $command->setRoot($root);
     $command->setYaml($root . '/.bundler/stylesheet.yaml');
+    $command->setRoot($root);
     $console->add($command);
 
     exit($console->run());
