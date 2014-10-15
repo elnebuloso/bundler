@@ -1,53 +1,67 @@
 <?php
 namespace Bundler;
 
+use Bundler\Compiler\CompilerFactory;
+use Bundler\Config\JavascriptConfig;
 use Bundler\Package\JavascriptPackage;
+use Bundler\Package\PackageInterface;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
  * Class JavascriptBundler
  *
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
-class JavascriptBundler extends AbstractBundler implements Bundler {
+class JavascriptBundler extends AbstractBundler {
 
     /**
-     * @var string
+     * @return string
      */
-    protected $title = 'bundling javascript ...';
+    public function getName() {
+        return 'Javascript Bundler';
+    }
 
     /**
-     * @var string
+     * @return ConfigurationInterface
      */
-    protected $type = self::TYPE_JAVASCRIPT;
+    protected function getConfiguration() {
+        return new JavascriptConfig();
+    }
 
     /**
-     * @var array
+     * @param string $name
+     * @param string $root
+     * @param array $configuration
+     * @return PackageInterface
      */
-    protected $cache;
+    protected function createPackage($name, $root, array $configuration) {
+        $package = new JavascriptPackage();
+        $package->setName($name);
+        $package->setRoot($root . DIRECTORY_SEPARATOR . $configuration['public']);
+        $package->setTarget($configuration['target']);
+        $package->setPublic($configuration['public']);
+        $package->setIncludes($configuration['include']);
+        $package->setLogger($this->getLogger());
+        $package->setConsoleOutput($this->getConsoleOutput());
+
+        foreach($configuration['compilers'] as $compilerType => $compilerConfig) {
+            $package->addCompiler(CompilerFactory::create($compilerType, $compilerConfig));
+        }
+
+        return $package;
+    }
 
     /**
-     * @var string
+     * @return void
      */
-    protected $cacheFilename;
+    protected function preBundle() {
+        // intentionally left blank
+    }
 
     /**
      * @return void
      */
     protected function postBundle() {
-        $this->cache = array();
-        $this->cacheFilename = dirname($this->getYaml()) . '/javascript.php';
-
-        $this->logDebug("creating cache manifest: " . $this->cacheFilename);
-
-        foreach($this->getPackages() as $package) {
-            /** @var JavascriptPackage $package */
-            $this->cache[$package->getName()] = array(
-                'md5' => md5(file_get_contents($package->getDestinationMin())),
-                'max' => $package->getTarget() . '/' . $package->getFilenameMaxFile(),
-                'min' => $package->getTarget() . '/' . $package->getFilenameMinFile()
-            );
-        }
-
-        file_put_contents($this->cacheFilename, '<?php return ' . var_export($this->cache, true) . ";" . PHP_EOL);
+        // intentionally left blank
     }
 }

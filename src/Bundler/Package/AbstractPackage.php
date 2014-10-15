@@ -1,9 +1,8 @@
 <?php
 namespace Bundler\Package;
 
-use Bundler\Benchmark;
 use Bundler\FileSystem\FileSelector;
-use Exception;
+use Bundler\Tools\Benchmark;
 use Symfony\Component\Console\Output\OutputInterface;
 use Zend\Log\LoggerInterface;
 
@@ -12,7 +11,7 @@ use Zend\Log\LoggerInterface;
  *
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
-abstract class AbstractPackage implements Package {
+abstract class AbstractPackage implements PackageInterface {
 
     /**
      * @var string
@@ -40,11 +39,6 @@ abstract class AbstractPackage implements Package {
     private $excludes;
 
     /**
-     * @var FileSelector
-     */
-    private $fileSelector;
-
-    /**
      * @var LoggerInterface
      */
     private $logger;
@@ -52,7 +46,12 @@ abstract class AbstractPackage implements Package {
     /**
      * @var OutputInterface
      */
-    private $output;
+    private $consoleOutput;
+
+    /**
+     * @var FileSelector
+     */
+    private $fileSelector;
 
     /**
      * @return AbstractPackage
@@ -65,13 +64,13 @@ abstract class AbstractPackage implements Package {
 
     /**
      * @param string $name
-     * @throws Exception
+     * @throws PackageException
      */
     public function setName($name) {
         $this->name = trim($name);
 
         if(empty($this->name)) {
-            throw new Exception('the package name cannot be empty');
+            throw new PackageException('the package name cannot be empty');
         }
     }
 
@@ -84,13 +83,13 @@ abstract class AbstractPackage implements Package {
 
     /**
      * @param string $root
-     * @throws Exception
+     * @throws PackageException
      */
     public function setRoot($root) {
         $this->root = realpath($root);
 
         if($this->root === false) {
-            throw new Exception('invalid root path: ' . $root);
+            throw new PackageException('invalid root path: ' . $root);
         }
     }
 
@@ -158,17 +157,41 @@ abstract class AbstractPackage implements Package {
     }
 
     /**
-     * @param OutputInterface $output
+     * @param OutputInterface $consoleOutput
      */
-    public function setOutput($output = null) {
-        $this->output = $output;
+    public function setConsoleOutput($consoleOutput = null) {
+        $this->consoleOutput = $consoleOutput;
     }
 
     /**
      * @return OutputInterface
      */
-    public function getOutput() {
-        return $this->output;
+    public function getConsoleOutput() {
+        return $this->consoleOutput;
+    }
+
+    /**
+     * @param string $message
+     */
+    public function logInfo($message) {
+        if(!is_null($this->getLogger())) {
+            $this->logger->info($message);
+        }
+        elseif(!is_null($this->getConsoleOutput())) {
+            $this->consoleOutput->writeln("<comment>" . $message . "</comment>");
+        }
+    }
+
+    /**
+     * @param string $message
+     */
+    public function logDebug($message) {
+        if(!is_null($this->getLogger())) {
+            $this->logger->debug($message);
+        }
+        elseif(!is_null($this->getConsoleOutput())) {
+            $this->consoleOutput->writeln("  <info>" . $message . "</info>");
+        }
     }
 
     /**
@@ -192,13 +215,6 @@ abstract class AbstractPackage implements Package {
     }
 
     /**
-     * @return int
-     */
-    public function getSelectedFilesCount() {
-        return $this->fileSelector->getFilesCount();
-    }
-
-    /**
      * @return array
      */
     public function getSelectedFiles() {
@@ -206,27 +222,10 @@ abstract class AbstractPackage implements Package {
     }
 
     /**
-     * @param string $message
+     * @return int
      */
-    public function logInfo($message) {
-        if(!is_null($this->getLogger())) {
-            $this->logger->info($message);
-        }
-        elseif(!is_null($this->getOutput())) {
-            $this->output->writeln("<comment>" . $message . "</comment>");
-        }
-    }
-
-    /**
-     * @param string $message
-     */
-    public function logDebug($message) {
-        if(!is_null($this->getLogger())) {
-            $this->logger->debug($message);
-        }
-        elseif(!is_null($this->getOutput())) {
-            $this->output->writeln("  <info>" . $message . "</info>");
-        }
+    public function getSelectedFilesCount() {
+        return $this->fileSelector->getFilesCount();
     }
 
     /**
@@ -242,6 +241,7 @@ abstract class AbstractPackage implements Package {
         $this->bundlePackage();
 
         $benchmark->stop();
+
         $this->logInfo("bundling package: {$this->getName()} in {$benchmark->getTime()} seconds");
     }
 

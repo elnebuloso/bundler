@@ -1,20 +1,63 @@
 <?php
 namespace Bundler;
 
+use Bundler\Config\FileConfig;
+use Bundler\Package\FilePackage;
+use Bundler\Package\PackageInterface;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
+
 /**
  * Class FileBundler
  *
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
-class FileBundler extends AbstractBundler implements Bundler {
+class FileBundler extends AbstractBundler {
 
     /**
-     * @var string
+     * @return string
      */
-    protected $title = 'bundling files ...';
+    public function getName() {
+        return 'File Bundler';
+    }
 
     /**
-     * @var string
+     * @return ConfigurationInterface
      */
-    protected $type = self::TYPE_FILES;
+    protected function getConfiguration() {
+        return new FileConfig();
+    }
+
+    /**
+     * @param string $name
+     * @param string $root
+     * @param array $configuration
+     * @return PackageInterface
+     */
+    protected function createPackage($name, $root, array $configuration) {
+        $package = new FilePackage();
+        $package->setName($name);
+        $package->setRoot($root);
+        $package->setTarget($configuration['target']);
+        $package->setIncludes($configuration['include']);
+        $package->setExcludes($configuration['exclude']);
+        $package->setVersion($configuration['version']);
+        $package->setLogger($this->getLogger());
+        $package->setConsoleOutput($this->getConsoleOutput());
+
+        return $package;
+    }
+
+    /**
+     * @return void
+     */
+    protected function preBundle() {
+        // intentionally left blank
+    }
+
+    /**
+     * @return void
+     */
+    protected function postBundle() {
+        // intentionally left blank
+    }
 }

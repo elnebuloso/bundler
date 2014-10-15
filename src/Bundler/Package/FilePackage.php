@@ -1,9 +1,8 @@
 <?php
 namespace Bundler\Package;
 
-use Bundler\Benchmark;
 use Bundler\FileSystem\FileCopy;
-use Exception;
+use Bundler\Tools\Benchmark;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -13,25 +12,18 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class FilePackage extends AbstractPackage {
 
-    /**
-     * @var string
-     */
     const VERSION_TYPE_DATETIME = 'datetime';
-
-    /**
-     * @var string
-     */
     const VERSION_TYPE_FILE = 'file';
 
     /**
      * @var string
      */
-    protected $copyMethod = 'native';
+    private $version;
 
     /**
      * @var string
      */
-    private $version;
+    private $copyMethod;
 
     /**
      * @param string $version
@@ -48,12 +40,20 @@ class FilePackage extends AbstractPackage {
     }
 
     /**
+     * @param string $sourceFile
      * @return string
-     * @throws Exception
+     */
+    public function getTargetFile($sourceFile) {
+        return $this->getTargetDirectory() . DIRECTORY_SEPARATOR . str_replace($this->getRoot() . DIRECTORY_SEPARATOR, '', $sourceFile);
+    }
+
+    /**
+     * @return string
+     * @throws PackageException
      */
     public function getTargetDirectory() {
         if(realpath($this->getTarget()) === false) {
-            throw new Exception('wrong target directory: ' . $this->getTarget());
+            throw new PackageException('wrong target directory: ' . $this->getTarget());
         }
 
         $targetDirectory[] = rtrim(realpath($this->getTarget()), '/');
@@ -67,6 +67,7 @@ class FilePackage extends AbstractPackage {
                 if(($version = file_get_contents($this->getRoot() . '/VERSION'))) {
                     $targetDirectory[] = trim($version);
                 }
+                break;
         }
 
         $targetDirectory[] = $this->getName();
@@ -76,29 +77,12 @@ class FilePackage extends AbstractPackage {
     }
 
     /**
-     * @param string $sourceFilePath
-     * @return string
-     */
-    public function getTargetFile($sourceFilePath) {
-        return $this->getTargetDirectory() . '/' . str_replace($this->getRoot() . '/', '', $sourceFilePath);
-    }
-
-    /**
      * @return void
      */
-    protected function bundlePackage() {
-        $this->copyMethod = (shell_exec('which cp')) ? 'native' : 'php';
-
-        $this->cleanupTargetDirectory();
-        $this->copyFiles();
-    }
-
-    /**
-     * @return void
-     */
-    protected function cleanupTargetDirectory() {
+    public function cleanupTargetDirectory() {
         $targetDirectory = $this->getTargetDirectory();
-        $this->logDebug("cleaning up target directory: {$targetDirectory}");
+
+        $this->logDebug("cleanup target directory: {$targetDirectory}");
 
         $benchmark = new Benchmark();
         $benchmark->start();
@@ -110,19 +94,20 @@ class FilePackage extends AbstractPackage {
         }
 
         $benchmark->stop();
-        $this->logDebug("cleaning up target directory: {$targetDirectory} in {$benchmark->getTime()} seconds");
+
+        $this->logDebug("cleanup target directory: {$targetDirectory} in {$benchmark->getTime()} seconds");
     }
 
     /**
      * @return void
      */
-    protected function copyFiles() {
-        $fileCopy = new FileCopy();
+    public function bundleFiles() {
+        $this->logDebug("bundle files");
 
         $benchmark = new Benchmark();
         $benchmark->start();
 
-        $this->logDebug("copying files");
+        $fileCopy = new FileCopy();
 
         $i = 1;
         $total = $this->getSelectedFilesCount();
@@ -137,6 +122,17 @@ class FilePackage extends AbstractPackage {
         }
 
         $benchmark->stop();
-        $this->logDebug("copying files {$total} in {$benchmark->getTime()} seconds");
+
+        $this->logDebug("bundle files {$total} in {$benchmark->getTime()} seconds");
+    }
+
+    /**
+     * @return void
+     */
+    protected function bundlePackage() {
+        $this->copyMethod = (shell_exec('which cp')) ? 'native' : 'php';
+
+        $this->cleanupTargetDirectory();
+        $this->bundleFiles();
     }
 }

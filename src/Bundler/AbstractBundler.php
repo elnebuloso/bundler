@@ -1,12 +1,10 @@
 <?php
 namespace Bundler;
 
-use Bundler\Config\FileConfig;
-use Bundler\Config\JavascriptConfig;
-use Bundler\Config\StylesheetConfig;
-use Bundler\Package\Package;
-use Bundler\Package\PackageFactory;
+use Bundler\Package\PackageInterface;
+use Bundler\Tools\Benchmark;
 use Exception;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Yaml\Yaml;
@@ -17,7 +15,7 @@ use Zend\Log\LoggerInterface;
  *
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
-abstract class AbstractBundler implements Bundler {
+abstract class AbstractBundler implements BundlerInterface {
 
     /**
      * @var string
@@ -37,22 +35,17 @@ abstract class AbstractBundler implements Bundler {
     /**
      * @var OutputInterface
      */
-    private $output;
+    private $consoleOutput;
 
     /**
-     * @var Package[]
+     * @var PackageInterface[]
      */
     private $packages;
 
     /**
-     * @var string
+     * @var bool
      */
-    protected $title;
-
-    /**
-     * @var string
-     */
-    protected $type;
+    private $isConfigured = false;
 
     /**
      * @param string $yaml
@@ -73,43 +66,6 @@ abstract class AbstractBundler implements Bundler {
 
         if(realpath($this->root) === false) {
             throw new Exception('invalid root path: ' . $this->root);
-        }
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function configure() {
-        $config = Yaml::parse($this->getYaml());
-        $processor = new Processor();
-        $configuration = null;
-
-        switch($this->type) {
-            case self::TYPE_FILES:
-                $configuration = new FileConfig();
-                break;
-
-            case self::TYPE_JAVASCRIPT:
-                $configuration = new JavascriptConfig();
-                break;
-
-            case self::TYPE_STYLESHEET:
-                $configuration = new StylesheetConfig();
-                break;
-        }
-
-        if(is_null($configuration)) {
-            throw new Exception('missing configuration to process');
-        }
-
-        $processedConfiguration = $processor->processConfiguration($configuration, array($config));
-
-        $packageFactory = new PackageFactory();
-        $packageFactory->setLogger($this->getLogger());
-        $packageFactory->setOutput($this->getOutput());
-
-        foreach($processedConfiguration['packages'] as $name => $package) {
-            $this->addPackage($packageFactory->create($this->type, $name, $this->getRoot(), $package));
         }
     }
 
@@ -142,28 +98,28 @@ abstract class AbstractBundler implements Bundler {
     }
 
     /**
-     * @param OutputInterface $output
+     * @param OutputInterface $consoleOutput
      */
-    public function setOutput($output = null) {
-        $this->output = $output;
+    public function setConsoleOutput($consoleOutput = null) {
+        $this->consoleOutput = $consoleOutput;
     }
 
     /**
      * @return OutputInterface
      */
-    public function getOutput() {
-        return $this->output;
+    public function getConsoleOutput() {
+        return $this->consoleOutput;
     }
 
     /**
-     * @param Package $package
+     * @param PackageInterface $package
      */
-    public function addPackage(Package $package) {
+    public function addPackage(PackageInterface $package) {
         $this->packages[$package->getName()] = $package;
     }
 
     /**
-     * @return Package[]
+     * @return PackageInterface[]
      */
     public function getPackages() {
         return $this->packages;
@@ -171,7 +127,7 @@ abstract class AbstractBundler implements Bundler {
 
     /**
      * @param string $name
-     * @return Package|null
+     * @return PackageInterface|null
      */
     public function getPackageByName($name) {
         return array_key_exists($name, $this->packages) ? $this->packages[$name] : null;
@@ -184,8 +140,8 @@ abstract class AbstractBundler implements Bundler {
         if(!is_null($this->getLogger())) {
             $this->logger->info($message);
         }
-        elseif(!is_null($this->getOutput())) {
-            $this->output->writeln("<comment>" . $message . "</comment>");
+        elseif(!is_null($this->getConsoleOutput())) {
+            $this->consoleOutput->writeln("<comment>" . $message . "</comment>");
         }
     }
 
@@ -196,8 +152,23 @@ abstract class AbstractBundler implements Bundler {
         if(!is_null($this->getLogger())) {
             $this->logger->debug($message);
         }
-        elseif(!is_null($this->getOutput())) {
-            $this->output->writeln("  <info>" . $message . "</info>");
+        elseif(!is_null($this->getConsoleOutput())) {
+            $this->consoleOutput->writeln("  <info>" . $message . "</info>");
+        }
+    }
+
+    /**
+     * @return void
+     */
+    public function configure() {
+        $this->isConfigured = true;
+
+        $config = Yaml::parse($this->getYaml());
+        $processor = new Processor();
+        $configuration = $processor->processConfiguration($this->getConfiguration(), array($config));
+
+        foreach($configuration['packages'] as $packageName => $packageConfiguration) {
+            $this->addPackage($this->createPackage($packageName, $this->getRoot(), $packageConfiguration));
         }
     }
 
@@ -205,10 +176,16 @@ abstract class AbstractBundler implements Bundler {
      * @return void
      */
     public function bundle() {
-        $this->logInfo($this->title);
+        if(!$this->isConfigured) {
+            $this->configure();
+        }
+
+        $this->logInfo($this->getName());
 
         $benchmark = new Benchmark();
         $benchmark->start();
+
+        $this->preBundle();
 
         foreach($this->getPackages() as $package) {
             $package->bundle();
@@ -217,13 +194,30 @@ abstract class AbstractBundler implements Bundler {
         $this->postBundle();
 
         $benchmark->stop();
-        $this->logInfo("{$this->title} in {$benchmark->getTime()} seconds");
+
+        $this->logInfo("{$this->getName()} in {$benchmark->getTime()} seconds");
     }
+
+    /**
+     * @return ConfigurationInterface
+     */
+    abstract protected function getConfiguration();
+
+    /**
+     * @param string $name
+     * @param string $root
+     * @param array $configuration
+     * @return PackageInterface
+     */
+    abstract protected function createPackage($name, $root, array $configuration);
 
     /**
      * @return void
      */
-    protected function postBundle() {
-        // intentionally left blank
-    }
+    abstract protected function preBundle();
+
+    /**
+     * @return void
+     */
+    abstract protected function postBundle();
 }

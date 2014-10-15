@@ -23,5 +23,4 @@ $logger->addWriter($writer);
 
 $bundler = new JavascriptBundler('.bundler/javascript.yaml');
 $bundler->setLogger($logger);
-$bundler->configure();
 $bundler->bundle();

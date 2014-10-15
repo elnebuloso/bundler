@@ -23,5 +23,4 @@ $logger->addWriter($writer);
 
 $bundler = new StylesheetBundler('.bundler/stylesheet.yaml');
 $bundler->setLogger($logger);
-$bundler->configure();
 $bundler->bundle();
