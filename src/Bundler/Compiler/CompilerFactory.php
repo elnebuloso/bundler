@@ -1,8 +1,6 @@
 <?php
 namespace Bundler\Compiler;
 
-use Exception;
-
 /**
  * Class CompilerFactory
  *
