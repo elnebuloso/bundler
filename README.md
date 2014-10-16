@@ -15,11 +15,13 @@ bundle your project files, your stylesheets and your javascripts
 ### usage
 
 see demo yaml files under ./bundler
-all include / exclude definitions are regular expressions
+
+ * all include / exclude definitions are regular expressions
+ * compilers are stackable, use any compiler that works with input / output file
 
 ## commands (used as composer package)
 
  * ./vendor/bin/bundler
- * ./vendor/bin/bundler bundle:files [--help]
- * ./vendor/bin/bundler bundle:stylesheet [--help]
- * ./vendor/bin/bundler bundle:javascript [--help]
+ * ./vendor/bin/bundler files [--help]
+ * ./vendor/bin/bundler stylesheet [--help]
+ * ./vendor/bin/bundler javascript [--help]
