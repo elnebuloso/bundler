@@ -4,33 +4,31 @@ packages:
     # package name: javascriptFoo
     javascriptFoo:
 
-         # public directory, relative to the root from which the files are collected
-         public: public
+        # public directory, relative to the root from which the files are collected
+        public: public
 
-         # folder under the public directory
-         target: js
+        # folder under the public directory
+        target: js
 
-         # the compiler to minify the javascripts included
-         # googleClosureCompiler
-         compilers:
-             googleClosureCompiler:
-                 compilationLevel: WHITESPACE_ONLY
-                 warningLevel: QUIET
+        # compiler command to compress / minify / etc. source files to destination files
+        # you can stack multiple compilers which are called after another
+        # $source  placeholder for source files
+        # $destination placeholder for destination files
+        compilers:
+            - /var/www/resources/google-closure-compiler/compiler --compilation_level=WHITESPACE_ONLY --warning_level=QUIET --js=$source --js_output_file=$destination
 
-         # define include pattern
-         include:
-             - vendor/jquery/jquery/1.11.0/jquery-1.11.0.js$
-             - vendor/twitter/bootstrap/3.1.0/js/bootstrap.js$
+        # define include pattern
+        include:
+            - vendor/jquery/jquery/1.11.0/jquery-1.11.0.js$
+            - vendor/twitter/bootstrap/3.1.0/js/bootstrap.js$
 
     # package name: javascriptBar
     javascriptBar:
-         public: public
-         target: js
-         compilers:
-             googleClosureCompiler:
-                 compilationLevel: WHITESPACE_ONLY
-                 warningLevel: QUIET
-         include:
-             - vendor/jquery/jquery/1.11.0/jquery-1.11.0.js$
-             - vendor/twitter/bootstrap/3.1.0/js/bootstrap.js$
-             - js/document.ready.js$
+        public: public
+        target: js
+        compilers:
+            - /var/www/resources/google-closure-compiler/compiler --compilation_level=WHITESPACE_ONLY --warning_level=QUIET --js=$source --js_output_file=$destination
+        include:
+            - vendor/jquery/jquery/1.11.0/jquery-1.11.0.js$
+            - vendor/twitter/bootstrap/3.1.0/js/bootstrap.js$
+            - js/document.ready.js$
