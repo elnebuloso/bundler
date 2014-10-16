@@ -15,7 +15,7 @@ class FileCommand extends AbstractCommand {
      * @return string
      */
     protected function getCommandName() {
-        return 'bundle:files';
+        return 'files';
     }
 
     /**

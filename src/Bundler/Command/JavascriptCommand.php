@@ -15,7 +15,7 @@ class JavascriptCommand extends AbstractCommand {
      * @return string
      */
     public function getCommandName() {
-        return 'bundle:javascript';
+        return 'javascript';
     }
 
     /**

@@ -15,7 +15,7 @@ class StylesheetCommand extends AbstractCommand {
      * @return string
      */
     public function getCommandName() {
-        return 'bundle:stylesheet';
+        return 'stylesheet';
     }
 
     /**
