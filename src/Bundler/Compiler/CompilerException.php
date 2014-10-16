@@ -4,10 +4,10 @@ namespace Bundler\Compiler;
 use Exception;
 
 /**
- * Class CompilerFactoryException
+ * Class CompilerException
  *
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
-class CompilerFactoryException extends Exception {
+class CompilerException extends Exception {
 
 }

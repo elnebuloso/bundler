@@ -6,22 +6,28 @@ namespace Bundler\Compiler;
  *
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
-interface Compiler {
+class Compiler {
 
     /**
      * @var string
      */
-    const TYPE_GOOGLE_CLOSURE_COMPILER = 'googleClosureCompiler';
+    private $command;
 
     /**
-     * @var string
+     * @param string $command
+     * @throws CompilerException
      */
-    const TYPE_YUI_COMPRESSOR = 'yuiCompressor';
+    public function __construct($command) {
+        $this->command = trim($command);
+
+        if(empty($this->command)) {
+            throw new CompilerException('missing command for compiler', 2000);
+        }
+    }
 
     /**
-     * @param string $source
-     * @param string $destination
-     * @return int
+     * @return void
      */
-    public function compile($source, $destination);
+    public function compile() {
+    }
 }
