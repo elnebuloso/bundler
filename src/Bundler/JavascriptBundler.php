@@ -1,7 +1,7 @@
 <?php
 namespace Bundler;
 
-use Bundler\Compiler\CompilerFactory;
+use Bundler\Compiler\Compiler;
 use Bundler\Config\JavascriptConfig;
 use Bundler\Package\JavascriptPackage;
 use Bundler\Package\PackageInterface;
@@ -44,8 +44,8 @@ class JavascriptBundler extends AbstractBundler {
         $package->setLogger($this->getLogger());
         $package->setConsoleOutput($this->getConsoleOutput());
 
-        foreach($configuration['compilers'] as $compilerType => $compilerConfig) {
-            $package->addCompiler(CompilerFactory::create($compilerType, $compilerConfig));
+        foreach($configuration['compilers'] as $command) {
+            $package->addCompiler(new Compiler($command));
         }
 
         return $package;

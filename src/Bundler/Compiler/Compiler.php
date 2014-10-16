@@ -26,8 +26,27 @@ class Compiler {
     }
 
     /**
-     * @return void
+     * @param string $source
+     * @param string $destination
+     * @return string
      */
-    public function compile() {
+    public function getCommand($source, $destination) {
+        $command = str_replace('$source', $source, $this->command);
+        $command = str_replace('$destination', $destination, $command);
+
+        return $command;
+    }
+
+    /**
+     * @param string $source
+     * @param string $destination
+     * @throws CompilerException
+     */
+    public function compile($source, $destination) {
+        exec($this->getCommand($source, $destination), $output, $return);
+
+        if($return != 0) {
+            throw new CompilerException(implode(PHP_EOL, $output), 2001);
+        }
     }
 }

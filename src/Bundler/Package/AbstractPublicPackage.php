@@ -86,11 +86,13 @@ abstract class AbstractPublicPackage extends AbstractPackage {
         if(!is_null($this->getCompilers())) {
             foreach($this->getCompilers() as $compiler) {
                 copy($this->getDestinationMin(), $tempFilename);
+
+                $this->logInfo($compiler->getCommand($tempFilename, $this->getDestinationMin()));
                 $compiler->compile($tempFilename, $this->getDestinationMin());
             }
         }
 
-        unlink($tempFilename);
+        @unlink($tempFilename);
 
         $this->logDebug("created file: {$this->getDestinationMax()}");
         $this->logDebug("created file: {$this->getDestinationMin()}");

@@ -1,7 +1,7 @@
 <?php
 namespace Bundler;
 
-use Bundler\Compiler\CompilerFactory;
+use Bundler\Compiler\Compiler;
 use Bundler\Config\StylesheetConfig;
 use Bundler\Package\PackageInterface;
 use Bundler\Package\StylesheetPackage;
@@ -44,8 +44,8 @@ class StylesheetBundler extends AbstractBundler {
         $package->setLogger($this->getLogger());
         $package->setConsoleOutput($this->getConsoleOutput());
 
-        foreach($configuration['compilers'] as $compilerType => $compilerConfig) {
-            $package->addCompiler(CompilerFactory::create($compilerType, $compilerConfig));
+        foreach($configuration['compilers'] as $command) {
+            $package->addCompiler(new Compiler($command));
         }
 
         return $package;
