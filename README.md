@@ -1,6 +1,7 @@
 # bundler
 
 [![Build Status](https://travis-ci.org/elnebuloso/bundler.svg?branch=master)](https://travis-ci.org/elnebuloso/bundler)
+[![Coverage Status](https://img.shields.io/coveralls/elnebuloso/bundler.svg)](https://coveralls.io/r/elnebuloso/bundler?branch=master)
 [![License](https://poser.pugx.org/elnebuloso/bundler/license.svg)](https://packagist.org/packages/elnebuloso/bundler)
 
 bundle your project files, your stylesheets and your javascripts
