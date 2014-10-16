@@ -16,6 +16,7 @@ bundle your project files, your stylesheets and your javascripts
 
 see demo yaml files under ./bundler
 
+ * documentation of each setting can be found in the demo yaml files
  * all include / exclude definitions are regular expressions
  * compilers are stackable, use any compiler that works with input / output file
 
