@@ -32,7 +32,7 @@ The following versions of PHP are supported by this version.
  * create file .bundler/stylesheet.yaml for bundling stylesheets
  * create file .bundler/javascript.yaml for bundling javascripts
 
-### usage
+### examples
 
 see demo yaml files under ./bundler
 
@@ -46,3 +46,25 @@ see demo yaml files under ./bundler
  * ./vendor/bin/bundler files [--help]
  * ./vendor/bin/bundler stylesheet [--help]
  * ./vendor/bin/bundler javascript [--help]
+
+## rendering markup (examples)
+
+ * see public/index.php for examples
+
+``` php
+$stylesheetMarkup = new Bundler\Markup\StylesheetMarkup();
+$stylesheetMarkup->setDevelopment(true);
+$stylesheetMarkup->setMinified(true);
+$stylesheetMarkup->setVersionized(true);
+
+echo $stylesheetMarkup->getMarkup('stylesheetFoo');
+```
+
+``` php
+$javascriptMarkup = new Bundler\Markup\JavascriptMarkup();
+$javascriptMarkup->setDevelopment(true);
+$javascriptMarkup->setMinified(true);
+$javascriptMarkup->setVersionized(true);
+
+echo $javascriptMarkup->getMarkup('javascriptFoo');
+```
