@@ -10,7 +10,7 @@ Via Composer
 ``` json
 {
     "require-dev": {
-        "elnebuloso/bundler": "~7.0"
+        "elnebuloso/bundler": "~7.1"
     }
 }
 ```
