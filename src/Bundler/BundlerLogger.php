@@ -71,7 +71,7 @@ class BundlerLogger {
         }
 
         if(!is_null($this->getConsoleOutput())) {
-            $this->consoleOutput->writeln("<info>>>>" . $message . "</info>");
+            $this->consoleOutput->writeln("<info>>>> " . $message . "</info>");
         }
     }
 }
