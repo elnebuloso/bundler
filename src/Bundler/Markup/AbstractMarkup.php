@@ -145,7 +145,7 @@ abstract class AbstractMarkup {
         $filename = $this->getHost() . $cache[$package][$type];
 
         if($this->getVersionized()) {
-            $filename .= 'v=' . $cache[$package]['md5'];
+            $filename .= '?v=' . $cache[$package]['md5'];
         }
 
         return array($filename);

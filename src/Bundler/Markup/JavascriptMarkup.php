@@ -26,7 +26,7 @@ class JavascriptMarkup extends AbstractMarkup {
     }
 
     /**
-     * @param $packageName
+     * @param string $packageName
      * @return string
      */
     public function getMarkup($packageName) {

@@ -21,7 +21,7 @@ $stylesheetMarkup->setVersionized(true);
 $javascriptMarkup = new JavascriptMarkup();
 $javascriptMarkup->setDevelopment(true);
 $javascriptMarkup->setMinified(true);
-$stylesheetMarkup->setVersionized(true);
+$javascriptMarkup->setVersionized(true);
 ?>
 
 <!DOCTYPE html>
