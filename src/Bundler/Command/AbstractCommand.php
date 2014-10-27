@@ -66,7 +66,7 @@ abstract class AbstractCommand extends Command {
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
         $bundler = $this->getBundler();
-        $bundler->setConsoleOutput($output);
+        $bundler->getBundlerLogger()->setConsoleOutput($output);
         $bundler->bundle();
     }
 

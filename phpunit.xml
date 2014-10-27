@@ -2,20 +2,19 @@
 
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.1/phpunit.xsd" backupGlobals="false" colors="true" bootstrap="vendor/autoload.php">
     <testsuites>
-        <testsuite name="Bundler Test Suite">
-            <directory>./tests/</directory>
+        <testsuite name="Test Suite">
+            <directory suffix="Test.php">./tests/</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
-            <directory>./</directory>
+            <directory suffix=".php">./</directory>
             <exclude>
                 <directory>./.bundler</directory>
                 <directory>./bin</directory>
                 <directory>./build</directory>
                 <directory>./public</directory>
-                <directory>./resources</directory>
                 <directory>./tests</directory>
                 <directory>./vendor</directory>
             </exclude>

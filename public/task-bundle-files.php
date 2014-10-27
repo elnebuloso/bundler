@@ -20,5 +20,5 @@ $logger = new Zend\Log\Logger();
 $logger->addWriter($writer);
 
 $bundler = new FileBundler('.bundler/files.yaml');
-$bundler->setLogger($logger);
+$bundler->getBundlerLogger()->setLogger($logger);
 $bundler->bundle();

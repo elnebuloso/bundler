@@ -41,8 +41,7 @@ class FileBundler extends AbstractBundler {
         $package->setIncludes($configuration['include']);
         $package->setExcludes($configuration['exclude']);
         $package->setVersion($configuration['version']);
-        $package->setLogger($this->getLogger());
-        $package->setConsoleOutput($this->getConsoleOutput());
+        $package->setBundlerLogger($this->getBundlerLogger());
 
         return $package;
     }

@@ -20,5 +20,5 @@ $logger = new Zend\Log\Logger();
 $logger->addWriter($writer);
 
 $bundler = new StylesheetBundler('.bundler/stylesheet.yaml');
-$bundler->setLogger($logger);
+$bundler->getBundlerLogger()->setLogger($logger);
 $bundler->bundle();

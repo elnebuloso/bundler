@@ -1,10 +1,29 @@
 # bundler
 
-[![Build Status](https://travis-ci.org/elnebuloso/bundler.svg?branch=master)](https://travis-ci.org/elnebuloso/bundler)
-[![Coverage Status](https://img.shields.io/coveralls/elnebuloso/bundler.svg)](https://coveralls.io/r/elnebuloso/bundler?branch=master)
-[![License](https://poser.pugx.org/elnebuloso/bundler/license.svg)](https://packagist.org/packages/elnebuloso/bundler)
+[![Build Status](https://img.shields.io/travis/elnebuloso/bundler/master.svg?style=flat-square)](https://travis-ci.org/elnebuloso/bundler)
+[![Software License](https://img.shields.io/packagist/l/elnebuloso/bundler.svg?style=flat-square)](LICENSE)
 
-bundle your project files, your stylesheets and your javascripts
+## Installation / Usage
+
+Via Composer
+
+``` json
+{
+    "require-dev": {
+        "elnebuloso/bundler": "~7.0"
+    }
+}
+```
+
+## Requirements
+
+The following versions of PHP are supported by this version.
+
+* PHP 5.3
+* PHP 5.4
+* PHP 5.5
+* PHP 5.6
+* HHVM
 
 ## usage
 
@@ -21,7 +40,7 @@ see demo yaml files under ./bundler
  * all include / exclude definitions are regular expressions
  * compilers are stackable, use any compiler that works with input / output file
 
-## commands (used as composer package)
+### commands (used as composer package)
 
  * ./vendor/bin/bundler
  * ./vendor/bin/bundler files [--help]

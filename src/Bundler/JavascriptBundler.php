@@ -41,8 +41,7 @@ class JavascriptBundler extends AbstractBundler {
         $package->setTarget($configuration['target']);
         $package->setPublic($configuration['public']);
         $package->setIncludes($configuration['include']);
-        $package->setLogger($this->getLogger());
-        $package->setConsoleOutput($this->getConsoleOutput());
+        $package->setBundlerLogger($this->getBundlerLogger());
 
         foreach($configuration['compilers'] as $command) {
             $package->addCompiler(new Compiler($command));

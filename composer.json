@@ -26,9 +26,6 @@
         "symfony\/filesystem": "~2.5",
         "zendframework\/zend-log": "~2.3"
     },
-    "require-dev": {
-        "satooshi\/php-coveralls": "dev-master"
-    },
     "autoload": {
         "psr-0": {
             "Bundler\\": "src\/"
