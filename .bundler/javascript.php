@@ -1,7 +1,7 @@
 <?php return array (
   'javascriptFoo' => 
   array (
-    'md5' => '06f28844cf5ac3aa4f32e1cefa6da4bb',
+    'md5' => 'cf1c4502fb665807b78f2f1ea6619f81',
     'max' => 'js/javascriptFoo.max.js',
     'min' => 'js/javascriptFoo.min.js',
   ),
