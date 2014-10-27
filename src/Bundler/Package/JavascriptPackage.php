@@ -28,7 +28,7 @@ class JavascriptPackage extends AbstractPublicPackage {
      * @return void
      */
     protected function bundlePackage() {
-        $this->logDebug("compressing files to single file");
+        $this->getBundlerLogger()->logDebug("compressing files to single file");
 
         $benchmark = new Benchmark();
         $benchmark->start();
@@ -37,13 +37,13 @@ class JavascriptPackage extends AbstractPublicPackage {
 
         foreach($this->getSelectedFiles() as $sourceFile) {
             $content[] = file_get_contents($sourceFile);
-            $this->logDebug("- {$sourceFile}");
+            $this->getBundlerLogger()->logDebug("- {$sourceFile}");
         }
 
         $this->compressContent($content);
 
         $benchmark->stop();
 
-        $this->logDebug("compressing files to single file in {$benchmark->getTime()} seconds");
+        $this->getBundlerLogger()->logDebug("compressing files to single file in {$benchmark->getTime()} seconds");
     }
 }

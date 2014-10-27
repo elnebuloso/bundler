@@ -29,7 +29,7 @@ class StylesheetPackage extends AbstractPublicPackage {
      * @return void
      */
     protected function bundlePackage() {
-        $this->logDebug("compressing files to single file");
+        $this->getBundlerLogger()->logDebug("compressing files to single file");
 
         $benchmark = new Benchmark();
         $benchmark->start();
@@ -45,14 +45,14 @@ class StylesheetPackage extends AbstractPublicPackage {
             $css = $this->changeCssUrls($path, $css);
 
             $content[] = $css;
-            $this->logDebug('- ' . $sourceFile);
+            $this->getBundlerLogger()->logDebug('- ' . $sourceFile);
         }
 
         $this->compressContent($content);
 
         $benchmark->stop();
 
-        $this->logDebug("compressing files to single file in {$benchmark->getTime()} seconds");
+        $this->getBundlerLogger()->logDebug("compressing files to single file in {$benchmark->getTime()} seconds");
     }
 
     /**

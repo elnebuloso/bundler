@@ -1,10 +1,9 @@
 <?php
 namespace Bundler\Package;
 
+use Bundler\BundlerLogger;
 use Bundler\FileSystem\FileSelector;
 use Bundler\Tools\Benchmark;
-use Symfony\Component\Console\Output\OutputInterface;
-use Zend\Log\LoggerInterface;
 
 /**
  * Class AbstractPackage
@@ -12,6 +11,11 @@ use Zend\Log\LoggerInterface;
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
 abstract class AbstractPackage implements PackageInterface {
+
+    /**
+     * @var BundlerLogger
+     */
+    private $bundlerLogger;
 
     /**
      * @var string
@@ -39,16 +43,6 @@ abstract class AbstractPackage implements PackageInterface {
     private $excludes;
 
     /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @var OutputInterface
-     */
-    private $consoleOutput;
-
-    /**
      * @var FileSelector
      */
     private $fileSelector;
@@ -60,6 +54,21 @@ abstract class AbstractPackage implements PackageInterface {
         $this->includes = array();
         $this->excludes = array();
         $this->fileSelector = new FileSelector();
+        $this->bundlerLogger = new BundlerLogger();
+    }
+
+    /**
+     * @param BundlerLogger $bundlerLogger
+     */
+    public function setBundlerLogger(BundlerLogger $bundlerLogger) {
+        $this->bundlerLogger = $bundlerLogger;
+    }
+
+    /**
+     * @return BundlerLogger
+     */
+    public function getBundlerLogger() {
+        return $this->bundlerLogger;
     }
 
     /**
@@ -143,62 +152,10 @@ abstract class AbstractPackage implements PackageInterface {
     }
 
     /**
-     * @param LoggerInterface $logger
-     */
-    public function setLogger($logger = null) {
-        $this->logger = $logger;
-    }
-
-    /**
-     * @return LoggerInterface
-     */
-    public function getLogger() {
-        return $this->logger;
-    }
-
-    /**
-     * @param OutputInterface $consoleOutput
-     */
-    public function setConsoleOutput($consoleOutput = null) {
-        $this->consoleOutput = $consoleOutput;
-    }
-
-    /**
-     * @return OutputInterface
-     */
-    public function getConsoleOutput() {
-        return $this->consoleOutput;
-    }
-
-    /**
-     * @param string $message
-     */
-    public function logInfo($message) {
-        if(!is_null($this->getLogger())) {
-            $this->logger->info($message);
-        }
-        elseif(!is_null($this->getConsoleOutput())) {
-            $this->consoleOutput->writeln("<comment>" . $message . "</comment>");
-        }
-    }
-
-    /**
-     * @param string $message
-     */
-    public function logDebug($message) {
-        if(!is_null($this->getLogger())) {
-            $this->logger->debug($message);
-        }
-        elseif(!is_null($this->getConsoleOutput())) {
-            $this->consoleOutput->writeln("  <info>" . $message . "</info>");
-        }
-    }
-
-    /**
      * @return void
      */
     public function selectFiles() {
-        $this->logDebug("selecting files");
+        $this->getBundlerLogger()->logDebug("selecting files");
 
         $benchmark = new Benchmark();
         $benchmark->start();
@@ -211,7 +168,7 @@ abstract class AbstractPackage implements PackageInterface {
 
         $benchmark->stop();
 
-        $this->logDebug("selecting files: {$this->getSelectedFilesCount()} files in {$benchmark->getTime()} seconds");
+        $this->getBundlerLogger()->logDebug("selecting files: {$this->getSelectedFilesCount()} files in {$benchmark->getTime()} seconds");
     }
 
     /**
@@ -232,7 +189,7 @@ abstract class AbstractPackage implements PackageInterface {
      * @return void
      */
     public function bundle() {
-        $this->logInfo("bundling package: {$this->getName()}");
+        $this->getBundlerLogger()->logInfo("bundling package: {$this->getName()}");
 
         $benchmark = new Benchmark();
         $benchmark->start();
@@ -242,7 +199,7 @@ abstract class AbstractPackage implements PackageInterface {
 
         $benchmark->stop();
 
-        $this->logInfo("bundling package: {$this->getName()} in {$benchmark->getTime()} seconds");
+        $this->getBundlerLogger()->logInfo("bundling package: {$this->getName()} in {$benchmark->getTime()} seconds");
     }
 
     /**

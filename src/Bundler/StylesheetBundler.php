@@ -65,7 +65,7 @@ class StylesheetBundler extends AbstractBundler {
         $cache = array();
         $cacheFilename = dirname($this->getYaml()) . '/stylesheet.php';
 
-        $this->logDebug("creating cache file: " . $cacheFilename);
+        $this->getBundlerLogger()->logDebug("creating cache file: " . $cacheFilename);
 
         foreach($this->getPackages() as $package) {
             /** @var StylesheetPackage $package */

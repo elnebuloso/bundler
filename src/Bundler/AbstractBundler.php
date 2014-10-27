@@ -5,9 +5,7 @@ use Bundler\Package\PackageInterface;
 use Bundler\Tools\Benchmark;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Processor;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Yaml\Yaml;
-use Zend\Log\LoggerInterface;
 
 /**
  * Class AbstractBundler
@@ -15,6 +13,11 @@ use Zend\Log\LoggerInterface;
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
 abstract class AbstractBundler implements BundlerInterface {
+
+    /**
+     * @var BundlerLogger
+     */
+    private $bundlerLogger;
 
     /**
      * @var string
@@ -25,16 +28,6 @@ abstract class AbstractBundler implements BundlerInterface {
      * @var string
      */
     private $root;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @var OutputInterface
-     */
-    private $consoleOutput;
 
     /**
      * @var PackageInterface[]
@@ -52,6 +45,7 @@ abstract class AbstractBundler implements BundlerInterface {
      * @throws BundlerException
      */
     public function __construct($yaml, $root = null) {
+        $this->bundlerLogger = new BundlerLogger();
         $this->yaml = realpath($yaml);
 
         if($this->yaml === false) {
@@ -69,6 +63,20 @@ abstract class AbstractBundler implements BundlerInterface {
     }
 
     /**
+     * @param BundlerLogger $bundlerLogger
+     */
+    public function setBundlerLogger(BundlerLogger $bundlerLogger) {
+        $this->bundlerLogger = $bundlerLogger;
+    }
+
+    /**
+     * @return BundlerLogger
+     */
+    public function getBundlerLogger() {
+        return $this->bundlerLogger;
+    }
+
+    /**
      * @return string
      */
     public function getYaml() {
@@ -80,34 +88,6 @@ abstract class AbstractBundler implements BundlerInterface {
      */
     public function getRoot() {
         return $this->root;
-    }
-
-    /**
-     * @param LoggerInterface $logger
-     */
-    public function setLogger($logger = null) {
-        $this->logger = $logger;
-    }
-
-    /**
-     * @return LoggerInterface
-     */
-    public function getLogger() {
-        return $this->logger;
-    }
-
-    /**
-     * @param OutputInterface $consoleOutput
-     */
-    public function setConsoleOutput($consoleOutput = null) {
-        $this->consoleOutput = $consoleOutput;
-    }
-
-    /**
-     * @return OutputInterface
-     */
-    public function getConsoleOutput() {
-        return $this->consoleOutput;
     }
 
     /**
@@ -133,30 +113,6 @@ abstract class AbstractBundler implements BundlerInterface {
     }
 
     /**
-     * @param string $message
-     */
-    public function logInfo($message) {
-        if(!is_null($this->getLogger())) {
-            $this->logger->info($message);
-        }
-        elseif(!is_null($this->getConsoleOutput())) {
-            $this->consoleOutput->writeln("<comment>" . $message . "</comment>");
-        }
-    }
-
-    /**
-     * @param string $message
-     */
-    public function logDebug($message) {
-        if(!is_null($this->getLogger())) {
-            $this->logger->debug($message);
-        }
-        elseif(!is_null($this->getConsoleOutput())) {
-            $this->consoleOutput->writeln("  <info>" . $message . "</info>");
-        }
-    }
-
-    /**
      * @return void
      */
     public function configure() {
@@ -179,7 +135,7 @@ abstract class AbstractBundler implements BundlerInterface {
             $this->configure();
         }
 
-        $this->logInfo($this->getName());
+        $this->getBundlerLogger()->logInfo($this->getName());
 
         $benchmark = new Benchmark();
         $benchmark->start();
@@ -194,7 +150,7 @@ abstract class AbstractBundler implements BundlerInterface {
 
         $benchmark->stop();
 
-        $this->logInfo("{$this->getName()} in {$benchmark->getTime()} seconds");
+        $this->getBundlerLogger()->logInfo("{$this->getName()} in {$benchmark->getTime()} seconds");
     }
 
     /**

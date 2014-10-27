@@ -92,7 +92,7 @@ class FilePackage extends AbstractPackage {
     private function cleanupTargetDirectory() {
         $targetDirectory = $this->getTargetDirectory();
 
-        $this->logDebug("cleanup target directory: {$targetDirectory}");
+        $this->getBundlerLogger()->logDebug("cleanup target directory: {$targetDirectory}");
 
         $benchmark = new Benchmark();
         $benchmark->start();
@@ -105,14 +105,14 @@ class FilePackage extends AbstractPackage {
 
         $benchmark->stop();
 
-        $this->logDebug("cleanup target directory: {$targetDirectory} in {$benchmark->getTime()} seconds");
+        $this->getBundlerLogger()->logDebug("cleanup target directory: {$targetDirectory} in {$benchmark->getTime()} seconds");
     }
 
     /**
      * @return void
      */
     private function bundleFiles() {
-        $this->logDebug("bundle files");
+        $this->getBundlerLogger()->logDebug("bundle files");
 
         $benchmark = new Benchmark();
         $benchmark->start();
@@ -127,12 +127,12 @@ class FilePackage extends AbstractPackage {
             $fileCopy->copyFile($sourceFile, $targetFile);
 
             $number = str_pad($i, strlen($total), '0', STR_PAD_LEFT);
-            $this->logDebug("{$number} / {$total} {$targetFile}");
+            $this->getBundlerLogger()->logDebug("{$number} / {$total} {$targetFile}");
             $i++;
         }
 
         $benchmark->stop();
 
-        $this->logDebug("bundle files {$total} in {$benchmark->getTime()} seconds");
+        $this->getBundlerLogger()->logDebug("bundle files {$total} in {$benchmark->getTime()} seconds");
     }
 }

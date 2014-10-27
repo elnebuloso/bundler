@@ -87,22 +87,22 @@ abstract class AbstractPublicPackage extends AbstractPackage {
             foreach($this->getCompilers() as $compiler) {
                 copy($this->getDestinationMin(), $tempFilename);
 
-                $this->logInfo($compiler->getCommand($tempFilename, $this->getDestinationMin()));
+                $this->getBundlerLogger()->logInfo($compiler->getCommand($tempFilename, $this->getDestinationMin()));
                 $compiler->compile($tempFilename, $this->getDestinationMin());
             }
         }
 
         @unlink($tempFilename);
 
-        $this->logDebug("created file: {$this->getDestinationMax()}");
-        $this->logDebug("created file: {$this->getDestinationMin()}");
+        $this->getBundlerLogger()->logDebug("created file: {$this->getDestinationMax()}");
+        $this->getBundlerLogger()->logDebug("created file: {$this->getDestinationMin()}");
 
         $org = strlen(file_get_contents($this->getDestinationMax()));
         $new = strlen(file_get_contents($this->getDestinationMin()));
         $ratio = !empty($org) ? $new / $org : 0;
 
-        $this->logDebug("org:   {$org} bytes");
-        $this->logDebug("new:   {$new} bytes");
-        $this->logDebug("ratio: {$ratio}");
+        $this->getBundlerLogger()->logDebug("org:   {$org} bytes");
+        $this->getBundlerLogger()->logDebug("new:   {$new} bytes");
+        $this->getBundlerLogger()->logDebug("ratio: {$ratio}");
     }
 }

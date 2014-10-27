@@ -2,8 +2,6 @@
 namespace Bundler;
 
 use Bundler\Package\PackageInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Zend\Log\LoggerInterface;
 
 /**
  * Class Bundler
@@ -17,6 +15,11 @@ interface BundlerInterface {
      * @param string $root
      */
     public function __construct($yaml, $root = null);
+
+    /**
+     * @return BundlerLogger
+     */
+    public function getBundlerLogger();
 
     /**
      * @return string
@@ -34,26 +37,6 @@ interface BundlerInterface {
     public function getRoot();
 
     /**
-     * @param LoggerInterface $logger
-     */
-    public function setLogger($logger = null);
-
-    /**
-     * @return LoggerInterface
-     */
-    public function getLogger();
-
-    /**
-     * @param OutputInterface $output
-     */
-    public function setConsoleOutput($output = null);
-
-    /**
-     * @return OutputInterface
-     */
-    public function getConsoleOutput();
-
-    /**
      * @param PackageInterface $package
      */
     public function addPackage(PackageInterface $package);
@@ -68,16 +51,6 @@ interface BundlerInterface {
      * @return PackageInterface|null
      */
     public function getPackageByName($name);
-
-    /**
-     * @param string $message
-     */
-    public function logInfo($message);
-
-    /**
-     * @param string $message
-     */
-    public function logDebug($message);
 
     /**
      * @return void

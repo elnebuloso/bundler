@@ -65,7 +65,7 @@ class JavascriptBundler extends AbstractBundler {
         $cache = array();
         $cacheFilename = dirname($this->getYaml()) . '/javascript.php';
 
-        $this->logDebug("creating cache file: " . $cacheFilename);
+        $this->getBundlerLogger()->logDebug("creating cache file: " . $cacheFilename);
 
         foreach($this->getPackages() as $package) {
             /** @var JavascriptPackage $package */
