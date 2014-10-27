@@ -55,5 +55,10 @@ interface BundlerInterface {
     /**
      * @return void
      */
+    public function configure();
+
+    /**
+     * @return void
+     */
     public function bundle();
 }

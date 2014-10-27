@@ -1,12 +1,29 @@
 <?php
 namespace Bundler\Markup;
 
+use Bundler\BundlerInterface;
+use Bundler\JavascriptBundler;
+
 /**
  * Class JavascriptMarkup
  *
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
 class JavascriptMarkup extends AbstractMarkup {
+
+    /**
+     * @return BundlerInterface
+     */
+    protected function getBundler() {
+        return new JavascriptBundler($this->getBundlerDirectory() . '/javascript.yaml');
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCacheFilename() {
+        return $this->getBundlerDirectory() . '/javascript.php';
+    }
 
     /**
      * @param $packageName

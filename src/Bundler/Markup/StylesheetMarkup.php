@@ -1,12 +1,29 @@
 <?php
 namespace Bundler\Markup;
 
+use Bundler\BundlerInterface;
+use Bundler\StylesheetBundler;
+
 /**
  * Class StylesheetMarkup
  *
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
 class StylesheetMarkup extends AbstractMarkup {
+
+    /**
+     * @return BundlerInterface
+     */
+    protected function getBundler() {
+        return new StylesheetBundler($this->getBundlerDirectory() . '/stylesheet.yaml');
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCacheFilename() {
+        return $this->getBundlerDirectory() . '/stylesheet.php';
+    }
 
     /**
      * @param string $packageName

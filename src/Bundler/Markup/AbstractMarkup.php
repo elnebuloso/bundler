@@ -1,8 +1,7 @@
 <?php
 namespace Bundler\Markup;
 
-use Bundler\JavascriptBundler;
-use Bundler\StylesheetBundler;
+use Bundler\BundlerInterface;
 
 /**
  * Class AbstractMarkup
@@ -22,17 +21,17 @@ abstract class AbstractMarkup {
     private $host;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $minified;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $development;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $versionized;
 
@@ -76,49 +75,49 @@ abstract class AbstractMarkup {
     }
 
     /**
-     * @param boolean $minified
+     * @param bool $minified
      */
     public function setMinified($minified) {
         $this->minified = $minified;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getMinified() {
         return $this->minified;
     }
 
     /**
-     * @param boolean $development
+     * @param bool $development
      */
     public function setDevelopment($development) {
         $this->development = $development;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getDevelopment() {
         return $this->development;
     }
 
     /**
-     * @param boolean $versionized
+     * @param bool $versionized
      */
     public function setVersionized($versionized) {
         $this->versionized = $versionized;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getVersionized() {
         return $this->versionized;
     }
 
     /**
-     * @param $package
+     * @param string $package
      * @return array
      */
     protected function getFiles($package) {
@@ -131,26 +130,12 @@ abstract class AbstractMarkup {
     }
 
     /**
-     * @param $package
+     * @param string $package
      * @return array
      * @throws MarkupException
      */
     private function getFilesCached($package) {
-        $cacheFilename = null;
-
-        if($this instanceof JavascriptMarkup) {
-            $cacheFilename = $this->getBundlerDirectory() . '/javascript.php';
-        }
-
-        if($this instanceof StylesheetMarkup) {
-            $cacheFilename = $this->getBundlerDirectory() . '/stylesheet.php';
-        }
-
-        if(is_null($cacheFilename)) {
-            throw new MarkupException('missing cache file', 4000);
-        }
-
-        $cache = include $cacheFilename;
+        $cache = include $this->getCacheFilename();
 
         if(!array_key_exists($package, $cache)) {
             throw new MarkupException('missing package in cache file', 4001);
@@ -167,27 +152,12 @@ abstract class AbstractMarkup {
     }
 
     /**
-     * @param $package
+     * @param string $package
      * @return array
      * @throws MarkupException
      */
     private function getFilesDevelopment($package) {
-        $bundler = null;
-
-        if($this instanceof JavascriptMarkup) {
-            $yaml = $this->getBundlerDirectory() . '/javascript.yaml';
-            $bundler = new JavascriptBundler($yaml);
-        }
-
-        if($this instanceof StylesheetMarkup) {
-            $yaml = $this->getBundlerDirectory() . '/stylesheet.yaml';
-            $bundler = new StylesheetBundler($yaml);
-        }
-
-        if(is_null($bundler)) {
-            throw new MarkupException('missing bundler definition');
-        }
-
+        $bundler = $this->getBundler();
         $bundler->configure();
 
         $package = $bundler->getPackageByName($package);
@@ -205,6 +175,16 @@ abstract class AbstractMarkup {
 
         return $files;
     }
+
+    /**
+     * @return BundlerInterface
+     */
+    abstract protected function getBundler();
+
+    /**
+     * @return string
+     */
+    abstract protected function getCacheFilename();
 
     /**
      * @param $packageName
