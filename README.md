@@ -46,7 +46,7 @@ see demo yaml files under ./bundler
  * all include / exclude definitions are regular expressions
  * compilers are stackable, use any compiler that works with input / output file
 
-### commands
+### commands (called in project root)
 
  * /path/to/your/bundler-installation/bin/bundler
  * /path/to/your/bundler-installation/bin/bundler files [--help]
