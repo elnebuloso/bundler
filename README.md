@@ -5,6 +5,12 @@
 
 ## Installation / Usage
 
+Global Project Installation
+
+```
+composer create-project elnebuloso/bundler /path/to/your/bundler-installation
+```
+
 Via Composer
 
 ``` json
@@ -40,12 +46,12 @@ see demo yaml files under ./bundler
  * all include / exclude definitions are regular expressions
  * compilers are stackable, use any compiler that works with input / output file
 
-### commands (used as composer package)
+### commands
 
- * ./vendor/bin/bundler
- * ./vendor/bin/bundler files [--help]
- * ./vendor/bin/bundler stylesheet [--help]
- * ./vendor/bin/bundler javascript [--help]
+ * /path/to/your/bundler-installation/bin/bundler
+ * /path/to/your/bundler-installation/bin/bundler files [--help]
+ * /path/to/your/bundler-installation/bin/bundler stylesheet [--help]
+ * /path/to/your/bundler-installation/bin/bundler javascript [--help]
 
 ## rendering markup (examples)
 

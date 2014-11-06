@@ -60,7 +60,7 @@ class StylesheetPackage extends AbstractPublicPackage {
      * @param $content
      * @return string
      */
-    private function changeCssUrls($baseUrl, $content) {
+    protected function changeCssUrls($baseUrl, $content) {
         preg_match_all('/url\(\s*[\'"]?\/?(.+?)[\'"]?\s*\)/i', $content, $matches);
 
         $from = array();

@@ -134,7 +134,7 @@ abstract class AbstractMarkup {
      * @return array
      * @throws MarkupException
      */
-    private function getFilesCached($package) {
+    protected function getFilesCached($package) {
         $cache = include $this->getCacheFilename();
 
         if(!array_key_exists($package, $cache)) {
@@ -156,7 +156,7 @@ abstract class AbstractMarkup {
      * @return array
      * @throws MarkupException
      */
-    private function getFilesDevelopment($package) {
+    protected function getFilesDevelopment($package) {
         $bundler = $this->getBundler();
         $bundler->configure();
 

@@ -53,7 +53,7 @@ class FilePackage extends AbstractPackage {
      * @param string $sourceFile
      * @return string
      */
-    private function getTargetFile($sourceFile) {
+    protected function getTargetFile($sourceFile) {
         return $this->getTargetDirectory() . DIRECTORY_SEPARATOR . str_replace($this->getRoot() . DIRECTORY_SEPARATOR, '', $sourceFile);
     }
 
@@ -61,7 +61,7 @@ class FilePackage extends AbstractPackage {
      * @return string
      * @throws PackageException
      */
-    private function getTargetDirectory() {
+    protected function getTargetDirectory() {
         if(realpath($this->getTarget()) === false) {
             throw new PackageException('wrong target directory: ' . $this->getTarget(), 5002);
         }
@@ -89,7 +89,7 @@ class FilePackage extends AbstractPackage {
     /**
      * @return void
      */
-    private function cleanupTargetDirectory() {
+    protected function cleanupTargetDirectory() {
         $targetDirectory = $this->getTargetDirectory();
 
         $this->getBundlerLogger()->logDebug("cleanup target directory: {$targetDirectory}");
@@ -111,7 +111,7 @@ class FilePackage extends AbstractPackage {
     /**
      * @return void
      */
-    private function bundleFiles() {
+    protected function bundleFiles() {
         $this->getBundlerLogger()->logDebug("bundle files");
 
         $benchmark = new Benchmark();

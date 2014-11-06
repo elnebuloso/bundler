@@ -203,7 +203,7 @@ class FileSelector {
      * @param string $pattern
      * @return array
      */
-    private function selectFiles($dir, $pattern) {
+    protected function selectFiles($dir, $pattern) {
         $dir = $this->optimizeFolder($dir, $pattern);
         $files = $this->scanFolder($dir);
         $fileList = array();
@@ -222,7 +222,7 @@ class FileSelector {
      * @param string $pattern
      * @return string
      */
-    private function optimizeFolder($dir, $pattern) {
+    protected function optimizeFolder($dir, $pattern) {
         $subFolders = explode(DIRECTORY_SEPARATOR, $pattern);
 
         foreach($subFolders as $subFolder) {
@@ -244,7 +244,7 @@ class FileSelector {
      * @param string $dir
      * @return array
      */
-    private function scanFolder($dir) {
+    protected function scanFolder($dir) {
         $files = array();
 
         foreach(scandir($dir) as $file) {
@@ -270,7 +270,7 @@ class FileSelector {
      * @param array $excludeFiles
      * @return array
      */
-    private function selectFilesToUse(array $includeFiles, array $excludeFiles) {
+    protected function selectFilesToUse(array $includeFiles, array $excludeFiles) {
         return array_diff($includeFiles, $excludeFiles);
     }
 }

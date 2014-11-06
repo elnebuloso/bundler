@@ -52,7 +52,7 @@ class FileCopy {
      * @param string $source
      * @param string $destination
      */
-    private function copyFileNative($source, $destination) {
+    protected function copyFileNative($source, $destination) {
         shell_exec("cp -r $source $destination");
     }
 
@@ -60,7 +60,7 @@ class FileCopy {
      * @param string $source
      * @param string $destination
      */
-    private function copyFilePhp($source, $destination) {
+    protected function copyFilePhp($source, $destination) {
         $sourceHandle = fopen($source, 'r');
         $destinationHandle = fopen($destination, 'w+');
 
