@@ -24,6 +24,16 @@ abstract class AbstractCommand extends Command {
     private $root;
 
     /**
+     * @var InputInterface
+     */
+    protected $input;
+
+    /**
+     * @var OutputInterface
+     */
+    protected $output;
+
+    /**
      * @param string $yaml
      */
     public function setYaml($yaml) {
@@ -65,6 +75,9 @@ abstract class AbstractCommand extends Command {
      * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
+        $this->input = $input;
+        $this->output = $output;
+
         $bundler = $this->getBundler();
         $bundler->getBundlerLogger()->setConsoleOutput($output);
         $bundler->bundle();
