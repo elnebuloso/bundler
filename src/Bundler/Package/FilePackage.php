@@ -97,10 +97,10 @@ class FilePackage extends AbstractPackage {
         $benchmark = new Benchmark();
         $benchmark->start();
 
-        $fs = new Filesystem();
+        $fileSystem = new Filesystem();
 
-        if($fs->exists($targetDirectory)) {
-            $fs->remove($targetDirectory);
+        if($fileSystem->exists($targetDirectory)) {
+            $fileSystem->remove($targetDirectory);
         }
 
         $benchmark->stop();

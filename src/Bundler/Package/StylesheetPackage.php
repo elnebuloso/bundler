@@ -34,11 +34,11 @@ class StylesheetPackage extends AbstractPublicPackage {
         $benchmark = new Benchmark();
         $benchmark->start();
 
-        $fs = new Filesystem();
+        $fileSystem = new Filesystem();
         $content = array();
 
         foreach($this->getSelectedFiles() as $sourceFile) {
-            $path = $fs->makePathRelative(dirname($sourceFile), dirname($this->getDestinationMax()));
+            $path = $fileSystem->makePathRelative(dirname($sourceFile), dirname($this->getDestinationMax()));
             $path = trim($path, '/');
 
             $css = file_get_contents($sourceFile);
