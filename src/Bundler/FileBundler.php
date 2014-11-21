@@ -14,10 +14,27 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 class FileBundler extends AbstractBundler {
 
     /**
+     * @var string
+     */
+    private $version;
+
+    /**
      * @return string
      */
     public function getName() {
         return 'File Bundler';
+    }
+
+    /**
+     * @param string $version
+     * @throws BundlerException
+     */
+    public function setVersion($version) {
+        $this->version = trim($version);
+
+        if(empty($this->version)) {
+            throw new BundlerException('empty version set');
+        }
     }
 
     /**
@@ -42,6 +59,11 @@ class FileBundler extends AbstractBundler {
         $package->setExcludes($configuration['exclude']);
         $package->setVersion($configuration['version']);
         $package->setBundlerLogger($this->getBundlerLogger());
+
+        // do we have a fixed version set, override the version from the files.yaml
+        if(!empty($this->version)) {
+            $package->setVersion($this->version);
+        }
 
         return $package;
     }

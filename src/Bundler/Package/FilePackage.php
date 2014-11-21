@@ -29,7 +29,7 @@ class FilePackage extends AbstractPackage {
      * @param string $version
      */
     public function setVersion($version) {
-        $this->version = $version;
+        $this->version = trim($version);
     }
 
     /**
@@ -76,6 +76,13 @@ class FilePackage extends AbstractPackage {
             case self::VERSION_TYPE_FILE:
                 if(($version = file_get_contents($this->getRoot() . '/VERSION'))) {
                     $targetDirectory[] = trim($version);
+                }
+                break;
+
+            // if version is not a special type, use the string set
+            default:
+                if(!empty($this->version)) {
+                    $targetDirectory[] = $this->version;
                 }
                 break;
         }

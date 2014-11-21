@@ -45,3 +45,13 @@ packages:
             - public/index.php$
             - VERSION$
         exclude:
+
+    # package name: barbaz
+    barbaz:
+        target: /var/builds/bundler
+        version: barbaz
+        include:
+            - public/.*
+            - public/index.php$
+            - VERSION$
+        exclude:

@@ -3,6 +3,7 @@ namespace Bundler\Command;
 
 use Bundler\BundlerInterface;
 use Bundler\FileBundler;
+use Symfony\Component\Console\Input\InputOption;
 
 /**
  * Class FileCommand
@@ -29,6 +30,18 @@ class FileCommand extends AbstractCommand {
      * @return BundlerInterface
      */
     protected function getBundler() {
-        return new FileBundler($this->getYaml());
+        $fileBundler = new FileBundler($this->getYaml());
+        $fileBundler->setVersion($this->input->getOption('folder'));
+
+        return $fileBundler;
+    }
+
+    /**
+     * @return void
+     */
+    protected function configure() {
+        $this->addOption('folder', 'folder', InputOption::VALUE_REQUIRED, 'name for version directory under target, overrides the version settings in files.yaml', null);
+
+        parent::configure();
     }
 }
