@@ -2,8 +2,7 @@
 <?php
 use Bundler\Command\FileCommand;
 use Bundler\Command\JavascriptCommand;
-use Bundler\Command\StylesheetCommand;
-use Symfony\Component\Console\Application;
+use Bundler\Command\StylesheetCommand;use Symfony\Component\Console\Application;
 
 // error reporting
 ini_set('error_reporting', E_ALL);
@@ -19,6 +18,7 @@ try {
     }
 
     // autoloading
+    /** @noinspection PhpIncludeInspection */
     require_once $autoloader;
 
     // this makes our life easier when dealing with paths.

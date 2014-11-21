@@ -13,6 +13,7 @@ ini_set('display_errors', 'on');
 chdir(dirname(__DIR__));
 
 // autoloading
+/** @noinspection PhpIncludeInspection */
 require_once 'vendor/autoload.php';
 
 $writer = new Zend\Log\Writer\Stream('php://output');
