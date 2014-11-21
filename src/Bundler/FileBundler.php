@@ -31,10 +31,6 @@ class FileBundler extends AbstractBundler {
      */
     public function setVersion($version) {
         $this->version = trim($version);
-
-        if(empty($this->version)) {
-            throw new BundlerException('empty version set');
-        }
     }
 
     /**
