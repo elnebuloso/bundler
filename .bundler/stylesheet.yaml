@@ -15,7 +15,7 @@ packages:
         # {source}  placeholder for source files
         # {destination} placeholder for destination files
         compilers:
-            - /var/www/resources/yuicompressor/yuicompressor --type css --line-break 5000 -o $destination $source
+            - yuicompressor --type css --line-break 5000 -o $destination $source
 
         # define include pattern (all relative under public directory)
         include:
@@ -28,7 +28,7 @@ packages:
         public: public
         target: css
         compilers:
-            - /var/www/resources/yuicompressor/yuicompressor --type css --line-break 5000 -o $destination $source
+            - yuicompressor --type css --line-break 5000 -o $destination $source
         include:
             - css/base.css$
             - vendor/twitter/bootstrap/3.1.0/css/bootstrap.css$
