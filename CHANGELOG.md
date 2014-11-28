@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## TODO for 8.0.0
+
+- all configuration files as php files
+- javascript.php
+- javascript.cache.php
+- stylesheet.php
+- stylesheet.cache.php
+- extract bundler-markup????
+
 ## 7.2.0
 
 - added possibility for setting the version / folder name in the console command by using optional --folder
