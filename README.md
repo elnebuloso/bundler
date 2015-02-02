@@ -47,7 +47,6 @@ The following versions of PHP are supported by this version.
 see demo files under ./bundler
 
 - documentation of each setting can be found in the demo files
-- all include / exclude definitions are regular expressions
 - compilers are stackable, use any compiler that works with input / output file
 
 ### commands (called in project root)
