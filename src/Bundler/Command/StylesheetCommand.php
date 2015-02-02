@@ -29,6 +29,6 @@ class StylesheetCommand extends AbstractCommand {
      * @return BundlerInterface
      */
     protected function getBundler() {
-        return new StylesheetBundler($this->getYaml());
+        return new StylesheetBundler($this->getFile());
     }
 }

@@ -16,7 +16,7 @@ abstract class AbstractCommand extends Command {
     /**
      * @var string
      */
-    private $yaml;
+    private $file;
 
     /**
      * @var string
@@ -34,17 +34,17 @@ abstract class AbstractCommand extends Command {
     protected $output;
 
     /**
-     * @param string $yaml
+     * @param string $file
      */
-    public function setYaml($yaml) {
-        $this->yaml = $yaml;
+    public function setFile($file) {
+        $this->file = $file;
     }
 
     /**
      * @return string
      */
-    public function getYaml() {
-        return $this->yaml;
+    public function getFile() {
+        return $this->file;
     }
 
     /**

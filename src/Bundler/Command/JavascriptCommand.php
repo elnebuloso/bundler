@@ -29,6 +29,6 @@ class JavascriptCommand extends AbstractCommand {
      * @return BundlerInterface
      */
     protected function getBundler() {
-        return new JavascriptBundler($this->getYaml());
+        return new JavascriptBundler($this->getFile());
     }
 }
