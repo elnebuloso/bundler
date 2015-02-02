@@ -1,40 +1,40 @@
 <?php
 return array(
 
-    # package name: javascriptFoo
-    'javascriptFoo' => array(
+    # package name: stylesheetFoo
+    'stylesheetFoo' => array(
         # public directory, relative to the root from which the files are collected
         'public' => 'public',
 
         # folder under the public directory
-        'target' => 'js',
+        'target' => 'css',
 
         # compiler command to compress / minify / etc. source files to destination files
         # you can stack multiple compilers which are called after another
         # %source%  placeholder for source files
         # %destination% placeholder for destination files
         'compilers' => array(
-            'google-closure-compiler --compilation_level=WHITESPACE_ONLY --warning_level=QUIET --js=%source% --js_output_file=%destination%'
+            'yuicompressor --type css --line-break 5000 -o %source% %destination%'
         ),
 
         # define includes (all relative under public directory)
         'include' => array(
-            'vendor/jquery/jquery/1.11.0/jquery-1.11.0.js',
-            'vendor/twitter/bootstrap/3.1.0/js/bootstrap.js'
+            'vendor/twitter/bootstrap/3.1.0/css/bootstrap.css',
+            'vendor/twitter/bootstrap/3.1.0/css/bootstrap-theme.css'
         )
     ),
 
-    # package name: javascriptBar
-    'javascriptBar' => array(
+    # package name: stylesheetBar
+    'stylesheetBar' => array(
         'public' => 'public',
-        'target' => 'js',
+        'target' => 'css',
         'compilers' => array(
-            'google-closure-compiler --compilation_level=WHITESPACE_ONLY --warning_level=QUIET --js=%source% --js_output_file=%destination%'
+            'yuicompressor --type css --line-break 5000 -o %source% %destination%'
         ),
         'include' => array(
-            'vendor/jquery/jquery/1.11.0/jquery-1.11.0.js',
-            'vendor/twitter/bootstrap/3.1.0/js/bootstrap.js',
-            'js/document.ready.js'
+            'vendor/twitter/bootstrap/3.1.0/css/bootstrap.css',
+            'vendor/twitter/bootstrap/3.1.0/css/bootstrap-theme.css',
+            'css/base.css'
         )
     )
 );

@@ -36,6 +36,7 @@ class JavascriptPackage extends AbstractPublicPackage {
         $content = array();
 
         foreach($this->getIncludes() as $sourceFile) {
+            $sourceFile = realpath($this->getRoot() . '/' . $sourceFile);
             $content[] = file_get_contents($sourceFile);
             $this->getBundlerLogger()->logDebug("- {$sourceFile}");
         }

@@ -17,19 +17,29 @@ interface BundlerInterface {
     public function __construct($file, $root = null);
 
     /**
+     * @param BundlerLogger $bundlerLogger
+     */
+    public function setBundlerLogger(BundlerLogger $bundlerLogger);
+
+    /**
      * @return BundlerLogger
      */
     public function getBundlerLogger();
 
     /**
-     * @return string
+     * @param $file
      */
-    public function getName();
+    public function setFile($file);
 
     /**
      * @return string
      */
     public function getFile();
+
+    /**
+     * @param $root
+     */
+    public function setRoot($root);
 
     /**
      * @return string
@@ -42,15 +52,25 @@ interface BundlerInterface {
     public function addPackage(PackageInterface $package);
 
     /**
+     * @param string $name
+     * @return PackageInterface|null
+     */
+    public function getPackageByName($name);
+
+    /**
      * @return PackageInterface[]
      */
     public function getPackages();
 
     /**
-     * @param string $name
-     * @return PackageInterface|null
+     * @return void
      */
-    public function getPackageByName($name);
+    public function configure();
+
+    /**
+     * @return string
+     */
+    public function getName();
 
     /**
      * @return void

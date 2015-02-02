@@ -31,8 +31,8 @@ class Compiler {
      * @return string
      */
     public function getCommand($source, $destination) {
-        $command = str_replace('$source', $source, $this->command);
-        $command = str_replace('$destination', $destination, $command);
+        $command = str_replace('%source%', $source, $this->command);
+        $command = str_replace('%destination%', $destination, $command);
 
         return $command;
     }

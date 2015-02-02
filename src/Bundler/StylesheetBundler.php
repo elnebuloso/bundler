@@ -2,10 +2,8 @@
 namespace Bundler;
 
 use Bundler\Compiler\Compiler;
-use Bundler\Config\StylesheetConfig;
 use Bundler\Package\PackageInterface;
 use Bundler\Package\StylesheetPackage;
-use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
  * Class StylesheetBundler
@@ -19,13 +17,6 @@ class StylesheetBundler extends AbstractBundler {
      */
     public function getName() {
         return 'Stylesheet Bundler';
-    }
-
-    /**
-     * @return ConfigurationInterface
-     */
-    protected function getConfiguration() {
-        return new StylesheetConfig();
     }
 
     /**
@@ -62,7 +53,7 @@ class StylesheetBundler extends AbstractBundler {
      */
     protected function postBundle() {
         $cache = array();
-        $cacheFilename = dirname($this->getYaml()) . '/stylesheet.php';
+        $cacheFilename = dirname($this->getFile()) . '/stylesheet.cache.php';
 
         $this->getBundlerLogger()->logDebug("creating cache file: " . $cacheFilename);
 

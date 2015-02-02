@@ -2,7 +2,6 @@
 namespace Bundler\Package;
 
 use Bundler\BundlerLogger;
-use Bundler\FileSystem\FileSelector;
 use Bundler\Tools\Benchmark;
 
 /**
@@ -67,7 +66,7 @@ abstract class AbstractPackage implements PackageInterface {
         $this->name = trim($name);
 
         if(empty($this->name)) {
-            throw new PackageException('the package name cannot be empty');
+            throw new PackageException('the package name cannot be empty', 3000);
         }
     }
 
@@ -86,7 +85,7 @@ abstract class AbstractPackage implements PackageInterface {
         $this->root = realpath($root);
 
         if($this->root === false) {
-            throw new PackageException('invalid root path: ' . $root);
+            throw new PackageException('invalid root path: ' . $root, 3001);
         }
     }
 
@@ -133,7 +132,9 @@ abstract class AbstractPackage implements PackageInterface {
 
         $benchmark = new Benchmark();
         $benchmark->start();
+
         $this->bundlePackage();
+
         $benchmark->stop();
 
         $this->getBundlerLogger()->logInfo("bundling package: {$this->getName()} in {$benchmark->getTime()} seconds");

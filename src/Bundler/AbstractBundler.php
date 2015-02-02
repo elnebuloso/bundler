@@ -3,9 +3,6 @@ namespace Bundler;
 
 use Bundler\Package\PackageInterface;
 use Bundler\Tools\Benchmark;
-use Symfony\Component\Config\Definition\ConfigurationInterface;
-use Symfony\Component\Config\Definition\Processor;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class AbstractBundler
@@ -22,7 +19,7 @@ abstract class AbstractBundler implements BundlerInterface {
     /**
      * @var string
      */
-    private $yaml;
+    private $file;
 
     /**
      * @var string
@@ -35,31 +32,15 @@ abstract class AbstractBundler implements BundlerInterface {
     private $packages;
 
     /**
-     * @var bool
-     */
-    private $isConfigured = false;
-
-    /**
-     * @param string $yaml
+     * @param string $file
      * @param string $root
      * @throws BundlerException
      */
-    public function __construct($yaml, $root = null) {
-        $this->bundlerLogger = new BundlerLogger();
-        $this->yaml = realpath($yaml);
-
-        if($this->yaml === false) {
-            throw new BundlerException('unable to find configuration: ' . $yaml, 1000);
-        }
-
-        // no root given from which the files are collected, we take the parent folder from ./.bundler
-        if(empty($root)) {
-            $this->root = dirname(dirname($this->yaml));
-        }
-
-        if(realpath($this->root) === false) {
-            throw new BundlerException('invalid root path: ' . $this->root, 1001);
-        }
+    public function __construct($file, $root = null) {
+        $this->setBundlerLogger(new BundlerLogger());
+        $this->setFile($file);
+        $this->setRoot($root);
+        $this->configure();
     }
 
     /**
@@ -77,10 +58,39 @@ abstract class AbstractBundler implements BundlerInterface {
     }
 
     /**
+     * @param $file
+     * @throws BundlerException
+     */
+    public function setFile($file) {
+        $this->file = realpath($file);
+
+        if($this->file === false) {
+            throw new BundlerException('unable to find configuration: ' . $file, 1000);
+        }
+    }
+
+    /**
      * @return string
      */
-    public function getYaml() {
-        return $this->yaml;
+    public function getFile() {
+        return $this->file;
+    }
+
+    /**
+     * @param $root
+     * @throws BundlerException
+     */
+    public function setRoot($root) {
+        // no root given from which the files are collected, we take the parent folder from ./.bundler
+        if(empty($root)) {
+            $root = dirname(dirname($this->file));
+        }
+
+        $this->root = realpath($root);
+
+        if($this->root === false) {
+            throw new BundlerException('invalid root path: ' . $root, 1001);
+        }
     }
 
     /**
@@ -98,13 +108,6 @@ abstract class AbstractBundler implements BundlerInterface {
     }
 
     /**
-     * @return PackageInterface[]
-     */
-    public function getPackages() {
-        return $this->packages;
-    }
-
-    /**
      * @param string $name
      * @return PackageInterface|null
      */
@@ -113,17 +116,23 @@ abstract class AbstractBundler implements BundlerInterface {
     }
 
     /**
+     * @return PackageInterface[]
+     */
+    public function getPackages() {
+        return $this->packages;
+    }
+
+    /**
      * @return void
      */
     public function configure() {
-        $this->isConfigured = true;
+        $this->packages = array();
 
-        $config = Yaml::parse($this->getYaml());
-        $processor = new Processor();
-        $configuration = $processor->processConfiguration($this->getConfiguration(), array($config));
+        /** @noinspection PhpIncludeInspection */
+        $packages = include $this->getFile();
 
-        foreach($configuration['packages'] as $packageName => $packageConfiguration) {
-            $this->addPackage($this->createPackage($packageName, $this->getRoot(), $packageConfiguration));
+        foreach($packages as $packageName => $configuration) {
+            $this->addPackage($this->createPackage($packageName, $this->getRoot(), $configuration));
         }
     }
 
@@ -131,15 +140,10 @@ abstract class AbstractBundler implements BundlerInterface {
      * @return void
      */
     public function bundle() {
-        if(!$this->isConfigured) {
-            $this->configure();
-        }
-
         $this->getBundlerLogger()->logInfo($this->getName());
 
         $benchmark = new Benchmark();
         $benchmark->start();
-
         $this->preBundle();
 
         foreach($this->getPackages() as $package) {
@@ -147,7 +151,6 @@ abstract class AbstractBundler implements BundlerInterface {
         }
 
         $this->postBundle();
-
         $benchmark->stop();
 
         $this->getBundlerLogger()->logInfo("{$this->getName()} in {$benchmark->getTime()} seconds");

@@ -2,10 +2,8 @@
 namespace Bundler;
 
 use Bundler\Compiler\Compiler;
-use Bundler\Config\JavascriptConfig;
 use Bundler\Package\JavascriptPackage;
 use Bundler\Package\PackageInterface;
-use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
  * Class JavascriptBundler
@@ -55,7 +53,7 @@ class JavascriptBundler extends AbstractBundler {
      */
     protected function postBundle() {
         $cache = array();
-        $cacheFilename = dirname($this->getYaml()) . '/javascript.php';
+        $cacheFilename = dirname($this->getFile()) . '/javascript.cache.php';
 
         $this->getBundlerLogger()->logDebug("creating cache file: " . $cacheFilename);
 
