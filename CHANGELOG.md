@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 8.0.2
+
+- removed unused dependencies
+
 ## 8.0.1
 
 - extracted markup rendering, available with elnebuloso/bundler-markup
