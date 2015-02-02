@@ -1,14 +1,14 @@
 <?php return array (
-  'stylesheetFoo' => 
+  'javascriptFoo' => 
   array (
-    'md5' => 'ebb7d9ec9ca620c8413870e23901bfc4',
-    'max' => 'css/stylesheetFoo.max.js',
-    'min' => 'css/stylesheetFoo.min.js',
+    'md5' => 'cf1c4502fb665807b78f2f1ea6619f81',
+    'max' => 'js/javascriptFoo.max.js',
+    'min' => 'js/javascriptFoo.min.js',
   ),
-  'stylesheetBar' => 
+  'javascriptBar' => 
   array (
-    'md5' => '0f1fbf23d39cc87f6dcd2fc2a47bbc26',
-    'max' => 'css/stylesheetBar.max.js',
-    'min' => 'css/stylesheetBar.min.js',
+    'md5' => 'dc0365178947b1816b15c7752892d5da',
+    'max' => 'js/javascriptBar.max.js',
+    'min' => 'js/javascriptBar.min.js',
   ),
 );

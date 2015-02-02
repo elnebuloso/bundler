@@ -12291,4 +12291,5 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap requires jQuery'
 
 
 $(document).ready(function() {
+    console.log('foo');
 });
