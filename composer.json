@@ -3,15 +3,14 @@
     "type": "library",
     "license": "MIT",
     "description": "bundle your stylesheets and your javascripts",
-    "keywords":
-        [
-            "bundling",
-            "minifying",
-            "javascript",
-            "js",
-            "stylesheet",
-            "css"
-        ],
+    "keywords": [
+        "bundling",
+        "minifying",
+        "javascript",
+        "js",
+        "stylesheet",
+        "css"
+    ],
     "authors": [
         {
             "name": "Jeff Tunessen",
@@ -28,7 +27,7 @@
         "zendframework\/zend-log": "~2.3"
     },
     "suggest": {
-        "elnebuloso/bundler-markup": "markup renderer for bundler"
+        "elnebuloso\/bundler-markup": "markup renderer for bundler"
     },
     "autoload": {
         "psr-0": {
