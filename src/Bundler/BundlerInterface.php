@@ -11,10 +11,10 @@ use Bundler\Package\PackageInterface;
 interface BundlerInterface {
 
     /**
-     * @param string $yaml
+     * @param string $file
      * @param string $root
      */
-    public function __construct($yaml, $root = null);
+    public function __construct($file, $root = null);
 
     /**
      * @return BundlerLogger
@@ -29,7 +29,7 @@ interface BundlerInterface {
     /**
      * @return string
      */
-    public function getYaml();
+    public function getFile();
 
     /**
      * @return string
@@ -51,11 +51,6 @@ interface BundlerInterface {
      * @return PackageInterface|null
      */
     public function getPackageByName($name);
-
-    /**
-     * @return void
-     */
-    public function configure();
 
     /**
      * @return void

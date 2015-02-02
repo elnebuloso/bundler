@@ -22,13 +22,6 @@ class JavascriptBundler extends AbstractBundler {
     }
 
     /**
-     * @return ConfigurationInterface
-     */
-    protected function getConfiguration() {
-        return new JavascriptConfig();
-    }
-
-    /**
      * @param string $name
      * @param string $root
      * @param array $configuration

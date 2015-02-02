@@ -56,31 +56,6 @@ interface PackageInterface {
     public function getIncludes();
 
     /**
-     * @param array $excludes
-     */
-    public function setExcludes(array $excludes);
-
-    /**
-     * @return array
-     */
-    public function getExcludes();
-
-    /**
-     * @return void
-     */
-    public function selectFiles();
-
-    /**
-     * @return array
-     */
-    public function getSelectedFiles();
-
-    /**
-     * @return int
-     */
-    public function getSelectedFilesCount();
-
-    /**
      * @return void
      */
     public function bundle();

@@ -38,22 +38,10 @@ abstract class AbstractPackage implements PackageInterface {
     private $includes;
 
     /**
-     * @var array
-     */
-    private $excludes;
-
-    /**
-     * @var FileSelector
-     */
-    private $fileSelector;
-
-    /**
      * @return self
      */
     public function __construct() {
         $this->includes = array();
-        $this->excludes = array();
-        $this->fileSelector = new FileSelector();
         $this->bundlerLogger = new BundlerLogger();
     }
 
@@ -79,7 +67,7 @@ abstract class AbstractPackage implements PackageInterface {
         $this->name = trim($name);
 
         if(empty($this->name)) {
-            throw new PackageException('the package name cannot be empty', 5000);
+            throw new PackageException('the package name cannot be empty');
         }
     }
 
@@ -98,7 +86,7 @@ abstract class AbstractPackage implements PackageInterface {
         $this->root = realpath($root);
 
         if($this->root === false) {
-            throw new PackageException('invalid root path: ' . $root, 5001);
+            throw new PackageException('invalid root path: ' . $root);
         }
     }
 
@@ -138,54 +126,6 @@ abstract class AbstractPackage implements PackageInterface {
     }
 
     /**
-     * @param array $excludes
-     */
-    public function setExcludes(array $excludes) {
-        $this->excludes = $excludes;
-    }
-
-    /**
-     * @return array
-     */
-    public function getExcludes() {
-        return $this->excludes;
-    }
-
-    /**
-     * @return void
-     */
-    public function selectFiles() {
-        $this->getBundlerLogger()->logDebug("selecting files");
-
-        $benchmark = new Benchmark();
-        $benchmark->start();
-
-        $this->fileSelector = new FileSelector();
-        $this->fileSelector->setDir($this->root);
-        $this->fileSelector->setIncludes($this->getIncludes());
-        $this->fileSelector->setExcludes($this->getExcludes());
-        $this->fileSelector->select();
-
-        $benchmark->stop();
-
-        $this->getBundlerLogger()->logDebug("selecting files: {$this->getSelectedFilesCount()} files in {$benchmark->getTime()} seconds");
-    }
-
-    /**
-     * @return array
-     */
-    public function getSelectedFiles() {
-        return $this->fileSelector->getFiles();
-    }
-
-    /**
-     * @return int
-     */
-    public function getSelectedFilesCount() {
-        return $this->fileSelector->getFilesCount();
-    }
-
-    /**
      * @return void
      */
     public function bundle() {
@@ -193,10 +133,7 @@ abstract class AbstractPackage implements PackageInterface {
 
         $benchmark = new Benchmark();
         $benchmark->start();
-
-        $this->selectFiles();
         $this->bundlePackage();
-
         $benchmark->stop();
 
         $this->getBundlerLogger()->logInfo("bundling package: {$this->getName()} in {$benchmark->getTime()} seconds");

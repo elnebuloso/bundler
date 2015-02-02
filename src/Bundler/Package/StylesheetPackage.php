@@ -37,7 +37,7 @@ class StylesheetPackage extends AbstractPublicPackage {
         $fileSystem = new Filesystem();
         $content = array();
 
-        foreach($this->getSelectedFiles() as $sourceFile) {
+        foreach($this->getIncludes() as $sourceFile) {
             $path = $fileSystem->makePathRelative(dirname($sourceFile), dirname($this->getDestinationMax()));
             $path = trim($path, '/');
 

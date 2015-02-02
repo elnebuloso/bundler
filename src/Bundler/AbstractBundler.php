@@ -154,11 +154,6 @@ abstract class AbstractBundler implements BundlerInterface {
     }
 
     /**
-     * @return ConfigurationInterface
-     */
-    abstract protected function getConfiguration();
-
-    /**
      * @param string $name
      * @param string $root
      * @param array $configuration

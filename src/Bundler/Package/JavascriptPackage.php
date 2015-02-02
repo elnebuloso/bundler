@@ -35,7 +35,7 @@ class JavascriptPackage extends AbstractPublicPackage {
 
         $content = array();
 
-        foreach($this->getSelectedFiles() as $sourceFile) {
+        foreach($this->getIncludes() as $sourceFile) {
             $content[] = file_get_contents($sourceFile);
             $this->getBundlerLogger()->logDebug("- {$sourceFile}");
         }

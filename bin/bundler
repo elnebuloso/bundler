@@ -1,8 +1,8 @@
 #!/usr/bin/env php
 <?php
-use Bundler\Command\FileCommand;
 use Bundler\Command\JavascriptCommand;
-use Bundler\Command\StylesheetCommand;use Symfony\Component\Console\Application;
+use Bundler\Command\StylesheetCommand;
+use Symfony\Component\Console\Application;
 
 // error reporting
 ini_set('error_reporting', E_ALL);
@@ -27,18 +27,13 @@ try {
 
     $console = new Application();
 
-    $command = new FileCommand();
-    $command->setYaml($root . '/.bundler/files.yaml');
-    $command->setRoot($root);
-    $console->add($command);
-
     $command = new JavascriptCommand();
-    $command->setYaml($root . '/.bundler/javascript.yaml');
+    $command->setFile($root . '/.bundler/javascript.php');
     $command->setRoot($root);
     $console->add($command);
 
     $command = new StylesheetCommand();
-    $command->setYaml($root . '/.bundler/stylesheet.yaml');
+    $command->setFile($root . '/.bundler/stylesheet.php');
     $command->setRoot($root);
     $console->add($command);
 
