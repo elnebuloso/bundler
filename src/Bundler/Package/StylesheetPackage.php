@@ -38,7 +38,10 @@ class StylesheetPackage extends AbstractPublicPackage {
         $content = array();
 
         foreach($this->getIncludes() as $sourceFile) {
-            $path = $fileSystem->makePathRelative(dirname($sourceFile), dirname($this->getDestinationMax()));
+            $sourceFile = realpath($this->getRoot() . '/' . $sourceFile);
+            $destinationFile = realpath($this->getDestinationMax());
+
+            $path = $fileSystem->makePathRelative(dirname($sourceFile), dirname($destinationFile));
             $path = trim($path, '/');
 
             $css = file_get_contents($sourceFile);
