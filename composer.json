@@ -2,15 +2,16 @@
     "name": "elnebuloso\/bundler",
     "type": "library",
     "license": "MIT",
-    "description": "bundle your project files, your stylesheets and your javascripts",
-    "keywords": [
-        "bundling",
-        "minifying",
-        "javascript",
-        "js",
-        "stylesheet",
-        "css"
-    ],
+    "description": "bundle your stylesheets and your javascripts",
+    "keywords":
+        [
+            "bundling",
+            "minifying",
+            "javascript",
+            "js",
+            "stylesheet",
+            "css"
+        ],
     "authors": [
         {
             "name": "Jeff Tunessen",
@@ -25,6 +26,9 @@
         "symfony\/yaml": "~2.5",
         "symfony\/filesystem": "~2.5",
         "zendframework\/zend-log": "~2.3"
+    },
+    "suggest": {
+        "elnebuloso/bundler-markup": "markup renderer for bundler"
     },
     "autoload": {
         "psr-0": {

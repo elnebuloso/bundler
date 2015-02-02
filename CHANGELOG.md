@@ -1,13 +1,9 @@
 # CHANGELOG
 
-## TODO for 8.0.0
+## 8.0.1
 
-- all configuration files as php files
-- javascript.php
-- javascript.cache.php
-- stylesheet.php
-- stylesheet.cache.php
-- extract bundler-markup????
+- extracted markup rendering, available with elnebuloso/bundler-markup
+- bundler configuration by php files
 
 ## 7.2.0
 
