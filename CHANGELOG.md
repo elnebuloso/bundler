@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 8.1.2
+
+- bugfix changeCssUrls
+
 ## 8.1.1
 
 - elnebuloso/phing-commons integration

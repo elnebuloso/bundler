@@ -70,7 +70,7 @@ class StylesheetPackage extends AbstractPublicPackage {
         $with = array();
 
         foreach($matches[0] as $match) {
-            if(strpos($match, 'http') === false) {
+            if(strpos($match, 'http', 0) === false && strpos($match, '//', 0) === false) {
                 $from[] = $match;
                 $with[] = preg_replace('/url\(\s*[\'"]?\/?(.+?)[\'"]?\s*\)/i', 'url(' . $baseUrl . '/$1)', $match);
             }
