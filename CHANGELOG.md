@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 8.1.0
+
+- updated for usage with elnebuloso/phing-commons build stack
+- bugfix yuicompressor example call
+
 ## 8.0.2
 
 - removed unused dependencies

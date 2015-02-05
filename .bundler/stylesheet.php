@@ -14,7 +14,7 @@ return array(
         # %source%  placeholder for source files
         # %destination% placeholder for destination files
         'compilers' => array(
-            'yuicompressor --type css --line-break 5000 -o %source% %destination%'
+            'yuicompressor --type css --line-break 5000 -o %destination% %source%'
         ),
 
         # define includes (all relative under public directory)
@@ -29,7 +29,7 @@ return array(
         'public' => 'public',
         'target' => 'css',
         'compilers' => array(
-            'yuicompressor --type css --line-break 5000 -o %source% %destination%'
+            'yuicompressor --type css --line-break 5000 -o %destination% %source%'
         ),
         'include' => array(
             'vendor/twitter/bootstrap/3.1.0/css/bootstrap.css',
