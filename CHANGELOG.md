@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 8.1.1
+
+- elnebuloso/phing-commons integration
+
 ## 8.1.0
 
 - updated for usage with elnebuloso/phing-commons build stack
