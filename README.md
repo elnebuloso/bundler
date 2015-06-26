@@ -58,6 +58,6 @@ see demo files under ./bundler
 
 ### commands (called in project root)
 
-- /path/to/your/bundler-installation/bin/bundler
-- /path/to/your/bundler-installation/bin/bundler stylesheet [--help]
-- /path/to/your/bundler-installation/bin/bundler javascript [--help]
+- vendor/bin/bundler
+- vendor/bin/bundler stylesheet [--help]
+- vendor/bin/bundler javascript [--help]
