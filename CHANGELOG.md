@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 8.1.3
+
+- PSR1, PSR2 Coding Standard
+
 ## 8.1.2
 
 - bugfix changeCssUrls

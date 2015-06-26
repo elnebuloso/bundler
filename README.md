@@ -1,12 +1,29 @@
 # bundler
 
-[![Build Status](https://img.shields.io/travis/elnebuloso/bundler/master.svg?style=flat-square)](https://travis-ci.org/elnebuloso/bundler)
-[![Software License](https://img.shields.io/packagist/l/elnebuloso/bundler.svg?style=flat-square)](LICENSE)
+[![Build Status](https://travis-ci.org/elnebuloso/bundler.svg?branch=master)](https://travis-ci.org/elnebuloso/bundler)
 
 ## About
 
 - Bundler minifies your Javascript
 - Bundler minifies your Stylesheet
+
+## Requirements
+
+The following versions of PHP are supported by this version.
+
+* PHP 5.3
+* PHP 5.4
+* PHP 5.5
+* PHP 5.6
+
+The following versions of PHP are NOT supported by this version.
+
+* PHP 7.0
+* HHVM
+
+## Coding Standards
+
+Bundler follows the standards defined in the PSR-0, PSR-1, PSR-2 and PSR-4 documents.
 
 ## Installation / Usage
 
@@ -25,16 +42,6 @@ Via Composer
     }
 }
 ```
-
-## Requirements
-
-The following versions of PHP are supported by this version.
-
-- PHP 5.3
-- PHP 5.4
-- PHP 5.5
-- PHP 5.6
-- HHVM
 
 ## usage
 

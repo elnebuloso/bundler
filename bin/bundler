@@ -1,8 +1,7 @@
 #!/usr/bin/env php
 <?php
 use Bundler\Command\JavascriptCommand;
-use Bundler\Command\StylesheetCommand;
-use Symfony\Component\Console\Application;
+use Bundler\Command\StylesheetCommand;use Symfony\Component\Console\Application;
 
 // error reporting
 ini_set('error_reporting', E_ALL);

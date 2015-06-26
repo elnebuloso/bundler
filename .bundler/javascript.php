@@ -14,7 +14,7 @@ return array(
         # %source%  placeholder for source files
         # %destination% placeholder for destination files
         'compilers' => array(
-            'google-closure-compiler --compilation_level=WHITESPACE_ONLY --warning_level=QUIET --js=%source% --js_output_file=%destination%'
+            'closure-compiler --compilation_level=WHITESPACE_ONLY --warning_level=QUIET --js=%source% --js_output_file=%destination%'
         ),
 
         # define includes (all relative under public directory)
@@ -29,7 +29,7 @@ return array(
         'public' => 'public',
         'target' => 'js',
         'compilers' => array(
-            'google-closure-compiler --compilation_level=WHITESPACE_ONLY --warning_level=QUIET --js=%source% --js_output_file=%destination%'
+            'closure-compiler --compilation_level=WHITESPACE_ONLY --warning_level=QUIET --js=%source% --js_output_file=%destination%'
         ),
         'include' => array(
             'vendor/jquery/jquery/1.11.0/jquery-1.11.0.js',
