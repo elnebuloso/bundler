@@ -1,7 +1,8 @@
 #!/usr/bin/env php
 <?php
 use Bundler\Command\JavascriptCommand;
-use Bundler\Command\StylesheetCommand;use Symfony\Component\Console\Application;
+use Bundler\Command\StylesheetCommand;
+use Symfony\Component\Console\Application;
 
 // error reporting
 ini_set('error_reporting', E_ALL);
@@ -10,8 +11,8 @@ ini_set('display_errors', 'on');
 try {
     $root = getcwd();
 
-    if(($autoloader = realpath(__DIR__ . '/../vendor/autoload.php')) === false) {
-        if(($autoloader = realpath(__DIR__ . '/../../../../vendor/autoload.php')) === false) {
+    if (($autoloader = realpath(__DIR__ . '/../vendor/autoload.php')) === false) {
+        if (($autoloader = realpath(__DIR__ . '/../../../../vendor/autoload.php')) === false) {
             throw new Exception("Unable to determine autoloader.", 100);
         }
     }
@@ -37,8 +38,7 @@ try {
     $console->add($command);
 
     exit($console->run());
-}
-catch(Exception $e) {
+} catch (Exception $e) {
     echo $e->getMessage() . PHP_EOL;
     exit($e->getCode());
 }
