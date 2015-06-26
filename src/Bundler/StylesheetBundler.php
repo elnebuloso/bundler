@@ -10,12 +10,14 @@ use Bundler\Package\StylesheetPackage;
  *
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
-class StylesheetBundler extends AbstractBundler {
+class StylesheetBundler extends AbstractBundler
+{
 
     /**
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return 'Stylesheet Bundler';
     }
 
@@ -25,7 +27,8 @@ class StylesheetBundler extends AbstractBundler {
      * @param array $configuration
      * @return PackageInterface
      */
-    protected function createPackage($name, $root, array $configuration) {
+    protected function createPackage($name, $root, array $configuration)
+    {
         $package = new StylesheetPackage();
         $package->setName($name);
         $package->setRoot($root . DIRECTORY_SEPARATOR . $configuration['public']);
@@ -34,7 +37,7 @@ class StylesheetBundler extends AbstractBundler {
         $package->setIncludes($configuration['include']);
         $package->setBundlerLogger($this->getBundlerLogger());
 
-        foreach($configuration['compilers'] as $command) {
+        foreach ($configuration['compilers'] as $command) {
             $package->addCompiler(new Compiler($command));
         }
 
@@ -44,20 +47,22 @@ class StylesheetBundler extends AbstractBundler {
     /**
      * @return void
      */
-    protected function preBundle() {
+    protected function preBundle()
+    {
         // intentionally left blank
     }
 
     /**
      * @return void
      */
-    protected function postBundle() {
+    protected function postBundle()
+    {
         $cache = array();
         $cacheFilename = dirname($this->getFile()) . '/stylesheet.cache.php';
 
         $this->getBundlerLogger()->logDebug("creating cache file: " . $cacheFilename);
 
-        foreach($this->getPackages() as $package) {
+        foreach ($this->getPackages() as $package) {
             /** @var StylesheetPackage $package */
             $cache[$package->getName()] = array(
                 'md5' => md5(file_get_contents($package->getDestinationMin())),

@@ -8,6 +8,7 @@ use Exception;
  *
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
-class BundlerException extends Exception {
+class BundlerException extends Exception
+{
 
 }

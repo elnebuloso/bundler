@@ -8,6 +8,7 @@ use Exception;
  *
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
-class CompilerException extends Exception {
+class CompilerException extends Exception
+{
 
 }

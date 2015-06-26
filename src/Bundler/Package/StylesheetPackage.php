@@ -9,26 +9,30 @@ use Symfony\Component\Filesystem\Filesystem;
  *
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
-class StylesheetPackage extends AbstractPublicPackage {
+class StylesheetPackage extends AbstractPublicPackage
+{
 
     /**
      * @return string
      */
-    public function getFilenameMaxFile() {
+    public function getFilenameMaxFile()
+    {
         return $this->getName() . '.max.css';
     }
 
     /**
      * @return string
      */
-    public function getFilenameMinFile() {
+    public function getFilenameMinFile()
+    {
         return $this->getName() . '.min.css';
     }
 
     /**
      * @return void
      */
-    protected function bundlePackage() {
+    protected function bundlePackage()
+    {
         $this->getBundlerLogger()->logDebug("compressing files to single file");
 
         $benchmark = new Benchmark();
@@ -37,7 +41,7 @@ class StylesheetPackage extends AbstractPublicPackage {
         $fileSystem = new Filesystem();
         $content = array();
 
-        foreach($this->getIncludes() as $sourceFile) {
+        foreach ($this->getIncludes() as $sourceFile) {
             $sourceFile = realpath($this->getRoot() . '/' . $sourceFile);
             $destinationFile = realpath($this->getDestinationMax());
 
@@ -63,14 +67,15 @@ class StylesheetPackage extends AbstractPublicPackage {
      * @param $content
      * @return string
      */
-    protected function changeCssUrls($baseUrl, $content) {
+    protected function changeCssUrls($baseUrl, $content)
+    {
         preg_match_all('/url\(\s*[\'"]?\/?(.+?)[\'"]?\s*\)/i', $content, $matches);
 
         $from = array();
         $with = array();
 
-        foreach($matches[0] as $match) {
-            if(strpos($match, 'http', 0) === false && strpos($match, '//', 0) === false) {
+        foreach ($matches[0] as $match) {
+            if (strpos($match, 'http', 0) === false && strpos($match, '//', 0) === false) {
                 $from[] = $match;
                 $with[] = preg_replace('/url\(\s*[\'"]?\/?(.+?)[\'"]?\s*\)/i', 'url(' . $baseUrl . '/$1)', $match);
             }

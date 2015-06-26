@@ -8,7 +8,8 @@ use Bundler\Compiler\Compiler;
  *
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
-abstract class AbstractPublicPackage extends AbstractPackage {
+abstract class AbstractPublicPackage extends AbstractPackage
+{
 
     /**
      * @var string
@@ -23,42 +24,48 @@ abstract class AbstractPublicPackage extends AbstractPackage {
     /**
      * @param string $public
      */
-    public function setPublic($public) {
+    public function setPublic($public)
+    {
         $this->public = $public;
     }
 
     /**
      * @return string
      */
-    public function getPublic() {
+    public function getPublic()
+    {
         return $this->public;
     }
 
     /**
      * @param Compiler $compiler
      */
-    public function addCompiler(Compiler $compiler) {
+    public function addCompiler(Compiler $compiler)
+    {
         $this->compilers[] = $compiler;
     }
 
     /**
      * @return Compiler[]
      */
-    public function getCompilers() {
+    public function getCompilers()
+    {
         return $this->compilers;
     }
 
     /**
      * @return string
      */
-    public function getDestinationMax() {
+    public function getDestinationMax()
+    {
         return "{$this->getRoot()}/{$this->getTarget()}/{$this->getFilenameMaxFile()}";
     }
 
     /**
      * @return string
      */
-    public function getDestinationMin() {
+    public function getDestinationMin()
+    {
         return "{$this->getRoot()}/{$this->getTarget()}/{$this->getFilenameMinFile()}";
     }
 
@@ -76,15 +83,16 @@ abstract class AbstractPublicPackage extends AbstractPackage {
      * @param array $content
      * @return void
      */
-    protected function compressContent(array $content) {
+    protected function compressContent(array $content)
+    {
         $content = implode(PHP_EOL . PHP_EOL, $content);
         $tempFilename = $this->getDestinationMin() . '.tmp';
 
         file_put_contents($this->getDestinationMax(), $content);
         file_put_contents($this->getDestinationMin(), $content);
 
-        if(!is_null($this->getCompilers())) {
-            foreach($this->getCompilers() as $compiler) {
+        if (!is_null($this->getCompilers())) {
+            foreach ($this->getCompilers() as $compiler) {
                 copy($this->getDestinationMin(), $tempFilename);
 
                 $this->getBundlerLogger()->logInfo($compiler->getCommand($tempFilename, $this->getDestinationMin()));

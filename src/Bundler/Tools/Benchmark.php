@@ -6,7 +6,8 @@ namespace Bundler\Tools;
  *
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
-class Benchmark {
+class Benchmark
+{
 
     /**
      * @var int
@@ -21,7 +22,8 @@ class Benchmark {
     /**
      * @return void
      */
-    public function start() {
+    public function start()
+    {
         $this->timeStart = microtime(true);
         $this->timeEnd = 0;
     }
@@ -29,14 +31,16 @@ class Benchmark {
     /**
      * @return void
      */
-    public function stop() {
+    public function stop()
+    {
         $this->timeEnd = microtime(true);
     }
 
     /**
      * @return int
      */
-    public function getTime() {
+    public function getTime()
+    {
         return $this->timeEnd - $this->timeStart;
     }
 }

@@ -11,7 +11,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
-abstract class AbstractCommand extends Command {
+abstract class AbstractCommand extends Command
+{
 
     /**
      * @var string
@@ -36,35 +37,40 @@ abstract class AbstractCommand extends Command {
     /**
      * @param string $file
      */
-    public function setFile($file) {
+    public function setFile($file)
+    {
         $this->file = $file;
     }
 
     /**
      * @return string
      */
-    public function getFile() {
+    public function getFile()
+    {
         return $this->file;
     }
 
     /**
      * @param string $root
      */
-    public function setRoot($root) {
+    public function setRoot($root)
+    {
         $this->root = $root;
     }
 
     /**
      * @return string
      */
-    public function getRoot() {
+    public function getRoot()
+    {
         return $this->root;
     }
 
     /**
      * @return void
      */
-    protected function configure() {
+    protected function configure()
+    {
         $this->setName($this->getCommandName());
         $this->setDescription($this->getCommandName());
     }
@@ -74,7 +80,8 @@ abstract class AbstractCommand extends Command {
      * @param OutputInterface $output
      * @return void
      */
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
         $this->input = $input;
         $this->output = $output;
 

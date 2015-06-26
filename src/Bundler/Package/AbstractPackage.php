@@ -9,7 +9,8 @@ use Bundler\Tools\Benchmark;
  *
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
-abstract class AbstractPackage implements PackageInterface {
+abstract class AbstractPackage implements PackageInterface
+{
 
     /**
      * @var BundlerLogger
@@ -39,7 +40,8 @@ abstract class AbstractPackage implements PackageInterface {
     /**
      * @return self
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->includes = array();
         $this->bundlerLogger = new BundlerLogger();
     }
@@ -47,14 +49,16 @@ abstract class AbstractPackage implements PackageInterface {
     /**
      * @param BundlerLogger $bundlerLogger
      */
-    public function setBundlerLogger(BundlerLogger $bundlerLogger) {
+    public function setBundlerLogger(BundlerLogger $bundlerLogger)
+    {
         $this->bundlerLogger = $bundlerLogger;
     }
 
     /**
      * @return BundlerLogger
      */
-    public function getBundlerLogger() {
+    public function getBundlerLogger()
+    {
         return $this->bundlerLogger;
     }
 
@@ -62,10 +66,11 @@ abstract class AbstractPackage implements PackageInterface {
      * @param string $name
      * @throws PackageException
      */
-    public function setName($name) {
+    public function setName($name)
+    {
         $this->name = trim($name);
 
-        if(empty($this->name)) {
+        if (empty($this->name)) {
             throw new PackageException('the package name cannot be empty', 3000);
         }
     }
@@ -73,7 +78,8 @@ abstract class AbstractPackage implements PackageInterface {
     /**
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
@@ -81,10 +87,11 @@ abstract class AbstractPackage implements PackageInterface {
      * @param string $root
      * @throws PackageException
      */
-    public function setRoot($root) {
+    public function setRoot($root)
+    {
         $this->root = realpath($root);
 
-        if($this->root === false) {
+        if ($this->root === false) {
             throw new PackageException('invalid root path: ' . $root, 3001);
         }
     }
@@ -92,42 +99,48 @@ abstract class AbstractPackage implements PackageInterface {
     /**
      * @return string
      */
-    public function getRoot() {
+    public function getRoot()
+    {
         return $this->root;
     }
 
     /**
      * @param string $target
      */
-    public function setTarget($target) {
+    public function setTarget($target)
+    {
         $this->target = $target;
     }
 
     /**
      * @return string
      */
-    public function getTarget() {
+    public function getTarget()
+    {
         return $this->target;
     }
 
     /**
      * @param array $includes
      */
-    public function setIncludes(array $includes) {
+    public function setIncludes(array $includes)
+    {
         $this->includes = $includes;
     }
 
     /**
      * @return array
      */
-    public function getIncludes() {
+    public function getIncludes()
+    {
         return $this->includes;
     }
 
     /**
      * @return void
      */
-    public function bundle() {
+    public function bundle()
+    {
         $this->getBundlerLogger()->logInfo("bundling package: {$this->getName()}");
 
         $benchmark = new Benchmark();

@@ -8,7 +8,8 @@ use Bundler\Package\PackageInterface;
  *
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
-interface BundlerInterface {
+interface BundlerInterface
+{
 
     /**
      * @param string $file

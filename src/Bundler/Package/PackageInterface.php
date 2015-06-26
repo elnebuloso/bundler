@@ -8,7 +8,8 @@ use Bundler\BundlerLogger;
  *
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
-interface PackageInterface {
+interface PackageInterface
+{
 
     /**
      * @return BundlerLogger

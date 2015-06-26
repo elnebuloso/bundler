@@ -9,26 +9,30 @@ use Bundler\JavascriptBundler;
  *
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
-class JavascriptCommand extends AbstractCommand {
+class JavascriptCommand extends AbstractCommand
+{
 
     /**
      * @return string
      */
-    public function getCommandName() {
+    public function getCommandName()
+    {
         return 'javascript';
     }
 
     /**
      * @return string
      */
-    public function getCommandDescription() {
+    public function getCommandDescription()
+    {
         return 'bundling javascript';
     }
 
     /**
      * @return BundlerInterface
      */
-    protected function getBundler() {
+    protected function getBundler()
+    {
         return new JavascriptBundler($this->getFile());
     }
 }

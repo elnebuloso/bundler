@@ -9,7 +9,8 @@ use Bundler\Tools\Benchmark;
  *
  * @author Jeff Tunessen <jeff.tunessen@gmail.com>
  */
-abstract class AbstractBundler implements BundlerInterface {
+abstract class AbstractBundler implements BundlerInterface
+{
 
     /**
      * @var BundlerLogger
@@ -36,7 +37,8 @@ abstract class AbstractBundler implements BundlerInterface {
      * @param string $root
      * @throws BundlerException
      */
-    public function __construct($file, $root = null) {
+    public function __construct($file, $root = null)
+    {
         $this->setBundlerLogger(new BundlerLogger());
         $this->setFile($file);
         $this->setRoot($root);
@@ -46,14 +48,16 @@ abstract class AbstractBundler implements BundlerInterface {
     /**
      * @param BundlerLogger $bundlerLogger
      */
-    public function setBundlerLogger(BundlerLogger $bundlerLogger) {
+    public function setBundlerLogger(BundlerLogger $bundlerLogger)
+    {
         $this->bundlerLogger = $bundlerLogger;
     }
 
     /**
      * @return BundlerLogger
      */
-    public function getBundlerLogger() {
+    public function getBundlerLogger()
+    {
         return $this->bundlerLogger;
     }
 
@@ -61,10 +65,11 @@ abstract class AbstractBundler implements BundlerInterface {
      * @param $file
      * @throws BundlerException
      */
-    public function setFile($file) {
+    public function setFile($file)
+    {
         $this->file = realpath($file);
 
-        if($this->file === false) {
+        if ($this->file === false) {
             throw new BundlerException('unable to find configuration: ' . $file, 1000);
         }
     }
@@ -72,7 +77,8 @@ abstract class AbstractBundler implements BundlerInterface {
     /**
      * @return string
      */
-    public function getFile() {
+    public function getFile()
+    {
         return $this->file;
     }
 
@@ -80,15 +86,16 @@ abstract class AbstractBundler implements BundlerInterface {
      * @param $root
      * @throws BundlerException
      */
-    public function setRoot($root) {
+    public function setRoot($root)
+    {
         // no root given from which the files are collected, we take the parent folder from ./.bundler
-        if(empty($root)) {
+        if (empty($root)) {
             $root = dirname(dirname($this->file));
         }
 
         $this->root = realpath($root);
 
-        if($this->root === false) {
+        if ($this->root === false) {
             throw new BundlerException('invalid root path: ' . $root, 1001);
         }
     }
@@ -96,14 +103,16 @@ abstract class AbstractBundler implements BundlerInterface {
     /**
      * @return string
      */
-    public function getRoot() {
+    public function getRoot()
+    {
         return $this->root;
     }
 
     /**
      * @param PackageInterface $package
      */
-    public function addPackage(PackageInterface $package) {
+    public function addPackage(PackageInterface $package)
+    {
         $this->packages[$package->getName()] = $package;
     }
 
@@ -111,27 +120,30 @@ abstract class AbstractBundler implements BundlerInterface {
      * @param string $name
      * @return PackageInterface|null
      */
-    public function getPackageByName($name) {
+    public function getPackageByName($name)
+    {
         return array_key_exists($name, $this->packages) ? $this->packages[$name] : null;
     }
 
     /**
      * @return PackageInterface[]
      */
-    public function getPackages() {
+    public function getPackages()
+    {
         return $this->packages;
     }
 
     /**
      * @return void
      */
-    public function configure() {
+    public function configure()
+    {
         $this->packages = array();
 
         /** @noinspection PhpIncludeInspection */
         $packages = include $this->getFile();
 
-        foreach($packages as $packageName => $configuration) {
+        foreach ($packages as $packageName => $configuration) {
             $this->addPackage($this->createPackage($packageName, $this->getRoot(), $configuration));
         }
     }
@@ -139,14 +151,15 @@ abstract class AbstractBundler implements BundlerInterface {
     /**
      * @return void
      */
-    public function bundle() {
+    public function bundle()
+    {
         $this->getBundlerLogger()->logInfo($this->getName());
 
         $benchmark = new Benchmark();
         $benchmark->start();
         $this->preBundle();
 
-        foreach($this->getPackages() as $package) {
+        foreach ($this->getPackages() as $package) {
             $package->bundle();
         }
 
