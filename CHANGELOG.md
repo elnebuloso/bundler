@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 8.1.4
+
+- only testing composer packages after update
+
 ## 8.1.3
 
 - PSR1, PSR2 Coding Standard
