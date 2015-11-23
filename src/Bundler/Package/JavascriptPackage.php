@@ -10,7 +10,6 @@ use Bundler\Tools\Benchmark;
  */
 class JavascriptPackage extends AbstractPublicPackage
 {
-
     /**
      * @return string
      */
@@ -37,7 +36,7 @@ class JavascriptPackage extends AbstractPublicPackage
         $benchmark = new Benchmark();
         $benchmark->start();
 
-        $content = array();
+        $content = [];
 
         foreach ($this->getIncludes() as $sourceFile) {
             $sourceFile = realpath($this->getRoot() . '/' . $sourceFile);

@@ -8,7 +8,6 @@ namespace Bundler\Tools;
  */
 class Benchmark
 {
-
     /**
      * @var int
      */

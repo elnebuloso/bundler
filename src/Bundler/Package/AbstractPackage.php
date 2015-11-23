@@ -11,7 +11,6 @@ use Bundler\Tools\Benchmark;
  */
 abstract class AbstractPackage implements PackageInterface
 {
-
     /**
      * @var BundlerLogger
      */
@@ -42,7 +41,7 @@ abstract class AbstractPackage implements PackageInterface
      */
     public function __construct()
     {
-        $this->includes = array();
+        $this->includes = [];
         $this->bundlerLogger = new BundlerLogger();
     }
 

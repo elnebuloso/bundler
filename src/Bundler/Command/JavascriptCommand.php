@@ -11,7 +11,6 @@ use Bundler\JavascriptBundler;
  */
 class JavascriptCommand extends AbstractCommand
 {
-
     /**
      * @return string
      */

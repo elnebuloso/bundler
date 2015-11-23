@@ -11,7 +11,6 @@ use Bundler\Tools\Benchmark;
  */
 abstract class AbstractBundler implements BundlerInterface
 {
-
     /**
      * @var BundlerLogger
      */
@@ -138,7 +137,7 @@ abstract class AbstractBundler implements BundlerInterface
      */
     public function configure()
     {
-        $this->packages = array();
+        $this->packages = [];
 
         /** @noinspection PhpIncludeInspection */
         $packages = include $this->getFile();

@@ -11,7 +11,6 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class StylesheetPackage extends AbstractPublicPackage
 {
-
     /**
      * @return string
      */
@@ -39,7 +38,7 @@ class StylesheetPackage extends AbstractPublicPackage
         $benchmark->start();
 
         $fileSystem = new Filesystem();
-        $content = array();
+        $content = [];
 
         foreach ($this->getIncludes() as $sourceFile) {
             $sourceFile = realpath($this->getRoot() . '/' . $sourceFile);
@@ -71,8 +70,8 @@ class StylesheetPackage extends AbstractPublicPackage
     {
         preg_match_all('/url\(\s*[\'"]?\/?(.+?)[\'"]?\s*\)/i', $content, $matches);
 
-        $from = array();
-        $with = array();
+        $from = [];
+        $with = [];
 
         foreach ($matches[0] as $match) {
             if (strpos($match, 'http', 0) === false && strpos($match, '//', 0) === false) {

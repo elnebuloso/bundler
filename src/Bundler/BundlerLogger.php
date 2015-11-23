@@ -11,7 +11,6 @@ use Zend\Log\LoggerInterface;
  */
 class BundlerLogger
 {
-
     /**
      * @var LoggerInterface
      */

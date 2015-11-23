@@ -10,7 +10,6 @@ use Bundler\BundlerLogger;
  */
 interface PackageInterface
 {
-
     /**
      * @return BundlerLogger
      */

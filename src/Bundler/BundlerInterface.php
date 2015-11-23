@@ -10,7 +10,6 @@ use Bundler\Package\PackageInterface;
  */
 interface BundlerInterface
 {
-
     /**
      * @param string $file
      * @param string $root

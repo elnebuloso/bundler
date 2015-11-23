@@ -11,7 +11,6 @@ use Bundler\StylesheetBundler;
  */
 class StylesheetCommand extends AbstractCommand
 {
-
     /**
      * @return string
      */

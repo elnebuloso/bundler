@@ -10,7 +10,6 @@ use Bundler\Compiler\Compiler;
  */
 abstract class AbstractPublicPackage extends AbstractPackage
 {
-
     /**
      * @var string
      */

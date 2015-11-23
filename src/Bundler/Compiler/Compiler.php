@@ -8,7 +8,6 @@ namespace Bundler\Compiler;
  */
 class Compiler
 {
-
     /**
      * @var string
      */
