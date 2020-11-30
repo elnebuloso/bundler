@@ -1,6 +1,6 @@
 # bundler
 
-[![Build Status](https://travis-ci.org/elnebuloso/bundler.svg?branch=master)](https://travis-ci.org/elnebuloso/bundler)
+![abandoned](https://img.shields.io/badge/project-abandoned-red)
 
 ## About
 
